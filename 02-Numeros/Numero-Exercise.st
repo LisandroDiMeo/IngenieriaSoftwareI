@@ -799,21 +799,150 @@ printOn: aStream
 Fraccion class
 	instanceVariableNames: ''!
 
-!Fraccion class methodsFor: 'intance creation' stamp: 'NR 9/23/2018 23:45:19'!
+!Fraccion class methodsFor: 'intance creation' stamp: 'LDM 4/25/2022 11:52:09'!
 with: aDividend over: aDivisor
 
-	| greatestCommonDivisor numerator denominator |
-	
-	aDivisor isZero ifTrue: [ self error: self canNotDivideByZeroErrorDescription ].
-	aDividend isZero ifTrue: [ ^aDividend ].
-	
-	aDivisor isNegative ifTrue:[ ^aDividend negated / aDivisor negated].
+	^(Fraccion subclasses
+	detect: [:aSubclass | aSubclass canInitializeWith: aDividend over: aDivisor]
+	ifNone: [self error: 'No se pudo inicializar una Fraccion con esos valores']) with: aDividend over: aDivisor.
+	! !
+
+
+!classDefinition: #FraccionConDenominadorCero category: 'Numero-Exercise'!
+Fraccion subclass: #FraccionConDenominadorCero
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numero-Exercise'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FraccionConDenominadorCero class' category: 'Numero-Exercise'!
+FraccionConDenominadorCero class
+	instanceVariableNames: ''!
+
+!FraccionConDenominadorCero class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 10:56:56'!
+canInitializeWith: numerator over: denominator
+	^denominator isZero. ! !
+
+!FraccionConDenominadorCero class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:18:28'!
+with: aDividend over: aDivisor
+	self error: self canNotDivideByZeroErrorDescription.! !
+
+
+!classDefinition: #FraccionConDenominadorNegativo category: 'Numero-Exercise'!
+Fraccion subclass: #FraccionConDenominadorNegativo
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numero-Exercise'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FraccionConDenominadorNegativo class' category: 'Numero-Exercise'!
+FraccionConDenominadorNegativo class
+	instanceVariableNames: ''!
+
+!FraccionConDenominadorNegativo class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:01:39'!
+canInitializeWith: numerator over: denominator
+	^denominator isNegative. ! !
+
+!FraccionConDenominadorNegativo class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:25:03'!
+with: aDividend over: aDivisor
+	^aDividend negated / aDivisor negated! !
+
+
+!classDefinition: #FraccionConDenominadorPositivoNumeradorNoCero category: 'Numero-Exercise'!
+Fraccion subclass: #FraccionConDenominadorPositivoNumeradorNoCero
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numero-Exercise'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FraccionConDenominadorPositivoNumeradorNoCero class' category: 'Numero-Exercise'!
+FraccionConDenominadorPositivoNumeradorNoCero class
+	instanceVariableNames: ''!
+
+!FraccionConDenominadorPositivoNumeradorNoCero class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:40:00'!
+canInitializeWith: numerator over: denominator
+	^(denominator integerValue > 0) or: (numerator isZero not)! !
+
+!FraccionConDenominadorPositivoNumeradorNoCero class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:48:53'!
+with: aDividend over: aDivisor
+	| denominator greatestCommonDivisor numerator |
 	
 	greatestCommonDivisor := aDividend greatestCommonDivisorWith: aDivisor. 
 	numerator := aDividend // greatestCommonDivisor.
 	denominator := aDivisor // greatestCommonDivisor.
 	
-	denominator isOne ifTrue: [ ^numerator ].
+	^(FraccionConDenominadorPositivoNumeradorNoCero subclasses
+		detect: [:aSubclass | aSubclass canInitializeWith: denominator]
+		ifNone: [self error: 'No se pudo inicializar una Fraccion con esos valores']) with: numerator over: denominator.! !
 
-	^self new initializeWith: numerator over: denominator
-	! !
+
+!classDefinition: #FraccionConNumeradorDiferenteAUno category: 'Numero-Exercise'!
+FraccionConDenominadorPositivoNumeradorNoCero subclass: #FraccionConNumeradorDiferenteAUno
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numero-Exercise'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FraccionConNumeradorDiferenteAUno class' category: 'Numero-Exercise'!
+FraccionConNumeradorDiferenteAUno class
+	instanceVariableNames: ''!
+
+!FraccionConNumeradorDiferenteAUno class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:46:57'!
+canInitializeWith: denominator
+	^ denominator isOne not.! !
+
+!FraccionConNumeradorDiferenteAUno class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:47:52'!
+with: aNumerator over: aDenominator
+	^ self new initializeWith: aNumerator over: aDenominator.! !
+
+
+!classDefinition: #FraccionConNumeradorUno category: 'Numero-Exercise'!
+FraccionConDenominadorPositivoNumeradorNoCero subclass: #FraccionConNumeradorUno
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numero-Exercise'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FraccionConNumeradorUno class' category: 'Numero-Exercise'!
+FraccionConNumeradorUno class
+	instanceVariableNames: ''!
+
+!FraccionConNumeradorUno class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:47:15'!
+canInitializeWith: denominator
+	^ denominator isOne.! !
+
+!FraccionConNumeradorUno class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:47:33'!
+with: aNumerator over: aDenominator
+	^ aNumerator.! !
+
+
+!classDefinition: #FraccionConNumeradorCero category: 'Numero-Exercise'!
+Fraccion subclass: #FraccionConNumeradorCero
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Numero-Exercise'!
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'FraccionConNumeradorCero class' category: 'Numero-Exercise'!
+FraccionConNumeradorCero class
+	instanceVariableNames: ''!
+
+!FraccionConNumeradorCero class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:01:18'!
+canInitializeWith: numerator over: denominator
+	^numerator isZero. ! !
+
+!FraccionConNumeradorCero class methodsFor: 'as yet unclassified' stamp: 'LDM 4/25/2022 11:31:35'!
+with: aDividend over: aDivisor
+	^aDividend.! !
