@@ -144,6 +144,88 @@ TestCase subclass: #SentenceFinderByPrefixTest
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 16:57:22'!
+test01EmptyFinderShouldReturnEmpty
+	"Aca no se como podriamos generalizar el prefijo que le pasan para testear y que este test valga para cualquier prefijo"
+
+	| sentenceFinder sentencesWithPrefix|
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 't'.
+	
+	self assert: sentencesWithPrefix size = 0.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:01:48'!
+test02FinderReturnsAllSentencesWithPrefix
+	| sentenceFinder sentencesWithPrefix |
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentenceFinder addSentence: 'Winter is cold'.
+	sentenceFinder addSentence: 'summer is coming'.
+	sentenceFinder addSentence: 'Winning is everything'.
+	sentenceFinder addSentence: 'The winds of Winter'.
+	sentenceFinder addSentence: 'Winter is here'.
+	sentenceFinder addSentence: 'Winter is cold'.
+	
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Win'.
+	
+	self assert: sentencesWithPrefix size = 4.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:00:16'!
+test03NoneSentencesWithPrefixReturnsEmpty
+	| sentenceFinder sentencesWithPrefix |
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentenceFinder addSentence: 'winter is coming'.
+	sentenceFinder addSentence: 'Winning is everything'.
+	sentenceFinder addSentence: 'The winds of Winter'.
+	sentenceFinder addSentence: 'Winter is here'.
+	
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'hola'.
+	
+	self assert: sentencesWithPrefix size = 0.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:02:29'!
+test04FinderIsCaseSensitive
+	| sentenceFinder sentencesWithPrefix |
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentenceFinder addSentence: 'winter is coming'.
+	sentenceFinder addSentence: 'Winter is coming'.
+	
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Win'.
+	
+	self assert: sentencesWithPrefix size = 1.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:04:04'!
+test05FinderSearchesPrefix
+	| sentenceFinder sentencesWithPrefix |
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentenceFinder addSentence: 'Coming is Winter'.
+	
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Win'.
+	
+	self assert: sentencesWithPrefix size = 0.! !
+
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:08:13'!
+test06FinderDoesntModifyStack
+	| sentenceFinder |
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentenceFinder addSentence: 'Coming is Winter'.
+	sentenceFinder addSentence: 'Winter'.
+	
+	sentenceFinder findSentencesWithPrefix: 'Win'.
+	
+	self assert: sentenceFinder showStack elements size = 2.! !
+
 
 !classDefinition: #CollectionState category: 'Stack-Exercise'!
 Object subclass: #CollectionState
@@ -192,31 +274,31 @@ Node subclass: #FilledNode
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:48:01'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:48:01'!
 next
 	^next.! !
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:48:09'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:48:09'!
 previous
 	^previous.! !
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:04:31'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:04:31'!
 safeValue: aBlock
 	^value.! !
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:47:13'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:47:13'!
 setNext: nextNode
 	next  := nextNode. ! !
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:47:24'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:47:24'!
 setPrevious: previousNode
 	previous := previousNode. ! !
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:55:06'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:55:06'!
 setValue: newValue
 	value := newValue.! !
 
-!FilledNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:51:36'!
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:51:36'!
 value
 	^value.! !
 
@@ -228,27 +310,27 @@ Node subclass: #NilNode
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!NilNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:43:44'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:43:44'!
 next
 	^next ! !
 
-!NilNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:43:00'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:43:00'!
 previous
 	^self error: 'Nil no tiene anterior!!'! !
 
-!NilNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:04:54'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:04:54'!
 safeValue: aBlock
 	^aBlock value.! !
 
-!NilNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:44:24'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:44:24'!
 setNext: nextNode
 	next  := nextNode. ! !
 
-!NilNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:47:43'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:47:43'!
 setPrevious: previousNode
 	^self error: 'No se puede'! !
 
-!NilNode methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:51:53'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:51:53'!
 value
 	^self error: 'no te puedo dar value pibe'! !
 
@@ -260,7 +342,7 @@ Object subclass: #NodeList
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:10:42'!
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:10:42'!
 addNode: aValue
 	| newNode |
 	newNode := FilledNode new setValue: aValue.
@@ -269,32 +351,33 @@ addNode: aValue
 	current := newNode.
 	size := size + 1.! !
 
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 22:51:21'!
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:51:21'!
 head
 	^current value.! !
 
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:10:58'!
-initialize
-	current := NilNode new.
-	size := 0.! !
-
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:11:07'!
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:11:07'!
 isEmpty
 	^size = 0.! !
 
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:10:53'!
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:10:53'!
 removeNode
 	current setNext: nil.
 	current := current previous.
 	size := size - 1.! !
 
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:04:13'!
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:04:13'!
 safeHead: aBlock
 	^current safeValue: aBlock.! !
 
-!NodeList methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:10:31'!
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:10:31'!
 size
 	^size.! !
+
+
+!NodeList methodsFor: 'init' stamp: 'LDM 4/26/2022 23:10:58'!
+initialize
+	current := NilNode new.
+	size := 0.! !
 
 
 !classDefinition: #OOStack category: 'Stack-Exercise'!
@@ -304,38 +387,39 @@ Object subclass: #OOStack
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'ldmaf 4/25/2022 20:11:25'!
+!OOStack methodsFor: 'operations' stamp: 'ldmaf 4/25/2022 20:11:25'!
 elements
 	^elements.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:07:14'!
-initialize
-	elements := NodeList new.
-	
-	! !
-
-!OOStack methodsFor: 'as yet unclassified' stamp: 'ldmaf 4/25/2022 20:16:33'!
+!OOStack methodsFor: 'operations' stamp: 'ldmaf 4/25/2022 20:16:33'!
 isEmpty
 	^ elements isEmpty.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:09:41'!
+!OOStack methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:09:41'!
 pop
 	|top|
 	top := self top.
 	elements removeNode.
 	^top.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:07:58'!
+!OOStack methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:07:58'!
 push: anElement
 	elements addNode: anElement.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'ldmaf 4/25/2022 20:33:42'!
+!OOStack methodsFor: 'operations' stamp: 'ldmaf 4/25/2022 20:33:42'!
 size
 	^elements size.! !
 
-!OOStack methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:09:04'!
+!OOStack methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:09:04'!
 top
 	^elements safeHead: [^self error: OOStack stackEmptyErrorDescription].
+	! !
+
+
+!OOStack methodsFor: 'init' stamp: 'LDM 4/26/2022 23:07:14'!
+initialize
+	elements := NodeList new.
+	
 	! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
@@ -357,11 +441,16 @@ Object subclass: #SentenceFinderByPrefix
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:32:25'!
+!SentenceFinderByPrefix methodsFor: 'init' stamp: 'LDM 4/26/2022 23:32:03'!
+initialize
+	sentences := OOStack new.! !
+
+
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:32:25'!
 addSentence: aSentence
 	sentences push: aSentence.! !
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:45:20'!
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:45:20'!
 findSentencesWithPrefix: aPrefix
 	|sentencesWithDesiredPrefix xxx aux|
 	sentencesWithDesiredPrefix := OrderedCollection new.
@@ -380,6 +469,6 @@ findSentencesWithPrefix: aPrefix
 	
 ! !
 
-!SentenceFinderByPrefix methodsFor: 'as yet unclassified' stamp: 'LDM 4/26/2022 23:32:03'!
-initialize
-	sentences := OOStack new.! !
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'AF 4/27/2022 16:09:44'!
+showStack
+	^sentences! !
