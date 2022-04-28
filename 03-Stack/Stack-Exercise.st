@@ -139,7 +139,7 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: 'winterIsCold summerIsComing winningIsEverything theWindsOfWinter winterIsHere winterIsVeryCold winterIsColdLowerCase'
+	instanceVariableNames: 'winterIsCold summerIsComing winningIsEverything theWindsOfWinter winterIsHere winterIsVeryCold winterIsColdLowerCase win winner'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
@@ -234,8 +234,21 @@ test06SentenceFinderDoesntModifyPreviouslyAddedSentences
 	
 	self assert: (sentenceFinder sentences = sentencesBeforeFindWithPrefix).! !
 
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/28/2022 14:58:07'!
+test07SentenceFinderShouldReturnEmptyIfSentencesAreShorterThanPrefix
+	| sentenceFinder sentencesWithPrefix |
+	
+	sentenceFinder := SentenceFinderByPrefix new.
+	
+	sentenceFinder addSentence: win.
+	sentenceFinder addSentence: winner.
+	
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'winners'.
+	
+	self assert: sentencesWithPrefix size = 0.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'LDM 4/27/2022 22:55:28'!
+
+!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'AF 4/28/2022 14:57:02'!
 setUp
 	winterIsCold :=  'Winter is cold'.
 	summerIsComing :=  'summer is Coming'.
@@ -243,7 +256,9 @@ setUp
 	theWindsOfWinter := 'The winds of Winter'.
 	winterIsHere := 'Winter is here'.
 	winterIsVeryCold := 'Winter is very cold'.
-	winterIsColdLowerCase  := 'winter is cold'.! !
+	winterIsColdLowerCase  := 'winter is cold'.
+	win := 'win'.
+	winner := 'winner'! !
 
 
 !classDefinition: #Node category: 'Stack-Exercise'!
