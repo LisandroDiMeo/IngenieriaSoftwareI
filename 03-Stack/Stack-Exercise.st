@@ -139,124 +139,111 @@ test10CanNotTopWhenThereAreNoObjectsInTheStack
 
 !classDefinition: #SentenceFinderByPrefixTest category: 'Stack-Exercise'!
 TestCase subclass: #SentenceFinderByPrefixTest
-	instanceVariableNames: ''
+	instanceVariableNames: 'winterIsCold summerIsComing winningIsEverything theWindsOfWinter winterIsHere winterIsVeryCold winterIsColdLowerCase'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 16:57:22'!
-test01EmptyFinderShouldReturnEmpty
-	"Aca no se como podriamos generalizar el prefijo que le pasan para testear y que este test valga para cualquier prefijo"
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'LDM 4/27/2022 22:33:53'!
+test01SentenceFinderWithoutSentencesShouldReturnEmptyListOnFind
 
 	| sentenceFinder sentencesWithPrefix|
 	
 	sentenceFinder := SentenceFinderByPrefix new.
 	
-	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 't'.
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'A'.
 	
 	self assert: sentencesWithPrefix size = 0.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:01:48'!
-test02FinderReturnsAllSentencesWithPrefix
-	| sentenceFinder sentencesWithPrefix |
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'LDM 4/27/2022 22:42:34'!
+test02SentenceFinderReturnsAllSentencesWithGivenPrefix
+	| sentenceFinder sentencesWithPrefix expectedSentences |
 	
 	sentenceFinder := SentenceFinderByPrefix new.
 	
-	sentenceFinder addSentence: 'Winter is cold'.
-	sentenceFinder addSentence: 'summer is coming'.
-	sentenceFinder addSentence: 'Winning is everything'.
-	sentenceFinder addSentence: 'The winds of Winter'.
-	sentenceFinder addSentence: 'Winter is here'.
-	sentenceFinder addSentence: 'Winter is cold'.
+	sentenceFinder addSentence: winterIsCold.
+	sentenceFinder addSentence: summerIsComing.
+	sentenceFinder addSentence: winningIsEverything.
+	sentenceFinder addSentence: theWindsOfWinter.
+	sentenceFinder addSentence: winterIsHere.
+	sentenceFinder addSentence: winterIsVeryCold.
+	
+	expectedSentences := OrderedCollection new.
+	expectedSentences addAll: 	{winterIsVeryCold. winterIsHere.winningIsEverything.winterIsCold. }.
 	
 	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Win'.
 	
-	self assert: sentencesWithPrefix size = 4.! !
+	self assert: sentencesWithPrefix = expectedSentences.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:00:16'!
-test03NoneSentencesWithPrefixReturnsEmpty
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'LDM 4/27/2022 22:46:02'!
+test03SentenceFinderReturnsEmptyIfNoneHasTheGivenPrefix
 	| sentenceFinder sentencesWithPrefix |
 	
 	sentenceFinder := SentenceFinderByPrefix new.
 	
-	sentenceFinder addSentence: 'winter is coming'.
+	sentenceFinder addSentence: ''.
 	sentenceFinder addSentence: 'Winning is everything'.
 	sentenceFinder addSentence: 'The winds of Winter'.
 	sentenceFinder addSentence: 'Winter is here'.
 	
 	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'hola'.
 	
-	self assert: sentencesWithPrefix size = 0.! !
+	self assert: sentencesWithPrefix isEmpty.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:02:29'!
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'LDM 4/27/2022 22:53:20'!
 test04FinderIsCaseSensitive
-	| sentenceFinder sentencesWithPrefix |
+	| sentenceFinder sentencesWithPrefix expectedSentences |
 	
 	sentenceFinder := SentenceFinderByPrefix new.
 	
-	sentenceFinder addSentence: 'winter is coming'.
-	sentenceFinder addSentence: 'Winter is coming'.
+	sentenceFinder addSentence: winterIsColdLowerCase.
+	sentenceFinder addSentence: winterIsCold.
+	
+	expectedSentences := OrderedCollection new.
+	expectedSentences add: winterIsCold.
 	
 	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Win'.
 	
-	self assert: sentencesWithPrefix size = 1.! !
+	self assert: sentencesWithPrefix = expectedSentences.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:04:04'!
-test05FinderSearchesPrefix
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'LDM 4/27/2022 22:55:46'!
+test05SentenceFinderOnlySearchesGivenPrefixOnSentences
 	| sentenceFinder sentencesWithPrefix |
 	
 	sentenceFinder := SentenceFinderByPrefix new.
 	
-	sentenceFinder addSentence: 'Coming is Winter'.
+	sentenceFinder addSentence: summerIsComing.
 	
-	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Win'.
+	sentencesWithPrefix := sentenceFinder findSentencesWithPrefix: 'Com'.
 	
 	self assert: sentencesWithPrefix size = 0.! !
 
-!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'AF 4/27/2022 17:08:13'!
-test06FinderDoesntModifyStack
-	| sentenceFinder |
+!SentenceFinderByPrefixTest methodsFor: 'tests' stamp: 'LDM 4/27/2022 23:16:44'!
+test06SentenceFinderDoesntModifyPreviouslyAddedSentences
+	| sentenceFinder sentencesBeforeFindWithPrefix |
 	
 	sentenceFinder := SentenceFinderByPrefix new.
 	
-	sentenceFinder addSentence: 'Coming is Winter'.
-	sentenceFinder addSentence: 'Winter'.
+	sentenceFinder addSentence: winterIsCold.
+	sentenceFinder addSentence: winterIsVeryCold.
+	sentenceFinder addSentence: summerIsComing.
+	
+	sentencesBeforeFindWithPrefix := sentenceFinder sentences.
 	
 	sentenceFinder findSentencesWithPrefix: 'Win'.
 	
-	self assert: sentenceFinder showStack elements size = 2.! !
+	self assert: (sentenceFinder sentences = sentencesBeforeFindWithPrefix).! !
 
-
-!classDefinition: #CollectionState category: 'Stack-Exercise'!
-Object subclass: #CollectionState
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
 
-
-!classDefinition: #EmptyCollectionState category: 'Stack-Exercise'!
-CollectionState subclass: #EmptyCollectionState
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!EmptyCollectionState methodsFor: 'as yet unclassified' stamp: 'ldmaf 4/25/2022 21:27:23'!
-top: aCollection onError: aBlock
-	^(aBlock value).! !
-
-
-!classDefinition: #FilledCollectionState category: 'Stack-Exercise'!
-CollectionState subclass: #FilledCollectionState
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Stack-Exercise'!
-
-!FilledCollectionState methodsFor: 'as yet unclassified' stamp: 'ldmaf 4/25/2022 21:27:07'!
-top: aCollection onError: aBlock
-	^aCollection first.! !
+!SentenceFinderByPrefixTest methodsFor: 'setup' stamp: 'LDM 4/27/2022 22:55:28'!
+setUp
+	winterIsCold :=  'Winter is cold'.
+	summerIsComing :=  'summer is Coming'.
+	winningIsEverything :=  'Winning is everything'.
+	theWindsOfWinter := 'The winds of Winter'.
+	winterIsHere := 'Winter is here'.
+	winterIsVeryCold := 'Winter is very cold'.
+	winterIsColdLowerCase  := 'winter is cold'.! !
 
 
 !classDefinition: #Node category: 'Stack-Exercise'!
@@ -266,6 +253,36 @@ Object subclass: #Node
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
+!Node methodsFor: 'private' stamp: 'LDM 4/27/2022 22:21:02'!
+value
+	^self subclassResponsibility ! !
+
+
+!Node methodsFor: 'setters' stamp: 'LDM 4/27/2022 22:20:50'!
+setNext: nextNode
+	^self subclassResponsibility ! !
+
+!Node methodsFor: 'setters' stamp: 'LDM 4/27/2022 22:20:56'!
+setPrevious: previousNode
+	^self subclassResponsibility ! !
+
+
+!Node methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:03:00'!
+isNil
+	^self subclassResponsibility ! !
+
+!Node methodsFor: 'operations' stamp: 'LDM 4/27/2022 22:20:33'!
+next
+	^self subclassResponsibility ! !
+
+!Node methodsFor: 'operations' stamp: 'LDM 4/27/2022 22:20:39'!
+previous
+	^self subclassResponsibility ! !
+
+!Node methodsFor: 'operations' stamp: 'LDM 4/27/2022 22:20:44'!
+safeValue: aBlock
+	^self subclassResponsibility ! !
+
 
 !classDefinition: #FilledNode category: 'Stack-Exercise'!
 Node subclass: #FilledNode
@@ -273,6 +290,10 @@ Node subclass: #FilledNode
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
+
+!FilledNode methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:02:52'!
+isNil
+	^false.! !
 
 !FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:48:01'!
 next
@@ -286,21 +307,23 @@ previous
 safeValue: aBlock
 	^value.! !
 
-!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:47:13'!
+
+!FilledNode methodsFor: 'private' stamp: 'LDM 4/26/2022 22:51:36'!
+value
+	^value.! !
+
+
+!FilledNode methodsFor: 'setters' stamp: 'LDM 4/26/2022 22:47:13'!
 setNext: nextNode
 	next  := nextNode. ! !
 
-!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:47:24'!
+!FilledNode methodsFor: 'setters' stamp: 'LDM 4/26/2022 22:47:24'!
 setPrevious: previousNode
 	previous := previousNode. ! !
 
-!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:55:06'!
+!FilledNode methodsFor: 'setters' stamp: 'LDM 4/26/2022 22:55:06'!
 setValue: newValue
 	value := newValue.! !
-
-!FilledNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:51:36'!
-value
-	^value.! !
 
 
 !classDefinition: #NilNode category: 'Stack-Exercise'!
@@ -310,29 +333,35 @@ Node subclass: #NilNode
 	poolDictionaries: ''
 	category: 'Stack-Exercise'!
 
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:02:43'!
+isNil
+	^true.! !
+
 !NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:43:44'!
 next
 	^next ! !
 
-!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:43:00'!
+!NilNode methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:41:27'!
 previous
-	^self error: 'Nil no tiene anterior!!'! !
+	^self error: 'Nil node has no previous!!'! !
 
 !NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:04:54'!
 safeValue: aBlock
 	^aBlock value.! !
 
-!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:44:24'!
+
+!NilNode methodsFor: 'private' stamp: 'LDM 4/27/2022 23:41:05'!
+value
+	^self error: 'Nil node has no value!!'! !
+
+
+!NilNode methodsFor: 'setters' stamp: 'LDM 4/26/2022 22:44:24'!
 setNext: nextNode
 	next  := nextNode. ! !
 
-!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:47:43'!
+!NilNode methodsFor: 'setters' stamp: 'LDM 4/27/2022 23:42:24'!
 setPrevious: previousNode
-	^self error: 'No se puede'! !
-
-!NilNode methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:51:53'!
-value
-	^self error: 'no te puedo dar value pibe'! !
+	^self error: 'Nil node has no previous. Therefore, cannot set a previous node!!'! !
 
 
 !classDefinition: #NodeList category: 'Stack-Exercise'!
@@ -350,6 +379,10 @@ addNode: aValue
 	current setNext: newNode.
 	current := newNode.
 	size := size + 1.! !
+
+!NodeList methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:07:28'!
+current
+	^current.! !
 
 !NodeList methodsFor: 'operations' stamp: 'LDM 4/26/2022 22:51:21'!
 head
@@ -450,25 +483,39 @@ initialize
 addSentence: aSentence
 	sentences push: aSentence.! !
 
-!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'LDM 4/26/2022 23:45:20'!
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:33:58'!
 findSentencesWithPrefix: aPrefix
-	|sentencesWithDesiredPrefix xxx aux|
+	|sentencesWithDesiredPrefix sentencesCopy poppedSentence|
 	sentencesWithDesiredPrefix := OrderedCollection new.
-	xxx := OrderedCollection new.
+	sentencesCopy := OrderedCollection new.
 	[sentences isEmpty not] whileTrue: [
-			aux := sentences pop.
-			((aux findString: aPrefix) = 1) ifTrue: [
-					sentencesWithDesiredPrefix add: aux.
+			poppedSentence := sentences pop.
+			(self sentence: poppedSentence hasPrefix: aPrefix) ifTrue: [
+					sentencesWithDesiredPrefix add: poppedSentence.
 				].
-			xxx add: aux.
+			sentencesCopy add: poppedSentence.
 		].
-	xxx reverse do: [:aSentence | 
+	sentencesCopy reverse do: [:aSentence | 
 			sentences push: aSentence.
 		].
 	^sentencesWithDesiredPrefix. 
 	
 ! !
 
-!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'AF 4/27/2022 16:09:44'!
-showStack
-	^sentences! !
+!SentenceFinderByPrefix methodsFor: 'operations' stamp: 'LDM 4/27/2022 23:33:28'!
+sentence: aSentence hasPrefix: aPrefix
+	^(aSentence findString: aPrefix) = 1.
+! !
+
+
+!SentenceFinderByPrefix methodsFor: 'testing' stamp: 'LDM 4/27/2022 23:13:15'!
+sentences
+	| sentencesOfFinder node |
+	"Esta es un metodo auxiliar para testear que el set de oraciones no se ve alterado despues de usar findSentencesWithPrefix:"
+	sentencesOfFinder := OrderedCollection new.
+	node := sentences elements current .
+	[node isNil not] whileTrue: [
+			sentencesOfFinder add: node value.
+			node := node previous.
+		].
+	^sentencesOfFinder.! !
