@@ -1,0 +1,4810 @@
+
+
+----STARTUP---- (25 May 2022 17:48:17) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /media/lisandro/47FC-0197/Portfolio-Ejercicio.st----!
+
+!classRemoval: #ReceptiveAccount stamp: 'ldmaf 5/25/2022 17:49:51'!
+Object subclass: #ReceptiveAccount
+	instanceVariableNames: 'transactions'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #Withdraw stamp: 'ldmaf 5/25/2022 17:49:51'!
+AccountTransaction subclass: #Withdraw
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #Deposit stamp: 'ldmaf 5/25/2022 17:49:52'!
+AccountTransaction subclass: #Deposit
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #AccountTransaction stamp: 'ldmaf 5/25/2022 17:49:52'!
+Object subclass: #AccountTransaction
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #ReceptiveAccountTest stamp: 'ldmaf 5/25/2022 17:49:52'!
+TestCase subclass: #ReceptiveAccountTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+----STARTUP---- (25 May 2022 17:51:13) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /home/lisandro/Downloads/Portfolio-Solucion.st----!
+
+TestCase subclass: #TransferTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #TransferTest category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 17:59:40'!
+TestCase subclass: #TransferTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 18:05:16'!
+Object subclass: #Transfer
+	instanceVariableNames: 'transferValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!TransferTest methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 18:04:56'!
+test01xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer value = 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:07:16'!
+ERROR!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 18:07:20'!
+from: aReceptiveAccount to: aReceptiveAccount2 of: aSmallInteger 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeFrom: aReceptiveAccount to: aReceptiveAccount2 of: aSmallInteger ! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 18:10:09' prior: 50474868!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	Deposit register: anAmount on: aReceivingAccount.
+	Withdraw register: anAmount on: aSendingAccount.
+	^self new with: anAmount.! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:16'!
+ERROR!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test01ReceptiveAccountHaveZeroAsBalanceWhenCreated stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test02DepositIncreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test03WithdrawDecreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test04WithdrawValueMustBePositive stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test06ReceptiveAccountDoNotKnowNotRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test07AccountKnowsItsTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:27'!
+ERROR!
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 18:10:34'!
+with: aSmallInteger 
+	self shouldBeImplemented.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 18:10:50' prior: 50474923!
+with: anAmount
+	transferValue  _ anAmount.! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:53'!
+FAILURE!
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:53'!
+FAILURE!
+!Transfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 18:11:39'!
+isOf: anAmount
+	^anAmount = transferValue.! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:11:48' prior: 50474852!
+test01xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer isOf: 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:11:49'!
+PASSED!
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:11:49'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:13:30'!
+test01ATransferBetweenTwoAccountsReflectsTheSameBalance
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer isOf: 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).! !
+
+!methodRemoval: TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:13:30'!
+test01xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer isOf: 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 18:13:33'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 18:13:33'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:31:24'!
+test02xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (sendingAccount hasRegistered: transfer).
+	self assert: (receivingAccount hasRegistered: transfer).! !
+
+!testRun: #TransferTest #test02xxx stamp: 'ldmaf 5/25/2022 18:31:26'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 18:44:01' prior: 50474700 overrides: 50474490!
+hasRegistered: aTransaction
+	(aTransaction isKindOf: Transfer) ifTrue: [^true].
+	^ transactions includes: aTransaction 
+! !
+
+!testRun: #PortfolioTest #test01BalanceOfPortfolioWithoutAccountsIsZero stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test02BalanceOfPortfolioWithAccountsIsSumOfAccountsBalance stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test03BalanceOfPortfolioIsCalculatedRecursivelyOnPortfolios stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test04PortfolioWithoutAccountsHasNoRegisteredTransaction stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test05PortfolioHasRegisteredItsAccountsTransactions stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test06PortfolioLooksForRegisteredTransactionsRecursively stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test07PortfolioHasNoTransactionWhenHasNoAccounts stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test08PortfolioTransactionsIncludesAllItsAccountsTransactions stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test09PortfolioTransactionsAreCalculatedRecursively stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test10PortfolioCanNotIncludeTheSameAccountMoreThanOnce stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test11PortfolioCanNotIncludeAccountOfItsPortfolios stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test12PortfolioCanNotIncludeItself stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test13ComposedPortfolioCanNotHaveParentPortfolioAccount stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test14ComposedPortfolioCanNotHaveAccountOfAnyRootParentRecursively stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test15PortfolioCanNotIncludeAnyOfTheComposedAccountOfPortfolioToAdd stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test01ReceptiveAccountHaveZeroAsBalanceWhenCreated stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test02DepositIncreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test03WithdrawDecreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test04WithdrawValueMustBePositive stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test06ReceptiveAccountDoNotKnowNotRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test07AccountKnowsItsTransactions stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 18:44:11'!
+PASSED!
+
+!testRun: #TransferTest #test02xxx stamp: 'ldmaf 5/25/2022 18:44:11'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:44:51'!
+test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (sendingAccount hasRegistered: transfer).
+	self assert: (receivingAccount hasRegistered: transfer).! !
+
+!methodRemoval: TransferTest #test02xxx stamp: 'ldmaf 5/25/2022 18:44:55'!
+test02xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (sendingAccount hasRegistered: transfer).
+	self assert: (receivingAccount hasRegistered: transfer).!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:45:42'!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: false.! !
+
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'transferValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 18:48:13'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'transferValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 18:59:42'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:59:42' prior: 50474928!
+with: anAmount
+	value  _ anAmount.! !
+!Transfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:59:42' prior: 50474937!
+isOf: anAmount
+	^anAmount = value.! !
+
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:01:11'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 19:03:33' prior: 50474879!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	Deposit register: anAmount on: aReceivingAccount.
+	Withdraw register: anAmount on: aSendingAccount.
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 19:04:09' prior: 50475197!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:07:57'!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:08:26' prior: 50475215!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	aSendingAccount register: self.
+	aReceivingAccount register: self.! !
+!Transfer methodsFor: 'value' stamp: 'ldmaf 5/25/2022 19:09:16' overrides: 50474728!
+value
+	^value.! !
+!Transfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:16:29' overrides: 50474732!
+affectBalance: aBalance
+
+	^aBalance + value ! !
+
+!testRun: #PortfolioTest #test01BalanceOfPortfolioWithoutAccountsIsZero stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test02BalanceOfPortfolioWithAccountsIsSumOfAccountsBalance stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test03BalanceOfPortfolioIsCalculatedRecursivelyOnPortfolios stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test04PortfolioWithoutAccountsHasNoRegisteredTransaction stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test05PortfolioHasRegisteredItsAccountsTransactions stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test06PortfolioLooksForRegisteredTransactionsRecursively stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test07PortfolioHasNoTransactionWhenHasNoAccounts stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test08PortfolioTransactionsIncludesAllItsAccountsTransactions stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test09PortfolioTransactionsAreCalculatedRecursively stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test10PortfolioCanNotIncludeTheSameAccountMoreThanOnce stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test11PortfolioCanNotIncludeAccountOfItsPortfolios stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test12PortfolioCanNotIncludeItself stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test13ComposedPortfolioCanNotHaveParentPortfolioAccount stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test14ComposedPortfolioCanNotHaveAccountOfAnyRootParentRecursively stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test15PortfolioCanNotIncludeAnyOfTheComposedAccountOfPortfolioToAdd stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test01ReceptiveAccountHaveZeroAsBalanceWhenCreated stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test02DepositIncreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test03WithdrawDecreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test04WithdrawValueMustBePositive stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test06ReceptiveAccountDoNotKnowNotRegisteredTransactions stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test07AccountKnowsItsTransactions stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+Transfer subclass: #DepositTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #DepositTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:30:46'!
+Transfer subclass: #DepositTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+Transfer subclass: #WithdrawTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #WithdrawTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:30:54'!
+Transfer subclass: #WithdrawTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:31:20' prior: 50475238 overrides: 50474732!
+affectBalance: aBalance
+	self subclassResponsibility ! !
+!DepositTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:32:12' overrides: 50475353!
+affectBalance: aBalance
+	^aBalance + value.! !
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:32:48' overrides: 50475353!
+affectBalance: aBalance
+	^aBalance - value.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:41:46' prior: 50475223!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	aSendingAccount register: (WithdrawTransfer of: anAmount on: self).
+	aReceivingAccount register: (DepositTransfer of: anAmount on: self).! !
+!DepositTransfer class methodsFor: 'no messages' stamp: 'ldmaf 5/25/2022 19:43:46'!
+of: anAmount on: aTransfer
+	^DepositTransfer new with: anAmount on: aTransfer.! !
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:43:58' prior: 50475380!
+of: anAmount on: aTransfer
+	^(DepositTransfer new) with: anAmount on: aTransfer.! !
+
+!classDefinition: #DepositTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:44:57'!
+Transfer subclass: #DepositTransfer
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!DepositTransfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 19:44:56'!
+on: aTransfer.
+	^transfer _ aTransfer.! !
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:45:04' prior: 50475386!
+of: anAmount on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:45:40'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+
+!methodRemoval: DepositTransfer class #on: stamp: 'ldmaf 5/25/2022 19:45:43'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.!
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:45:54'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+
+!methodRemoval: DepositTransfer class #of:on: stamp: 'ldmaf 5/25/2022 19:46:07'!
+of: anAmount on: aTransfer
+	^(DepositTransfer new) on: aTransfer.!
+
+!classDefinition: #WithdrawTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:46:47'!
+Transfer subclass: #WithdrawTransfer
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:46:46'!
+on: aTransfer
+	transfer _ aTransfer.! !
+!WithdrawTransfer class methodsFor: 'no messages' stamp: 'ldmaf 5/25/2022 19:46:59'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:47:39' prior: 50475367!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	aSendingAccount register: (WithdrawTransfer on: self).
+	aReceivingAccount register: (DepositTransfer on: self).! !
+!DepositTransfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:49:01' overrides: 50475234!
+value	
+	^transfer value.! !
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:49:07' overrides: 50475234!
+value	
+	^transfer value.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:17'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:17'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:36'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:36'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:50:27'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:50:27'!
+ERROR!
+
+	WithdrawTransfer on: self.!
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:52:38' prior: 50475419!
+on: aTransfer
+	^DepositTransfer new on: aTransfer.! !
+!WithdrawTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:52:48' prior: 50475440!
+on: aTransfer
+	^DepositTransfer new on: aTransfer.! !
+!WithdrawTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:53:12' prior: 50475497!
+on: aTransfer
+	^WithdrawTransfer new on: aTransfer.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:53:34'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:53:34'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:53:50'!
+ERROR!
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:54:22' prior: 50475363 overrides: 50475353!
+affectBalance: aBalance
+	^aBalance - (self value).! !
+!DepositTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:54:31' prior: 50475358 overrides: 50475353!
+affectBalance: aBalance
+	^aBalance + (self value).! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:54:34'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:54:34'!
+ERROR!
+
+	WithdrawTransfer on: self.!
+
+	DepositTransfer on: self.!
+!DepositTransfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:56:10' prior: 50475399!
+on: aTransfer.
+	transfer _ aTransfer.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:56:16'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:56:22'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:56:59' prior: 50475140!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (anotherAccount hasRegistered: transfer).! !
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 19:57:10' prior: 50475014 overrides: 50474490!
+hasRegistered: aTransaction
+	^ transactions includes: aTransaction 
+! !
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:57:14'!
+FAILURE!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:57:14'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 20:00:16' prior: 50475581 overrides: 50474490!
+hasRegistered: aTransaction
+	( aTransaction isKindOf: Transfer ) ifTrue: [
+			^ ((transactions includes: (aTransaction depositTransfer)) or: [transactions includes: (aTransaction withdrawTransfer)]).
+		].
+	^ transactions includes: aTransaction 
+! !
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 20:01:24'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount withdrawTransfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 20:01:25'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount withdrawTransfer depositTransfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 20:01:41' prior: 50475445!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	withdrawTransfer _ (WithdrawTransfer on: self).
+	depositTransfer _ (DepositTransfer on: self).
+	value  _ anAmount.
+	aSendingAccount register: withdrawTransfer.
+	aReceivingAccount register: depositTransfer.! !
+!Transfer methodsFor: 'value' stamp: 'ldmaf 5/25/2022 20:02:02'!
+withdrawTransfer
+	^withdrawTransfer.! !
+!Transfer methodsFor: 'value' stamp: 'ldmaf 5/25/2022 20:02:08'!
+depositTransfer
+	^depositTransfer.! !
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:02:17'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:02:20'!
+PASSED!
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:02:23'!
+FAILURE!
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:02:23'!
+FAILURE!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:02:41' prior: 50475554!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: ((anotherAccount hasRegistered: transfer) not).! !
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:02:43'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:03:29'!
+test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: ((anotherAccount hasRegistered: transfer) not).! !
+
+!methodRemoval: TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:03:33'!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: ((anotherAccount hasRegistered: transfer) not).!
+!Transfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 20:16:28' overrides: 16901772!
+= aTransaction
+	^aTransaction = self.! !
+!DepositTransfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 20:17:41' overrides: 50475704!
+= aTransaction
+	^aTransaction = transfer.! !
+
+!methodRemoval: Transfer #= stamp: 'ldmaf 5/25/2022 20:18:26'!
+= aTransaction
+	^aTransaction = self.!
+!WithdrawTransfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 20:18:51' overrides: 16901772!
+= aTransaction
+	^aTransaction = transfer.! !
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 20:19:38' prior: 50475595 overrides: 50474490!
+hasRegistered: aTransaction
+	^ transactions includes: aTransaction 
+! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:19:42'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:19:47'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:19:50'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:20:02'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:20:02'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:20:02'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:23:23'!
+test04ATransferOfAmountZeroThrowsAnError
+	|transfer sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: 0.
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroAmountTransfer)].
+! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:23:31' prior: 50475751!
+test04ATransferOfAmountZeroThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: 0.
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroAmountTransfer)].
+! !
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:23:34'!
+FAILURE!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:23:34'!
+FAILURE!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:24:28'!
+cannotCreateAZeroAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.! !
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:24:33'!
+FAILURE!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:24:33'!
+FAILURE!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:25:07' prior: 50475208!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	(anAmount = 0) ifTrue: [self error: Transfer cannotCreateAZeroAmountTransfer].
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:25:51'!
+test05ATransferOfNegativeAmountThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: (-1).
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroAmountTransfer)].
+! !
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 20:25:53'!
+FAILURE!
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 20:25:53'!
+FAILURE!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:18' prior: 50475788!
+cannotCreateAZeroAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:33'!
+cannotCreateAZeroOrLessAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.! !
+!Transfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:26:33' prior: 50475801!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	(anAmount = 0) ifTrue: [self error: Transfer cannotCreateAZeroOrLessAmountTransfer].
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:26:33' prior: 50475826!
+test05ATransferOfNegativeAmountThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: (-1).
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroOrLessAmountTransfer)].
+! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:26:33' prior: 50475766!
+test04ATransferOfAmountZeroThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: 0.
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroOrLessAmountTransfer)].
+! !
+
+!methodRemoval: Transfer class #cannotCreateAZeroAmountTransfer stamp: 'ldmaf 5/25/2022 20:26:33'!
+cannotCreateAZeroAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:43' prior: 50475862!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	(anAmount <= 0) ifTrue: [self error: Transfer cannotCreateAZeroOrLessAmountTransfer].
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:50' prior: 50475855!
+cannotCreateAZeroOrLessAmountTransfer
+	^'Cannot create a transfer of an amount of zero or less.'.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+----SNAPSHOT----(25 May 2022 22:59:22) CuisUniversity-5096.image priorSource: 4557982!
+
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #ReportsTest category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 23:22:01'!
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!ReportsTest methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 23:26:12'!
+test01xxx
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) equals: 'Deposito por 100.')! !
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:26:24' prior: 50475960!
+test01xxx
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) = 'Deposito por 100.').! !
+
+!testRun: #ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:26:27'!
+ERROR!
+
+!testRun: #ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:26:27'!
+ERROR!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:26:40'!
+accountSummaryReport
+	self shouldBeImplemented.! !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:26:57' prior: 50475982!
+accountSummaryReport
+	^'Deposito por 100.'! !
+
+!testRun: #ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:27:02'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:27:23'!
+test01AccountSummaryReportOfSingleTransactionIsCorrectlyDisplayed
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) = 'Deposito por 100.').! !
+
+!methodRemoval: ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:27:23'!
+test01xxx
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) = 'Deposito por 100.').!
+
+'asdasdasda\nasdasdas'!
+
+'asdasdasda\nasdasdas' print!
+
+'asdasdasda <br> asdasd'!
+
+msg := 'hello world!!'.!
+
+msg := 'hello world!! \\n asdas'.!
+
+msg := 'hello world!!\n asda' printText !
+
+#(1 2 3) do: [:a | 
+		'puto' print
+	]!
+
+		'puto' print!
+
+#(1 2 3) do: [:a | 
+		'puto' print
+	]!
+
+----End fileIn of /home/lisandro/Documents/Facultad/ING1/linux64/Packages/TerseGuide.pck.st----!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:36:53'!
+test02yyy
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account. 
+	Withdraw register: 100 on: account.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 100. Deposito por 50. Balance = 0').! !
+
+!testRun: #ReportsTest #test02yyy stamp: 'ldmaf 5/25/2022 23:36:55'!
+FAILURE!
+
+!testRun: #ReportsTest #test02yyy stamp: 'ldmaf 5/25/2022 23:36:55'!
+FAILURE!
+
+'asda' + 5 + 'asdasd'!
+
+'asda' + (5 asString) + 'asdasd'!
+
+5 asString !
+
+'asda' , (5 asString) , 'asdasd'!
+
+----STARTUP---- (25 May 2022 23:41:16) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #ReportsTest category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 23:42:54'!
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!ReportsTest methodsFor: 'no messages' stamp: 'ldmaf 5/25/2022 23:45:01'!
+test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	self assert: (account accountSummaryReport = 'Balance 0').! !
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:05'!
+ERROR!
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:05'!
+ERROR!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:45:12'!
+accountSummaryReport
+	self shouldBeImplemented.! !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:45:19' prior: 50476001!
+accountSummaryReport
+	^'Balance 0'! !
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:21'!
+PASSED!
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:23'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:45:59'!
+test02xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 0').! !
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:45:59'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:50:35' prior: 50476006!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '.' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:50:50' prior: 50476019!
+test02xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 50').! !
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:50:52'!
+FAILURE!
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:50:52'!
+FAILURE!
+
+	account accountSummaryReport !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:51:23' prior: 50476030!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '.' ].
+		].
+	res _ res , ' Balance ', (self balance asString). 
+	^res.! !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:51:28' prior: 50476056!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '. ' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:51:32'!
+PASSED!
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:51:32'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:51:52'!
+test02AccountSummaryReportWithOneDepositDisplaysDepositInfoAndBalance
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 50').! !
+
+!methodRemoval: ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:51:54'!
+test02xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 50').!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:52:28'!
+test03xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').! !
+
+!testRun: #ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:52:30'!
+FAILURE!
+
+!testRun: #ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:52:30'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:52:52' prior: 50476067!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: Withdraw ) ifTrue: [res _ res , 'Extraccion por ', (aTransaction value asString), '. ' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+
+!testRun: #ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:52:59'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:53:25'!
+test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsInfoPlusDisplay
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').! !
+
+!methodRemoval: ReportsTest #test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsInfoPlusDisplay stamp: 'ldmaf 5/25/2022 23:53:28'!
+test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsInfoPlusDisplay
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').!
+
+----SNAPSHOT----(25 May 2022 23:53:38) CuisUniversity-5096.image priorSource: 4617441!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:54:35'!
+test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsPlusBalance
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').! !
+
+!methodRemoval: ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:54:35'!
+test03xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').!
+
+!testRun: #ReportsTest #test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsPlusBalance stamp: 'ldmaf 5/25/2022 23:54:39'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:57:33'!
+test04xxx
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10.').! !
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:57:34'!
+FAILURE!
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:57:34'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:58:59' prior: 50476118!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: Withdraw ) ifTrue: [res _ res , 'Extraccion por ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: WithdrawTransfer ) ifTrue: [res _ res , 'Salida por transferencia de ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: DepositTransfer ) ifTrue: [res _ res , 'Entrada por transferencia de ', (aTransaction value asString), '. ' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:59:08'!
+FAILURE!
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:59:08'!
+FAILURE!
+
+	accountSender accountSummaryReport !
+
+	accountReceiver accountSummaryReport !
+
+	'Entrada por transferencia de 10. Balance 10' = 'Entrada por transferencia de 10. Balance 10.'!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/26/2022 00:00:20' prior: 50476192!
+test04xxx
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10').! !
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/26/2022 00:00:22'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/26/2022 00:01:13'!
+test04AccountSummaryReportWithOneTransferDisplaysReportInReceiverAndSender
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10').! !
+
+!methodRemoval: ReportsTest #test04xxx stamp: 'ldmaf 5/26/2022 00:01:13'!
+test04xxx
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10').!
+
+----SNAPSHOT----(26 May 2022 00:01:47) CuisUniversity-5096.image priorSource: 4624366!
+
+----SNAPSHOT----(26 May 2022 00:01:49) CuisUniversity-5096.image priorSource: 4629095!
+
+----SNAPSHOT----(26 May 2022 00:01:50) CuisUniversity-5096.image priorSource: 4629183!
+
+----QUIT----(26 May 2022 00:02:06) CuisUniversity-5096.image priorSource: 4629271!
+
+----STARTUP---- (26 May 2022 20:00:49) as /home/clinux01/Descargas/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /media/clinux01/47FC-0197/PORTFOLIO2 2/Portfolio-Solucion.st----!
+
+----QUIT----(26 May 2022 21:42:25) CuisUniversity-5096.image priorSource: 4655823!
+
+----STARTUP---- (30 May 2022 20:05:18) as /home/clinux01/Descargas/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /home/clinux01/Descargas/MarsRover-WithHeading.st----!
+
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #AlgoTest category: 'MarsRover-WithHeading' stamp: 'ldmaf 5/30/2022 20:06:21'!
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 5/30/2022 20:17:36'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!AlgoTest methodsFor: 'no messages' stamp: 'ldmaf 5/30/2022 20:17:25'!
+tes01
+	| marsRover logger |
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover .
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+	
+	! !
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 20:17:50'!
+test01
+	| marsRover logger |
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover .
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+	
+	! !
+
+!methodRemoval: AlgoTest #tes01 stamp: 'ldmaf 5/30/2022 20:17:50'!
+tes01
+	| marsRover logger |
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover .
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+	
+	!
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:17:52'!
+ERROR!
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:17:58'!
+followPositionChangesOn: aMarsRover 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeFollowPositionChangesOn: aMarsRover ! !
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:19:28' prior: 50477931!
+followPositionChangesOn: aMarsRover 
+	! !
+!MarsRoverLogger methodsFor: 'no messages' stamp: 'ldmaf 5/30/2022 20:20:32'!
+readStream
+	^''! !
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:20:39'!
+ERROR!
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:20:39'!
+ERROR!
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:21:46' prior: 50477941!
+followPositionChangesOn: aMarsRover 
+	^self class new.! !
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:21:50'!
+ERROR!
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:21:50'!
+ERROR!
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:22:11' prior: 50477954!
+followPositionChangesOn: aMarsRover 
+	^MarsRoverLogger new.! !
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 5/30/2022 20:52:16'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 20:52:15' prior: 50477945!
+readStream
+	^ReadStream on: log contents.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 20:52:29' overrides: 16920235!
+initialize
+	log _ ''.! !
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:52:33'!
+PASSED!
+
+!classRemoval: #MarsRoverLogger stamp: 'ldmaf 5/30/2022 20:57:49'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingWest stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingWest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingSouth stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingSouth
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingNorth stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingNorth
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingEast stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingEast
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeading stamp: 'ldmaf 5/30/2022 20:57:51'!
+Object subclass: #MarsRoverHeading
+	instanceVariableNames: 'marsRover'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRover stamp: 'ldmaf 5/30/2022 20:57:51'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverTest stamp: 'ldmaf 5/30/2022 20:57:51'!
+TestCase subclass: #MarsRoverTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #AlgoTest stamp: 'ldmaf 5/30/2022 20:57:52'!
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+----End fileIn of /home/clinux01/Descargas/MarsRover-Logger.st----!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:05:32'!
+test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover
+
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test01 stamp: 'ldmaf 5/30/2022 21:05:32'!
+test01
+
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:09:00'!
+test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test02 stamp: 'ldmaf 5/30/2022 21:09:00'!
+test02
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:10:36'!
+test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	
+	logStream := logger readStream.
+	self assert: '1@0' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test03 stamp: 'ldmaf 5/30/2022 21:10:36'!
+test03
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	
+	logStream := logger readStream.
+	self assert: '1@0' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:11:10'!
+test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingEast.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'fb'.
+	
+	logStream := logger readStream.
+	self assert: '2@1' equals: logStream nextLine.
+	self assert: '1@1' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test04 stamp: 'ldmaf 5/30/2022 21:11:10'!
+test04
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingEast.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'fb'.
+	
+	logStream := logger readStream.
+	self assert: '2@1' equals: logStream nextLine.
+	self assert: '1@1' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:12:07'!
+test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	
+	logStream := logger readStream.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test05 stamp: 'ldmaf 5/30/2022 21:12:07'!
+test05
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	
+	logStream := logger readStream.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+
+!testRun: #AlgoTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:17:46'!
+PASSED!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:22:56'!
+test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'l'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:23:02'!
+FAILURE!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:23:02'!
+FAILURE!
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:24:24' prior: 50478336!
+headWest
+	
+	head := MarsRoverHeadingWest for: self. 
+	headingLogger ifNotNil: [headingLogger headingChangedTo: head]! !
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:52'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:52'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:58'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:58'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:25:07'!
+ERROR!
+!MarsRoverHeadingNorth methodsFor: 'moving' stamp: 'ldmaf 5/30/2022 21:25:48'!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingWest: self! !
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:28:42'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:28:42'!
+ERROR!
+!MarsRoverHeadingWest methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:28:55'!
+accept: aMarsRoverLogger 
+	self shouldBeImplemented.! !
+!MarsRoverHeadingEast methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:29:47' prior: 50478533!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingEast: self! !
+!MarsRoverHeadingWest methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:30:00' prior: 50478903!
+accept: aVisitor 
+	^aVisitor visitMarsRoverHeadingWest: self! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:30:17'!
+visitMarsRoverHeadingWest: aMarsRoverHeadingWest
+	
+	log nextPutAll: 'West'; newLine! !
+
+!testRun: #AlgoTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:32:26'!
+test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'll'.
+	
+	logStream := logger readStream.
+	self assert: 'South' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:28'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:28'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:50'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:50'!
+FAILURE!
+!MarsRoverHeadingNorth methodsFor: 'moving' stamp: 'ldmaf 5/30/2022 21:35:04' prior: 50478891!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingNorth: self! !
+!MarsRoverHeadingSouth methodsFor: 'moving' stamp: 'ldmaf 5/30/2022 21:35:46'!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingSouth: self! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:35:53'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:35:53'!
+FAILURE!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:36:39'!
+visitMarsRoverHeadingSouth: aMarsRoverHeadingSouth
+	
+	log nextPutAll: 'South'; newLine! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:36:55'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:36:55'!
+FAILURE!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:37:32' prior: 50479003!
+test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'll'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: 'South' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:37:36'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:37:36'!
+FAILURE!
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:38:40' prior: 50478332!
+headSouth
+	
+	head := MarsRoverHeadingSouth for: self.
+	headingLogger ifNotNil: [headingLogger headingChangedTo: head].! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:39:07'!
+PASSED!
+
+----QUIT----(30 May 2022 21:41:18) CuisUniversity-5096.image priorSource: 4663559!
+
+----STARTUP---- (1 June 2022 18:26:26) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /home/lisandro/Documents/Facultad/ING1/linux64/MarsRover-WithHeading.st----!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 18:26:45'!
+PASSED!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:36:46'!
+test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'lr'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: 'North' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:36:48'!
+FAILURE!
+
+!testRun: #AlgoTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:36:48'!
+FAILURE!
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 18:37:21' prior: 50479422!
+headNorth
+	
+	head := MarsRoverHeadingNorth for: self.
+	headingLogger ifNotNil: [headingLogger headingChangedTo: head].! !
+
+!testRun: #AlgoTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+PASSED!
+
+!testRun: #AlgoTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+ERROR!
+
+!testRun: #AlgoTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:37:25'!
+ERROR!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:37:53'!
+visitMarsRoverHeadingNorth: aMarsRoverHeadingNorth
+	
+	log nextPutAll: 'North'; newLine! !
+
+!testRun: #AlgoTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!testRun: #AlgoTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:37:57'!
+PASSED!
+
+!classRenamed: #AlgoTest as: #MarsRoverLoggerTest stamp: 'ldmaf 6/1/2022 18:38:17'!
+Smalltalk renameClassNamed: #AlgoTest as: #MarsRoverLoggerTest!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 18:38:21'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 18:40:44'!
+PASSED!
+
+Object subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverCurrentPositionWindow category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 18:46:29'!
+Object subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverCurrentPositionWindow methodsFor: 'no messages' stamp: 'ldmaf 6/1/2022 18:47:05'!
+followPositionChangesOn: aMarsRover 
+	
+	aMarsRover followPositionChangesWith: self! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:47:51'!
+followHeadingChangesOn: aMarsRover 
+	
+	aMarsRover followHeadingChangesWith: self! !
+
+TestCase subclass: #MarsRoverCurrentPositionWindowTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverCurrentPositionWindowTest category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 18:48:24'!
+TestCase subclass: #MarsRoverCurrentPositionWindowTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'no messages' stamp: 'ldmaf 6/1/2022 18:48:47'!
+test01
+	|aMarsRover| 
+	self assert: false.! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:49:26' prior: 50480131!
+test01
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: false.! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:49:34' prior: 50480137!
+test01
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: logger .! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:49:37' prior: 50480148!
+test01
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: false1.! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:49:40' prior: 50480159!
+test01
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: false.! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:51:24' prior: 50480170!
+test01
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: marsRoverPositionWindow readWindowContent equals: ''.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:51:56'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:51:56'!
+ERROR!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:52:11' prior: 50480181!
+test01
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: marsRoverPositionWindow readWindowContent equals: ''.! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:53:06' prior: 50480201!
+test01
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: marsRoverPositionWindow readWindowContent equals: ''.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:53:12'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:53:12'!
+ERROR!
+!MarsRoverCurrentPositionWindow class methodsFor: 'instance creation' stamp: 'ldmaf 6/1/2022 18:53:19'!
+followPositionChangesOn: aMarsRover 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeFollowPositionChangesOn: aMarsRover ! !
+!MarsRoverCurrentPositionWindow class methodsFor: 'instance creation' stamp: 'ldmaf 6/1/2022 18:55:18' prior: 50480234!
+followPositionChangesOn: aMarsRover 
+	
+	aMarsRover followPositionChangesWith: self.! !
+!MarsRoverCurrentPositionWindow class methodsFor: 'instance creation' stamp: 'ldmaf 6/1/2022 18:56:26' prior: 50480244!
+followPositionChangesOn: aMarsRover 
+	^self new followPositionChangesOn: aMarsRover ! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:56:37'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:56:37'!
+ERROR!
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 18:56:51'!
+readWindowContent
+	self shouldBeImplemented.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 18:56:59' prior: 50480263!
+readWindowContent
+	^log! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:57:01'!
+FAILURE!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:57:20' overrides: 16920235!
+initialize
+	log _ ''.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 18:57:24'!
+PASSED!
+
+!classDefinition: 'MarsRoverCurrentPositionWindow class' category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 18:58:28'!
+MarsRoverCurrentPositionWindow class
+	instanceVariableNames: 'headingField'!
+
+	headingField!
+
+!classDefinition: 'MarsRoverCurrentPositionWindow class' category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 18:58:35'!
+MarsRoverCurrentPositionWindow class
+	instanceVariableNames: 'headingField positionField'!
+
+	positionField!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:58:38' prior: 50480276 overrides: 16920235!
+initialize
+	log _ ''.! !
+
+Object subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverCurrentPositionWindow category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 18:59:13'!
+Object subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:59:22' prior: 50480105!
+followPositionChangesOn: aMarsRover 
+	positionField _ ''.
+	aMarsRover followPositionChangesWith: self! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 18:59:33' prior: 50480111!
+followHeadingChangesOn: aMarsRover 
+	headingField _ ''.
+	aMarsRover followHeadingChangesWith: self! !
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:00:40'!
+test02
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:00:43'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:00:43'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:00:54'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:00:59'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:00:59'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:01:23'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:01:23'!
+ERROR!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:01:47'!
+positionChangedTo: aPosition
+	! !
+
+(1@1) print!
+
+(1@1) asString!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:02:50' prior: 50480368!
+positionChangedTo: aPosition
+
+	positionField _ aPosition asString.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:04:11' prior: 50480268!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:04:15' prior: 50480380!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	^content! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:04:24'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:04:24'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:04:24'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:04:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:04:40'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:04:40'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:05:09'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:05:09'!
+FAILURE!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:05:27' prior: 50480215!
+test01
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: '' equals: marsRoverPositionWindow readWindowContent.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:05:29'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:05:29'!
+FAILURE!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:07:37' prior: 50480420!
+test01
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: '' equals: marsRoverPositionWindow readWindowContent.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:08:38' prior: 50480387!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [positionField ifEmpty: [content _ 'Posicion: ', positionField]].
+	^content! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:09:13' prior: 50480374!
+positionChangedTo: aPosition
+	positionField ifNil: [positionField _ ''].
+	positionField _ aPosition asString.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:09:41' prior: 50480453!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	^content! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:09:46'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:09:46'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:09:46'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:09:54'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:09:54'!
+FAILURE!
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:11:01' prior: 50480469!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	^content! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:11:38' prior: 50480319!
+followPositionChangesOn: aMarsRover 
+	aMarsRover followPositionChangesWith: self! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:11:42' prior: 50480326!
+followHeadingChangesOn: aMarsRover 
+	aMarsRover followHeadingChangesWith: self! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:11:47'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:11:47'!
+PASSED!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:12:25'!
+test03
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@0'.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 19:12:28'!
+PASSED!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:15:31'!
+test04
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@1'.
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 19:15:34'!
+PASSED!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:17:36'!
+test05
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	self assert: 'Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:17:38'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:17:38'!
+ERROR!
+!MarsRoverCurrentPositionWindow class methodsFor: 'instance creation' stamp: 'ldmaf 6/1/2022 19:17:44'!
+followHeadingChangesOn: aMarsRover 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeFollowHeadingChangesOn: aMarsRover ! !
+!MarsRoverCurrentPositionWindow class methodsFor: 'instance creation' stamp: 'ldmaf 6/1/2022 19:18:02' prior: 50480579!
+followHeadingChangesOn: aMarsRover 
+	^self new followHeadingChangesOn: aMarsRover ! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:18:40'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:18:40'!
+ERROR!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:18:49'!
+headingChangedTo: aMarsRoverHeadingEast 
+	self shouldBeImplemented.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:20:17' prior: 50480601!
+headingChangedTo: aMarsRoverHeading
+	| heading |
+	headingField ifNil: [headingField _ '']. 
+	
+	headingField _ aMarsRoverHeading asString.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:20:23' prior: 50480607!
+headingChangedTo: aMarsRoverHeading
+	headingField ifNil: [headingField _ '']. 
+	headingField _ aMarsRoverHeading asString.! !
+!MarsRoverHeadingEast methodsFor: 'nil' stamp: 'ldmaf 6/1/2022 19:20:42' overrides: 16901837!
+asString
+	^'Este'! !
+!MarsRoverHeadingNorth methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 19:20:51' overrides: 16901837!
+asString
+	^'Norte'! !
+!MarsRoverHeadingSouth methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 19:20:56' overrides: 16901837!
+asString
+	^'Sur'! !
+!MarsRoverHeadingWest methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 19:21:03' overrides: 16901837!
+asString
+	^'Oeste'! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:21:21' prior: 50480616!
+headingChangedTo: aMarsRoverHeading
+	headingField ifNil: [headingField _ '']. 
+	headingField _ 'Apuntando a ', aMarsRoverHeading asString.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:21:47' prior: 50480492!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	headingField ifNotNil: [content _ 'Apuntando a ', positionField].
+	^content! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:21:54' prior: 50480640!
+headingChangedTo: aMarsRoverHeading
+	headingField ifNil: [headingField _ '']. 
+	headingField _ aMarsRoverHeading asString.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:22:17'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:22:17'!
+ERROR!
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:22:43' prior: 50480648!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	headingField ifNotNil: [content _ 'Apuntando a ', headingField ].
+	^content! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:22:48'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:22:48'!
+FAILURE!
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:22:59' prior: 50480672!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ 'Posicion: ', positionField].
+	headingField ifNotNil: [content _ 'Apuntando al ', headingField ].
+	^content! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:23:02'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:23:02'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 19:23:02'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 19:23:02'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:23:02'!
+PASSED!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:24:01'!
+test06
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'l'.
+	self assert: 'Apuntando al Oeste' equals: marsRoverPositionWindow readWindowContent.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 19:24:09'!
+PASSED!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:25:39'!
+test07
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: 'Posicion: 1@2' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'r'.
+	self assert: 'Posicion: 1@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'f'.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:25:42'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:25:42'!
+FAILURE!
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:27:05'!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'lr'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: 'North' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: false.
+! !
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:27:11' prior: 50480757!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger.
+	
+	marsRover process: 'lr'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: 'North' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: false.
+! !
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:28:50' prior: 50480773!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger followPositionChangesWith: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'Este' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: false.
+! !
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:28:52'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:28:52'!
+ERROR!
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:28:59' prior: 50480789!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger followPositionChangesWith: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'Este' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+
+! !
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:29:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:29:01'!
+ERROR!
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:29:26' prior: 50480813!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'Este' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+
+! !
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:29:36'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:29:36'!
+FAILURE!
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:29:43' prior: 50480836!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+
+! !
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:29:46'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:30:19'!
+PASSED!
+!MarsRoverLoggerTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:30:54'!
+test09LoggerLogsChangesOfBothRotationsAndPositionsCommands
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+
+! !
+
+!methodRemoval: MarsRoverLoggerTest #test09 stamp: 'ldmaf 6/1/2022 19:30:54'!
+test09
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	logger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+
+!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:31:07'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:31:07'!
+FAILURE!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 19:31:22' prior: 50480730!
+test07
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	marsRoverPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: 'Posicion: 1@2' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'r'.
+	self assert: 'Posicion: 1@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'f'.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:31:24'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:31:24'!
+FAILURE!
+!MarsRoverCurrentPositionWindow methodsFor: 'content read' stamp: 'ldmaf 6/1/2022 19:35:04' prior: 50480688!
+readWindowContent
+	|content|
+	content _ ''.
+	positionField ifNotNil: [content _ content , 'Posicion: ', positionField].
+	headingField ifNotNil: [
+			(content isEmpty) ifTrue: [content _ 'Apuntando al ', headingField] ifFalse: [content _ content, ' Apuntando al ', headingField]. 
+		].
+	^content! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:35:10'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 19:35:16'!
+PASSED!
+
+----SNAPSHOT----(1 June 2022 19:51:17) CuisUniversity-5096.image priorSource: 4846731!
+
+Object subclass: #MarsRoverVisitor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverVisitor category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:01:37'!
+Object subclass: #MarsRoverVisitor
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+MarsRoverVisitor subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:02:43'!
+MarsRoverVisitor subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+MarsRoverVisitor subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverCurrentPositionWindow category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:02:51'!
+MarsRoverVisitor subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:04:07' prior: 50480658!
+headingChangedTo: aMarsRoverHeading
+	headingField ifNil: [headingField _ '']. 
+	aMarsRoverHeading accept: self.
+	headingField _ aMarsRoverHeading asString.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:04:54'!
+visitMarsRoverHeadingEast: aMarsRoverHeadingEast
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:05:00' prior: 50481037!
+headingChangedTo: aMarsRoverHeading
+	headingField ifNil: [headingField _ '']. 
+	aMarsRoverHeading accept: self.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:05:19' prior: 50481046!
+visitMarsRoverHeadingEast: aMarsRoverHeadingEast
+	headingField _ 'Este'.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:05:30'!
+visitMarsRoverHeadingWest: aMarsRoverHeadingWest
+	headingField _ 'Oeste'.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:05:40'!
+visitMarsRoverHeadingNorth: aMarsRoverHeadingNorth
+	headingField _ 'Norte'.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:05:51'!
+visitMarsRoverHeadingSouth: aMarsRoverHeadingSouth
+	headingField _ 'Sur'.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:06:08' prior: 50479787!
+positionChangedTo: aPosition
+	log print: aPosition; newLine! !
+
+!methodRemoval: MarsRoverHeadingEast #asString stamp: 'ldmaf 6/1/2022 20:06:19'!
+asString
+	^'Este'!
+
+!methodRemoval: MarsRoverHeadingNorth #asString stamp: 'ldmaf 6/1/2022 20:06:24'!
+asString
+	^'Norte'!
+
+!methodRemoval: MarsRoverHeadingSouth #asString stamp: 'ldmaf 6/1/2022 20:06:34'!
+asString
+	^'Sur'!
+
+!methodRemoval: MarsRoverHeadingWest #asString stamp: 'ldmaf 6/1/2022 20:06:39'!
+asString
+	^'Oeste'!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 20:06:51'!
+PASSED!
+
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head positionLogger headingLogger loggers'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRover category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:15:10'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head positionLogger headingLogger loggers'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+TestCase subclass: #MarsRoverVisitorTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverVisitorTest category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:16:01'!
+TestCase subclass: #MarsRoverVisitorTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverVisitorTest methodsFor: 'no messages' stamp: 'ldmaf 6/1/2022 20:16:16'!
+test01
+	self assert: false.! !
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:21:26' prior: 50481151!
+test01
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: '1@2' equals: window readWindowContent.! !
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:21:29'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:21:29'!
+FAILURE!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:21:42' prior: 50481156!
+test01
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	"self assert: '1@2' equals: window readWindowContent."! !
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:21:45'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:21:45'!
+FAILURE!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:21:49' prior: 50481179!
+test01
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: '1@2' equals: window readWindowContent.! !
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:23:33'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:23:33'!
+FAILURE!
+
+!classDefinition: #MarsRover category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:24:02'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head positionLogger headingLogger loggers visitors'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRover methodsFor: 'initialization' stamp: 'ldmaf 6/1/2022 20:24:01' prior: 50479410!
+initializeAt: aPosition heading: aHeadingType
+
+	position := aPosition.
+	head := aHeadingType for: self.
+	visitors _ OrderedCollection new.! !
+!MarsRover methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:26:28' prior: 50479525!
+followPositionChangesWith: aMarsRoverLogger 
+	visitors add: aMarsRoverLogger.! !
+!MarsRover methodsFor: 'as yet unclassified' stamp: 'HAW 5/30/2022 20:20:35' prior: 50481242!
+followPositionChangesWith: aMarsRoverLogger 
+	
+	positionLogger := aMarsRoverLogger ! !
+!MarsRover methodsFor: 'moving' stamp: 'ldmaf 6/1/2022 20:30:05' prior: 50479468!
+addToPositionAndLogNewPosition: newPosition
+
+	position := position + newPosition.
+	visitors do: [:aVisitor | aVisitor positionChangedTo: position].! !
+!MarsRover methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:30:51'!
+addVisitor: aVisitor
+	visitors add: aVisitor.! !
+
+!classDefinition: #MarsRoverCurrentPositionWindow category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:32:30'!
+MarsRoverVisitor subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField willVisitPosition'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:32:29' prior: 50480500!
+followPositionChangesOn: aMarsRover 
+	willVisitPosition _ true.
+	aMarsRover addVisitor: self.
+	! !
+
+!classDefinition: #MarsRoverCurrentPositionWindow category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:32:39'!
+MarsRoverVisitor subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField willVisitPosition willVisitHead'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:32:38' prior: 50481278!
+followPositionChangesOn: aMarsRover 
+	willVisitPosition _ true.
+	willVisitHead _ false.
+	aMarsRover addVisitor: self.
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:32:41' prior: 50481296!
+followPositionChangesOn: aMarsRover 
+	willVisitPosition _ true.
+	aMarsRover addVisitor: self.
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:33:13' prior: 50480507!
+followHeadingChangesOn: aMarsRover 
+	willVisitHead _ true.
+	aMarsRover addVisitor: self.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:35:14' prior: 50481311!
+followHeadingChangesOn: aMarsRover 
+	willVisitHead ifFalse: [aMarsRover addVisitor: self].! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:35:24' prior: 50481318!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [aMarsRover addVisitor: self].! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:35:44' prior: 50481304!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [aMarsRover addVisitor: self].
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:36:11' prior: 50481332!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			willVisitPosition _ true.
+			aMarsRover addVisitor: self
+		].
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:36:44' prior: 50481325!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			willVisitHead _ true.
+			aMarsRover addVisitor: self
+		].! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:37:11' prior: 50480462!
+positionChangedTo: aPosition
+	willVisitPosition ifTrue: [
+			positionField ifNil: [positionField _ ''].
+			positionField _ aPosition asString.
+		].
+! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:37:37' prior: 50481052!
+headingChangedTo: aMarsRoverHeading
+	willVisitHead ifTrue: [
+			headingField ifNil: [headingField _ '']. 
+			aMarsRoverHeading accept: self.	
+		].
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:38:02' prior: 50480299 overrides: 16920235!
+initialize
+	log _ ''.
+	willVisitPosition _ false.
+	willVisitHead _ false.! !
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:38:47'!
+MarsRoverVisitor subclass: #MarsRoverLogger
+	instanceVariableNames: 'log willVisitHead'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:38:48'!
+MarsRoverVisitor subclass: #MarsRoverLogger
+	instanceVariableNames: 'log willVisitHead willVisitPosition'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:38:44' prior: 50479771!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			willVisitPosition _ true.
+			aMarsRover addVisitor: self
+		].! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:41:33' prior: 50479765!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			willVisitHead _ true.
+			aMarsRover addVisitor: self
+		].! !
+
+MarsRoverVisitor subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverCurrentPositionWindow category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:41:43'!
+MarsRoverVisitor subclass: #MarsRoverCurrentPositionWindow
+	instanceVariableNames: 'log headingField positionField'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+Object subclass: #MarsRoverVisitor
+	instanceVariableNames: 'willVisitPosition willVisitHead'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+MarsRoverVisitor subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:41:57'!
+MarsRoverVisitor subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+Object subclass: #MarsRoverVisitor
+	instanceVariableNames: 'willVisitHead willVisitPosition'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverVisitor category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 20:42:00'!
+Object subclass: #MarsRoverVisitor
+	instanceVariableNames: 'willVisitHead willVisitPosition'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:42:56' prior: 50479777!
+headingChangedTo: aMarsRoverHeading
+	willVisitHead ifTrue: [aMarsRoverHeading accept: self].
+	! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:43:10' prior: 50481084!
+positionChangedTo: aPosition
+	willVisitPosition ifTrue: [log print: aPosition; newLine].! !
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 20:43:58'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:44:01'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:44:15'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:44:15'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:44:28'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:45:08'!
+ERROR!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:45:53' prior: 50479783 overrides: 16920235!
+initialize
+
+	log  := WriteStream on: ''.
+	willVisitPosition _ false.
+	willVisitHead _ false.! !
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:46:00'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:46:03'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:46:03'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:46:03'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:46:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:46:12'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:46:12'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:18'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:46:18'!
+FAILURE!
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 20:47:14' prior: 50479416!
+headEast
+	
+	head := MarsRoverHeadingEast for: self.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 20:47:19' prior: 50479917!
+headNorth
+	
+	head := MarsRoverHeadingNorth for: self.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 20:47:22' prior: 50479426!
+headSouth
+	
+	head := MarsRoverHeadingSouth for: self.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 20:47:25' prior: 50479432!
+headWest
+	
+	head := MarsRoverHeadingWest for: self. 
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:47:43'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:47:43'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:47:43'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:47:51'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:47:55'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:47:55'!
+FAILURE!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:51:22' prior: 50481462!
+headingChangedTo: aMarsRoverHeading
+	willVisitHead ifTrue: [aMarsRoverHeading accept: self].
+	! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:51:36' prior: 50481397!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			willVisitPosition _ true.
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:51:50' prior: 50481769!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			willVisitPosition _ true.
+			aMarsRover addVisitor: self
+		].
+	willVisitPosition _ true.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:51:59' prior: 50481405!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			willVisitHead _ true.
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:52:03' prior: 50481786!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:52:09' prior: 50481777!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitPosition _ true.! !
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:52:15'!
+PASSED!
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:52:26' prior: 50481347!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:52:30' prior: 50481339!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	! !
+!MarsRoverCurrentPositionWindow methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:52:32' prior: 50481856!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitPosition _ true.
+	! !
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 20:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 20:52:40'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:52:43'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:52:43'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:52:52'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:52:52'!
+FAILURE!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:53:06' prior: 50481202!
+test01
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 1@2' equals: window readWindowContent.! !
+
+!testRun: #MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 20:53:08'!
+PASSED!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:55:25'!
+test02
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: window readWindowContent.! !
+
+!testRun: #MarsRoverVisitorTest #test02 stamp: 'ldmaf 6/1/2022 20:55:28'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test02 stamp: 'ldmaf 6/1/2022 20:55:28'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test02 stamp: 'ldmaf 6/1/2022 20:55:48'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test02 stamp: 'ldmaf 6/1/2022 20:55:48'!
+FAILURE!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 20:58:32' prior: 50481960!
+test02
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	logger followHeadingChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	window followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: window readWindowContent.! !
+
+!testRun: #MarsRoverVisitorTest #test02 stamp: 'ldmaf 6/1/2022 20:58:35'!
+PASSED!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:00:17'!
+test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	logger followHeadingChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	window followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: window readWindowContent.! !
+
+!methodRemoval: MarsRoverVisitorTest #test02 stamp: 'ldmaf 6/1/2022 21:00:17'!
+test02
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	logger followHeadingChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	window followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'frf'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: '2@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: window readWindowContent.!
+!MarsRoverVisitorTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:01:03'!
+test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 1@2' equals: window readWindowContent.! !
+
+!methodRemoval: MarsRoverVisitorTest #test01 stamp: 'ldmaf 6/1/2022 21:01:03'!
+test01
+	| marsRover logger window logStream |
+	
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover.
+	window _ MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+	self assert: 'Posicion: 1@2' equals: window readWindowContent.!
+
+----SNAPSHOT----(1 June 2022 21:01:11) CuisUniversity-5096.image priorSource: 4778897!
+
+!methodRemoval: MarsRover #followPositionChangesWith: stamp: 'ldmaf 6/1/2022 21:01:35'!
+followPositionChangesWith: aMarsRoverLogger 
+	
+	positionLogger := aMarsRoverLogger !
+
+!methodRemoval: MarsRover #followHeadingChangesWith: stamp: 'ldmaf 6/1/2022 21:01:41'!
+followHeadingChangesWith: aMarsRoverLogger 
+	
+	headingLogger := aMarsRoverLogger !
+
+----SNAPSHOT----(1 June 2022 21:07:55) CuisUniversity-5096.image priorSource: 4814484!
+
+----SNAPSHOT----(1 June 2022 21:11:55) CuisUniversity-5096.image priorSource: 4814917!
+
+----SNAPSHOT----(1 June 2022 21:11:57) CuisUniversity-5096.image priorSource: 4815005!
+
+----QUIT----(1 June 2022 21:11:59) CuisUniversity-5096.image priorSource: 4815093!
+
+----STARTUP---- (1 June 2022 21:12:03) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----QUIT----(1 June 2022 21:12:11) CuisUniversity-5096.image priorSource: 4815181!
+
+----STARTUP---- (1 June 2022 21:12:52) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+Object subclass: #MarsRoverProxy
+	instanceVariableNames: 'visitors marsRover'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverProxy category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 21:13:28'!
+Object subclass: #MarsRoverProxy
+	instanceVariableNames: 'visitors marsRover'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRover category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 21:17:49'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head positionLogger headingLogger loggers visitors proxy'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRover methodsFor: 'initialization' stamp: 'ldmaf 6/1/2022 21:17:47' prior: 50481234!
+initializeAt: aPosition heading: aHeadingType
+
+	position := aPosition.
+	head := aHeadingType for: self.
+	visitors _ OrderedCollection new.
+	proxy _ MarsRoverProxy for: self. ! !
+!MarsRoverProxy class methodsFor: 'no messages' stamp: 'ldmaf 6/1/2022 21:18:13'!
+for: aMarsRover
+	^self new initializeWith: aMarsRover.! !
+!MarsRoverProxy methodsFor: 'no messages' stamp: 'ldmaf 6/1/2022 21:18:46'!
+initializeWith: aMarsRover
+	marsRover _ aMarsRover.! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:18:54' prior: 50482175!
+initializeWith: aMarsRover
+	marsRover _ aMarsRover.
+	visitors _ OrderedCollection new.! !
+
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head visitors proxy'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRover category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 21:19:58'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head visitors proxy'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:20:01'!
+PASSED!
+!MarsRover methodsFor: 'moving' stamp: 'ldmaf 6/1/2022 21:21:04' prior: 50481254!
+addToPositionAndLogNewPosition: newPosition
+
+	position := position + newPosition.
+	proxy notifyMoveTo: position.
+	visitors do: [:aVisitor | aVisitor positionChangedTo: position].! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:21:19'!
+notifyMoveToPosition: aPosition
+	! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:22:25' prior: 50482331!
+notifyMoveToPosition: aPosition
+	! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:22:44' prior: 50482336!
+notifyMoveToPosition: aPosition
+	visitors do: [:aVisitor | aVisitor positionChangedTo: aPosition].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:23:54' prior: 50481679!
+headEast
+	
+	head := MarsRoverHeadingEast for: self.
+	proxy notifyHeadingTo: head.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:26:09' prior: 50481686!
+headNorth
+	
+	head := MarsRoverHeadingNorth for: self.
+	proxy notifyHeadingTo: head.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:26:12' prior: 50481693!
+headSouth
+	
+	head := MarsRoverHeadingSouth for: self.
+	proxy notifyHeadingTo: head.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:26:21' prior: 50481700!
+headWest
+	
+	head := MarsRoverHeadingWest for: self. 
+	proxy notifyHeadingTo: head.
+	visitors do: [:aVisitor | aVisitor headingChangedTo: head].! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:26:56'!
+notifyHeadingToPosition: aMarsRoverHeading
+	visitors do: [:aVisitor | aVisitor positionChangedTo: aMarsRoverHeading].! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:27:19' prior: 50482379!
+notifyHeadingToPosition: aMarsRoverHeading
+	visitors do: [:aVisitor | aVisitor headingChangedTo: aMarsRoverHeading].! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:27:39' prior: 50482355!
+headNorth
+	
+	head := MarsRoverHeadingNorth for: self.
+	proxy notifyHeadingTo: head.! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:27:44' prior: 50482347!
+headEast
+	
+	head := MarsRoverHeadingEast for: self.
+	proxy notifyHeadingTo: head.! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:27:49' prior: 50482363!
+headSouth
+	
+	head := MarsRoverHeadingSouth for: self.
+	proxy notifyHeadingTo: head.
+! !
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 6/1/2022 21:27:52' prior: 50482371!
+headWest
+	
+	head := MarsRoverHeadingWest for: self. 
+	proxy notifyHeadingTo: head.! !
+!MarsRover methodsFor: 'moving' stamp: 'ldmaf 6/1/2022 21:28:01' prior: 50482322!
+addToPositionAndLogNewPosition: newPosition
+
+	position := position + newPosition.
+	proxy notifyMoveTo: position.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 21:28:37'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:28:37'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:28:37'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:28:37'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:28:37'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:28:37'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:28:37'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:29:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:29:12'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:16'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:16'!
+ERROR!
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:29:35'!
+notifyMoveTo: aPosition
+	visitors do: [:aVisitor | aVisitor positionChangedTo: aPosition].! !
+
+!methodRemoval: MarsRoverProxy #notifyMoveToPosition: stamp: 'ldmaf 6/1/2022 21:29:35'!
+notifyMoveToPosition: aPosition
+	visitors do: [:aVisitor | aVisitor positionChangedTo: aPosition].!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:29:38'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:29:38'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:29:38'!
+ERROR!
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:29:55'!
+notifyHeadingTo: aMarsRoverHeading
+	visitors do: [:aVisitor | aVisitor headingChangedTo: aMarsRoverHeading].! !
+
+!methodRemoval: MarsRoverProxy #notifyHeadingToPosition: stamp: 'ldmaf 6/1/2022 21:29:55'!
+notifyHeadingToPosition: aMarsRoverHeading
+	visitors do: [:aVisitor | aVisitor headingChangedTo: aMarsRoverHeading].!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:29:59'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:29:59'!
+FAILURE!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:30:34'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:30:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:30:41'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:30:45'!
+FAILURE!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:30:45'!
+FAILURE!
+!MarsRover methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:31:15' prior: 50481262!
+addVisitor: aVisitor
+	proxy addVisitor: aVisitor.! !
+!MarsRoverProxy methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:31:32'!
+addVisitor: aVisitor
+	visitors add: aVisitor.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:31:35'!
+PASSED!
+
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head proxy'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRover category: 'MarsRover-WithHeading' stamp: 'ldmaf 6/1/2022 21:32:17'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head proxy'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRover methodsFor: 'initialization' stamp: 'ldmaf 6/1/2022 21:32:21' prior: 50482161!
+initializeAt: aPosition heading: aHeadingType
+
+	position := aPosition.
+	head := aHeadingType for: self.
+	proxy _ MarsRoverProxy for: self. ! !
+
+----SNAPSHOT----(1 June 2022 21:32:26) CuisUniversity-5096.image priorSource: 4815383!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:37:52'!
+test01WindowLogsNothingWhenNoCommandsAreSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: '' equals: marsRoverPositionWindow readWindowContent.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test01 stamp: 'ldmaf 6/1/2022 21:37:52'!
+test01
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	self assert: '' equals: marsRoverPositionWindow readWindowContent.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:38:08'!
+test02WindowLogsPositionWhenForwardCommandIsSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test02 stamp: 'ldmaf 6/1/2022 21:38:08'!
+test02
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:38:26'!
+test03WindowLogsPositionWhenBackwardCommandIsSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@0'.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test03 stamp: 'ldmaf 6/1/2022 21:38:26'!
+test03
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@0'.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:39:04'!
+test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@1'.
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test04 stamp: 'ldmaf 6/1/2022 21:39:04'!
+test04
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@1'.
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:39:10'!
+test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSentStepByStep
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@1'.
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSent stamp: 'ldmaf 6/1/2022 21:39:10'!
+test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.
+	marsRover process: 'b'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@1'.
+	marsRover process: 'f'.
+	self assert: marsRoverPositionWindow readWindowContent equals: 'Posicion: 1@2'.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:39:42'!
+test05WindowLogsHeadingWhenRightRotateCommandIsSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	self assert: 'Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test05 stamp: 'ldmaf 6/1/2022 21:39:42'!
+test05
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	self assert: 'Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:39:58'!
+test06WindowLogsHeadingWhenLeftRotateCommandIsSent
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'l'.
+	self assert: 'Apuntando al Oeste' equals: marsRoverPositionWindow readWindowContent.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test06 stamp: 'ldmaf 6/1/2022 21:39:58'!
+test06
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'l'.
+	self assert: 'Apuntando al Oeste' equals: marsRoverPositionWindow readWindowContent.!
+!MarsRoverCurrentPositionWindowTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:47:06'!
+test07WindowLogsHeadingAndPositionWhenMultipleCommandsAreSentStepByStep
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	marsRoverPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: 'Posicion: 1@2' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'r'.
+	self assert: 'Posicion: 1@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'f'.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.! !
+
+!methodRemoval: MarsRoverCurrentPositionWindowTest #test07 stamp: 'ldmaf 6/1/2022 21:47:06'!
+test07
+	| marsRover marsRoverPositionWindow |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	marsRoverPositionWindow := MarsRoverCurrentPositionWindow followHeadingChangesOn: marsRover.
+	marsRoverPositionWindow followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	self assert: 'Posicion: 1@2' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'r'.
+	self assert: 'Posicion: 1@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.
+	marsRover process: 'f'.
+	self assert: 'Posicion: 2@2 Apuntando al Este' equals: marsRoverPositionWindow readWindowContent.!
+!MarsRoverVisitor methodsFor: 'nil' stamp: 'ldmaf 6/1/2022 21:50:22'!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.! !
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:50:31'!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitPosition _ true.
+	! !
+
+!methodRemoval: MarsRoverCurrentPositionWindow #followPositionChangesOn: stamp: 'ldmaf 6/1/2022 21:50:55'!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitPosition _ true.
+	!
+
+!methodRemoval: MarsRoverCurrentPositionWindow #followHeadingChangesOn: stamp: 'ldmaf 6/1/2022 21:50:58'!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.!
+
+!methodRemoval: MarsRoverLogger #followHeadingChangesOn: stamp: 'ldmaf 6/1/2022 21:51:02'!
+followHeadingChangesOn: aMarsRover 
+	willVisitPosition ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitHead _ true.!
+
+!methodRemoval: MarsRoverLogger #followPositionChangesOn: stamp: 'ldmaf 6/1/2022 21:51:06'!
+followPositionChangesOn: aMarsRover 
+	willVisitHead ifFalse: [
+			aMarsRover addVisitor: self
+		].
+	willVisitPosition _ true.!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01WindowLogsNothingWhenNoCommandsAreSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02WindowLogsPositionWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03WindowLogsPositionWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSentStepByStep stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05WindowLogsHeadingWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06WindowLogsHeadingWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07WindowLogsHeadingAndPositionWhenMultipleCommandsAreSentStepByStep stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:51:12'!
+PASSED!
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:51:30'!
+positionChangedTo: aPosition
+	self subclassResponsibility.! !
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:51:45'!
+headingChangedTo: aMarsRoverHeading
+	self subclassResponsibility.! !
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:52:06'!
+visitMarsRoverHeadingEast: aMarsRoverHeadingEast
+	self subclassResponsibility.! !
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:52:11'!
+visitMarsRoverHeadingWest: aMarsRoverHeadingWest
+	self subclassResponsibility.! !
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:52:21'!
+visitMarsRoverHeadingNorth: aMarsRoverHeadingNorth
+	self subclassResponsibility.! !
+!MarsRoverVisitor methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/1/2022 21:52:31'!
+visitMarsRoverHeadingSouth: aMarsRoverHeadingSouth
+	self subclassResponsibility.! !
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01WindowLogsNothingWhenNoCommandsAreSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02WindowLogsPositionWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03WindowLogsPositionWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSentStepByStep stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05WindowLogsHeadingWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06WindowLogsHeadingWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07WindowLogsHeadingAndPositionWhenMultipleCommandsAreSentStepByStep stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/1/2022 21:52:36'!
+PASSED!
+
+----QUIT----(1 June 2022 21:53:51) CuisUniversity-5096.image priorSource: 4846798!
+
+----STARTUP---- (2 June 2022 13:14:50) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----QUIT----(2 June 2022 13:15:02) CuisUniversity-5096.image priorSource: 4866576!
