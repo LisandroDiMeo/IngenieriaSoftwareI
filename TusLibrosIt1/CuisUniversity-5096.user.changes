@@ -1,0 +1,2575 @@
+
+
+----STARTUP---- (25 May 2022 17:48:17) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /media/lisandro/47FC-0197/Portfolio-Ejercicio.st----!
+
+!classRemoval: #ReceptiveAccount stamp: 'ldmaf 5/25/2022 17:49:51'!
+Object subclass: #ReceptiveAccount
+	instanceVariableNames: 'transactions'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #Withdraw stamp: 'ldmaf 5/25/2022 17:49:51'!
+AccountTransaction subclass: #Withdraw
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #Deposit stamp: 'ldmaf 5/25/2022 17:49:52'!
+AccountTransaction subclass: #Deposit
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #AccountTransaction stamp: 'ldmaf 5/25/2022 17:49:52'!
+Object subclass: #AccountTransaction
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!classRemoval: #ReceptiveAccountTest stamp: 'ldmaf 5/25/2022 17:49:52'!
+TestCase subclass: #ReceptiveAccountTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+----STARTUP---- (25 May 2022 17:51:13) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /home/lisandro/Downloads/Portfolio-Solucion.st----!
+
+TestCase subclass: #TransferTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #TransferTest category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 17:59:40'!
+TestCase subclass: #TransferTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 18:05:16'!
+Object subclass: #Transfer
+	instanceVariableNames: 'transferValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!TransferTest methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 18:04:56'!
+test01xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer value = 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:07:16'!
+ERROR!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 18:07:20'!
+from: aReceptiveAccount to: aReceptiveAccount2 of: aSmallInteger 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeFrom: aReceptiveAccount to: aReceptiveAccount2 of: aSmallInteger ! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 18:10:09' prior: 50474868!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	Deposit register: anAmount on: aReceivingAccount.
+	Withdraw register: anAmount on: aSendingAccount.
+	^self new with: anAmount.! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:16'!
+ERROR!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test01ReceptiveAccountHaveZeroAsBalanceWhenCreated stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test02DepositIncreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test03WithdrawDecreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test04WithdrawValueMustBePositive stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test06ReceptiveAccountDoNotKnowNotRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test07AccountKnowsItsTransactions stamp: 'ldmaf 5/25/2022 18:10:23'!
+PASSED!
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:27'!
+ERROR!
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 18:10:34'!
+with: aSmallInteger 
+	self shouldBeImplemented.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 18:10:50' prior: 50474923!
+with: anAmount
+	transferValue  _ anAmount.! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:53'!
+FAILURE!
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:10:53'!
+FAILURE!
+!Transfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 18:11:39'!
+isOf: anAmount
+	^anAmount = transferValue.! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:11:48' prior: 50474852!
+test01xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer isOf: 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).! !
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:11:49'!
+PASSED!
+
+!testRun: #TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:11:49'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:13:30'!
+test01ATransferBetweenTwoAccountsReflectsTheSameBalance
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer isOf: 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).! !
+
+!methodRemoval: TransferTest #test01xxx stamp: 'ldmaf 5/25/2022 18:13:30'!
+test01xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (transfer isOf: 50).
+	self assert: (sendingAccount balance = -50).
+	self assert: (receivingAccount balance = 50).!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 18:13:33'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 18:13:33'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:31:24'!
+test02xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (sendingAccount hasRegistered: transfer).
+	self assert: (receivingAccount hasRegistered: transfer).! !
+
+!testRun: #TransferTest #test02xxx stamp: 'ldmaf 5/25/2022 18:31:26'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 18:44:01' prior: 50474700 overrides: 50474490!
+hasRegistered: aTransaction
+	(aTransaction isKindOf: Transfer) ifTrue: [^true].
+	^ transactions includes: aTransaction 
+! !
+
+!testRun: #PortfolioTest #test01BalanceOfPortfolioWithoutAccountsIsZero stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test02BalanceOfPortfolioWithAccountsIsSumOfAccountsBalance stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test03BalanceOfPortfolioIsCalculatedRecursivelyOnPortfolios stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test04PortfolioWithoutAccountsHasNoRegisteredTransaction stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test05PortfolioHasRegisteredItsAccountsTransactions stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test06PortfolioLooksForRegisteredTransactionsRecursively stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test07PortfolioHasNoTransactionWhenHasNoAccounts stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test08PortfolioTransactionsIncludesAllItsAccountsTransactions stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test09PortfolioTransactionsAreCalculatedRecursively stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test10PortfolioCanNotIncludeTheSameAccountMoreThanOnce stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test11PortfolioCanNotIncludeAccountOfItsPortfolios stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test12PortfolioCanNotIncludeItself stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test13ComposedPortfolioCanNotHaveParentPortfolioAccount stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test14ComposedPortfolioCanNotHaveAccountOfAnyRootParentRecursively stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #PortfolioTest #test15PortfolioCanNotIncludeAnyOfTheComposedAccountOfPortfolioToAdd stamp: 'ldmaf 5/25/2022 18:44:05'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test01ReceptiveAccountHaveZeroAsBalanceWhenCreated stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test02DepositIncreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test03WithdrawDecreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test04WithdrawValueMustBePositive stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test06ReceptiveAccountDoNotKnowNotRegisteredTransactions stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test07AccountKnowsItsTransactions stamp: 'ldmaf 5/25/2022 18:44:08'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 18:44:11'!
+PASSED!
+
+!testRun: #TransferTest #test02xxx stamp: 'ldmaf 5/25/2022 18:44:11'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:44:51'!
+test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (sendingAccount hasRegistered: transfer).
+	self assert: (receivingAccount hasRegistered: transfer).! !
+
+!methodRemoval: TransferTest #test02xxx stamp: 'ldmaf 5/25/2022 18:44:55'!
+test02xxx
+	|transfer sendingAccount receivingAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (sendingAccount hasRegistered: transfer).
+	self assert: (receivingAccount hasRegistered: transfer).!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:45:42'!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: false.! !
+
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'transferValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 18:48:13'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'transferValue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 18:59:42'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:59:42' prior: 50474928!
+with: anAmount
+	value  _ anAmount.! !
+!Transfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 18:59:42' prior: 50474937!
+isOf: anAmount
+	^anAmount = value.! !
+
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:01:11'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 19:03:33' prior: 50474879!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	Deposit register: anAmount on: aReceivingAccount.
+	Withdraw register: anAmount on: aSendingAccount.
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 19:04:09' prior: 50475197!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:07:57'!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:08:26' prior: 50475215!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	aSendingAccount register: self.
+	aReceivingAccount register: self.! !
+!Transfer methodsFor: 'value' stamp: 'ldmaf 5/25/2022 19:09:16' overrides: 50474728!
+value
+	^value.! !
+!Transfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:16:29' overrides: 50474732!
+affectBalance: aBalance
+
+	^aBalance + value ! !
+
+!testRun: #PortfolioTest #test01BalanceOfPortfolioWithoutAccountsIsZero stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test02BalanceOfPortfolioWithAccountsIsSumOfAccountsBalance stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test03BalanceOfPortfolioIsCalculatedRecursivelyOnPortfolios stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test04PortfolioWithoutAccountsHasNoRegisteredTransaction stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test05PortfolioHasRegisteredItsAccountsTransactions stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test06PortfolioLooksForRegisteredTransactionsRecursively stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test07PortfolioHasNoTransactionWhenHasNoAccounts stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test08PortfolioTransactionsIncludesAllItsAccountsTransactions stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test09PortfolioTransactionsAreCalculatedRecursively stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test10PortfolioCanNotIncludeTheSameAccountMoreThanOnce stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test11PortfolioCanNotIncludeAccountOfItsPortfolios stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test12PortfolioCanNotIncludeItself stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test13ComposedPortfolioCanNotHaveParentPortfolioAccount stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test14ComposedPortfolioCanNotHaveAccountOfAnyRootParentRecursively stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #PortfolioTest #test15PortfolioCanNotIncludeAnyOfTheComposedAccountOfPortfolioToAdd stamp: 'ldmaf 5/25/2022 19:17:41'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test01ReceptiveAccountHaveZeroAsBalanceWhenCreated stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test02DepositIncreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test03WithdrawDecreasesBalanceOnTransactionValue stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test04WithdrawValueMustBePositive stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test05ReceptiveAccountKnowsRegisteredTransactions stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test06ReceptiveAccountDoNotKnowNotRegisteredTransactions stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+!testRun: #ReceptiveAccountTest #test07AccountKnowsItsTransactions stamp: 'ldmaf 5/25/2022 19:17:44'!
+PASSED!
+
+Transfer subclass: #DepositTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #DepositTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:30:46'!
+Transfer subclass: #DepositTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+Transfer subclass: #WithdrawTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #WithdrawTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:30:54'!
+Transfer subclass: #WithdrawTransfer
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:31:20' prior: 50475238 overrides: 50474732!
+affectBalance: aBalance
+	self subclassResponsibility ! !
+!DepositTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:32:12' overrides: 50475353!
+affectBalance: aBalance
+	^aBalance + value.! !
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:32:48' overrides: 50475353!
+affectBalance: aBalance
+	^aBalance - value.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:41:46' prior: 50475223!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	aSendingAccount register: (WithdrawTransfer of: anAmount on: self).
+	aReceivingAccount register: (DepositTransfer of: anAmount on: self).! !
+!DepositTransfer class methodsFor: 'no messages' stamp: 'ldmaf 5/25/2022 19:43:46'!
+of: anAmount on: aTransfer
+	^DepositTransfer new with: anAmount on: aTransfer.! !
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:43:58' prior: 50475380!
+of: anAmount on: aTransfer
+	^(DepositTransfer new) with: anAmount on: aTransfer.! !
+
+!classDefinition: #DepositTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:44:57'!
+Transfer subclass: #DepositTransfer
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!DepositTransfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 19:44:56'!
+on: aTransfer.
+	^transfer _ aTransfer.! !
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:45:04' prior: 50475386!
+of: anAmount on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:45:40'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+
+!methodRemoval: DepositTransfer class #on: stamp: 'ldmaf 5/25/2022 19:45:43'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.!
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:45:54'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+
+!methodRemoval: DepositTransfer class #of:on: stamp: 'ldmaf 5/25/2022 19:46:07'!
+of: anAmount on: aTransfer
+	^(DepositTransfer new) on: aTransfer.!
+
+!classDefinition: #WithdrawTransfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 19:46:47'!
+Transfer subclass: #WithdrawTransfer
+	instanceVariableNames: 'transfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:46:46'!
+on: aTransfer
+	transfer _ aTransfer.! !
+!WithdrawTransfer class methodsFor: 'no messages' stamp: 'ldmaf 5/25/2022 19:46:59'!
+on: aTransfer
+	^(DepositTransfer new) on: aTransfer.! !
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 19:47:39' prior: 50475367!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	value  _ anAmount.
+	aSendingAccount register: (WithdrawTransfer on: self).
+	aReceivingAccount register: (DepositTransfer on: self).! !
+!DepositTransfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:49:01' overrides: 50475234!
+value	
+	^transfer value.! !
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:49:07' overrides: 50475234!
+value	
+	^transfer value.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:17'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:17'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:36'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:49:36'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:50:27'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:50:27'!
+ERROR!
+
+	WithdrawTransfer on: self.!
+!DepositTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:52:38' prior: 50475419!
+on: aTransfer
+	^DepositTransfer new on: aTransfer.! !
+!WithdrawTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:52:48' prior: 50475440!
+on: aTransfer
+	^DepositTransfer new on: aTransfer.! !
+!WithdrawTransfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:53:12' prior: 50475497!
+on: aTransfer
+	^WithdrawTransfer new on: aTransfer.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:53:34'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:53:34'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:53:50'!
+ERROR!
+!WithdrawTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:54:22' prior: 50475363 overrides: 50475353!
+affectBalance: aBalance
+	^aBalance - (self value).! !
+!DepositTransfer methodsFor: 'balance' stamp: 'ldmaf 5/25/2022 19:54:31' prior: 50475358 overrides: 50475353!
+affectBalance: aBalance
+	^aBalance + (self value).! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:54:34'!
+ERROR!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:54:34'!
+ERROR!
+
+	WithdrawTransfer on: self.!
+
+	DepositTransfer on: self.!
+!DepositTransfer methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:56:10' prior: 50475399!
+on: aTransfer.
+	transfer _ aTransfer.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:56:16'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:56:22'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 19:56:59' prior: 50475140!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: (anotherAccount hasRegistered: transfer).! !
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 19:57:01'!
+PASSED!
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 19:57:10' prior: 50475014 overrides: 50474490!
+hasRegistered: aTransaction
+	^ transactions includes: aTransaction 
+! !
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:57:14'!
+FAILURE!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 19:57:14'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 20:00:16' prior: 50475581 overrides: 50474490!
+hasRegistered: aTransaction
+	( aTransaction isKindOf: Transfer ) ifTrue: [
+			^ ((transactions includes: (aTransaction depositTransfer)) or: [transactions includes: (aTransaction withdrawTransfer)]).
+		].
+	^ transactions includes: aTransaction 
+! !
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 20:01:24'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount withdrawTransfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #Transfer category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 20:01:25'!
+AccountTransaction subclass: #Transfer
+	instanceVariableNames: 'value sendingAccount receivingAccount withdrawTransfer depositTransfer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!Transfer methodsFor: 'init' stamp: 'ldmaf 5/25/2022 20:01:41' prior: 50475445!
+withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.
+	sendingAccount _ aSendingAccount.
+	receivingAccount _ aReceivingAccount.
+	withdrawTransfer _ (WithdrawTransfer on: self).
+	depositTransfer _ (DepositTransfer on: self).
+	value  _ anAmount.
+	aSendingAccount register: withdrawTransfer.
+	aReceivingAccount register: depositTransfer.! !
+!Transfer methodsFor: 'value' stamp: 'ldmaf 5/25/2022 20:02:02'!
+withdrawTransfer
+	^withdrawTransfer.! !
+!Transfer methodsFor: 'value' stamp: 'ldmaf 5/25/2022 20:02:08'!
+depositTransfer
+	^depositTransfer.! !
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:02:17'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:02:20'!
+PASSED!
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:02:23'!
+FAILURE!
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:02:23'!
+FAILURE!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:02:41' prior: 50475554!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: ((anotherAccount hasRegistered: transfer) not).! !
+
+!testRun: #TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:02:43'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:03:29'!
+test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: ((anotherAccount hasRegistered: transfer) not).! !
+
+!methodRemoval: TransferTest #test03xxxx stamp: 'ldmaf 5/25/2022 20:03:33'!
+test03xxxx
+	|transfer sendingAccount receivingAccount anotherAccount |
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	anotherAccount _ ReceptiveAccount new.
+	transfer _ Transfer from: sendingAccount to: receivingAccount of: 50.
+	self assert: ((anotherAccount hasRegistered: transfer) not).!
+!Transfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 20:16:28' overrides: 16901772!
+= aTransaction
+	^aTransaction = self.! !
+!DepositTransfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 20:17:41' overrides: 50475704!
+= aTransaction
+	^aTransaction = transfer.! !
+
+!methodRemoval: Transfer #= stamp: 'ldmaf 5/25/2022 20:18:26'!
+= aTransaction
+	^aTransaction = self.!
+!WithdrawTransfer methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 20:18:51' overrides: 16901772!
+= aTransaction
+	^aTransaction = transfer.! !
+!ReceptiveAccount methodsFor: 'testing' stamp: 'ldmaf 5/25/2022 20:19:38' prior: 50475595 overrides: 50474490!
+hasRegistered: aTransaction
+	^ transactions includes: aTransaction 
+! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:19:42'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:19:47'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:19:50'!
+PASSED!
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:20:02'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:20:02'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:20:02'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:23:23'!
+test04ATransferOfAmountZeroThrowsAnError
+	|transfer sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: 0.
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroAmountTransfer)].
+! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:23:31' prior: 50475751!
+test04ATransferOfAmountZeroThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: 0.
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroAmountTransfer)].
+! !
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:23:34'!
+FAILURE!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:23:34'!
+FAILURE!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:24:28'!
+cannotCreateAZeroAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.! !
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:24:33'!
+FAILURE!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:24:33'!
+FAILURE!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:25:07' prior: 50475208!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	(anAmount = 0) ifTrue: [self error: Transfer cannotCreateAZeroAmountTransfer].
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:25:09'!
+PASSED!
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:25:51'!
+test05ATransferOfNegativeAmountThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: (-1).
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroAmountTransfer)].
+! !
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 20:25:53'!
+FAILURE!
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 20:25:53'!
+FAILURE!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:18' prior: 50475788!
+cannotCreateAZeroAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:33'!
+cannotCreateAZeroOrLessAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.! !
+!Transfer class methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:26:33' prior: 50475801!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	(anAmount = 0) ifTrue: [self error: Transfer cannotCreateAZeroOrLessAmountTransfer].
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:26:33' prior: 50475826!
+test05ATransferOfNegativeAmountThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: (-1).
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroOrLessAmountTransfer)].
+! !
+!TransferTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 20:26:33' prior: 50475766!
+test04ATransferOfAmountZeroThrowsAnError
+	|sendingAccount receivingAccount|
+	sendingAccount _ ReceptiveAccount new.
+	receivingAccount _ ReceptiveAccount new.
+	self should: [
+			Transfer from: sendingAccount to: receivingAccount of: 0.
+		] raise: Error 
+	withExceptionDo: [:error | self assert: error messageText equals: (Transfer cannotCreateAZeroOrLessAmountTransfer)].
+! !
+
+!methodRemoval: Transfer class #cannotCreateAZeroAmountTransfer stamp: 'ldmaf 5/25/2022 20:26:33'!
+cannotCreateAZeroAmountTransfer
+	^'Cannot create a transfer of an amount of zero.'.!
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:43' prior: 50475862!
+from: aSendingAccount to: aReceivingAccount of: anAmount 
+	(anAmount <= 0) ifTrue: [self error: Transfer cannotCreateAZeroOrLessAmountTransfer].
+	^self new withSender: aSendingAccount andReceiver: aReceivingAccount of: anAmount.! !
+!Transfer class methodsFor: 'instance creation' stamp: 'ldmaf 5/25/2022 20:26:50' prior: 50475855!
+cannotCreateAZeroOrLessAmountTransfer
+	^'Cannot create a transfer of an amount of zero or less.'.! !
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 20:27:01'!
+PASSED!
+
+----SNAPSHOT----(25 May 2022 22:59:22) CuisUniversity-5096.image priorSource: 4557982!
+
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #ReportsTest category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 23:22:01'!
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!ReportsTest methodsFor: 'nil' stamp: 'ldmaf 5/25/2022 23:26:12'!
+test01xxx
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) equals: 'Deposito por 100.')! !
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:26:24' prior: 50475960!
+test01xxx
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) = 'Deposito por 100.').! !
+
+!testRun: #ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:26:27'!
+ERROR!
+
+!testRun: #ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:26:27'!
+ERROR!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:26:40'!
+accountSummaryReport
+	self shouldBeImplemented.! !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:26:57' prior: 50475982!
+accountSummaryReport
+	^'Deposito por 100.'! !
+
+!testRun: #ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:27:02'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:27:23'!
+test01AccountSummaryReportOfSingleTransactionIsCorrectlyDisplayed
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) = 'Deposito por 100.').! !
+
+!methodRemoval: ReportsTest #test01xxx stamp: 'ldmaf 5/25/2022 23:27:23'!
+test01xxx
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: ( (account accountSummaryReport) = 'Deposito por 100.').!
+
+'asdasdasda\nasdasdas'!
+
+'asdasdasda\nasdasdas' print!
+
+'asdasdasda <br> asdasd'!
+
+msg := 'hello world!!'.!
+
+msg := 'hello world!! \\n asdas'.!
+
+msg := 'hello world!!\n asda' printText !
+
+#(1 2 3) do: [:a | 
+		'puto' print
+	]!
+
+		'puto' print!
+
+#(1 2 3) do: [:a | 
+		'puto' print
+	]!
+
+----End fileIn of /home/lisandro/Documents/Facultad/ING1/linux64/Packages/TerseGuide.pck.st----!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:36:53'!
+test02yyy
+	|account|
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account. 
+	Withdraw register: 100 on: account.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 100. Deposito por 50. Balance = 0').! !
+
+!testRun: #ReportsTest #test02yyy stamp: 'ldmaf 5/25/2022 23:36:55'!
+FAILURE!
+
+!testRun: #ReportsTest #test02yyy stamp: 'ldmaf 5/25/2022 23:36:55'!
+FAILURE!
+
+'asda' + 5 + 'asdasd'!
+
+'asda' + (5 asString) + 'asdasd'!
+
+5 asString !
+
+'asda' , (5 asString) , 'asdasd'!
+
+----STARTUP---- (25 May 2022 23:41:16) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+!testRun: #TransferTest #test01ATransferBetweenTwoAccountsReflectsTheSameBalance stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test02ATransferBetweenTwoAccountsIsRegisteredOnBothAccounts stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test03ATransferIsOnlyRegisteredInReceiverAndSenderAccount stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test04ATransferOfAmountZeroThrowsAnError stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+!testRun: #TransferTest #test05ATransferOfNegativeAmountThrowsAnError stamp: 'ldmaf 5/25/2022 23:41:59'!
+PASSED!
+
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+
+!classDefinition: #ReportsTest category: 'Portfolio-Solucion' stamp: 'ldmaf 5/25/2022 23:42:54'!
+TestCase subclass: #ReportsTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Solucion'!
+!ReportsTest methodsFor: 'no messages' stamp: 'ldmaf 5/25/2022 23:45:01'!
+test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	self assert: (account accountSummaryReport = 'Balance 0').! !
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:05'!
+ERROR!
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:05'!
+ERROR!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:45:12'!
+accountSummaryReport
+	self shouldBeImplemented.! !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:45:19' prior: 50476001!
+accountSummaryReport
+	^'Balance 0'! !
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:21'!
+PASSED!
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:45:23'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:45:59'!
+test02xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 0').! !
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:45:59'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:50:35' prior: 50476006!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '.' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:50:50' prior: 50476019!
+test02xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 50').! !
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:50:52'!
+FAILURE!
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:50:52'!
+FAILURE!
+
+	account accountSummaryReport !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:51:23' prior: 50476030!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '.' ].
+		].
+	res _ res , ' Balance ', (self balance asString). 
+	^res.! !
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:51:28' prior: 50476056!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '. ' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+
+!testRun: #ReportsTest #test01AccountSummaryReportFromAccountWithNoTransactionsIsCorrectlyDisplayed stamp: 'ldmaf 5/25/2022 23:51:32'!
+PASSED!
+
+!testRun: #ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:51:32'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:51:52'!
+test02AccountSummaryReportWithOneDepositDisplaysDepositInfoAndBalance
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 50').! !
+
+!methodRemoval: ReportsTest #test02xxx stamp: 'ldmaf 5/25/2022 23:51:54'!
+test02xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Balance 50').!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:52:28'!
+test03xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').! !
+
+!testRun: #ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:52:30'!
+FAILURE!
+
+!testRun: #ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:52:30'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:52:52' prior: 50476067!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: Withdraw ) ifTrue: [res _ res , 'Extraccion por ', (aTransaction value asString), '. ' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+
+!testRun: #ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:52:59'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:53:25'!
+test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsInfoPlusDisplay
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').! !
+
+!methodRemoval: ReportsTest #test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsInfoPlusDisplay stamp: 'ldmaf 5/25/2022 23:53:28'!
+test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsInfoPlusDisplay
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').!
+
+----SNAPSHOT----(25 May 2022 23:53:38) CuisUniversity-5096.image priorSource: 4617441!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:54:35'!
+test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsPlusBalance
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').! !
+
+!methodRemoval: ReportsTest #test03xxx stamp: 'ldmaf 5/25/2022 23:54:35'!
+test03xxx
+	
+	|account|
+	
+	account _ ReceptiveAccount new.
+	Deposit register: 50 on: account.
+	Withdraw register: 20 on: account.
+	self assert: (account accountSummaryReport = 'Deposito por 50. Extraccion por 20. Balance 30').!
+
+!testRun: #ReportsTest #test03AccountSummaryReportWithOneDepositAndOneWithdrawDisplaysBothTransactionsPlusBalance stamp: 'ldmaf 5/25/2022 23:54:39'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/25/2022 23:57:33'!
+test04xxx
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10.').! !
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:57:34'!
+FAILURE!
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:57:34'!
+FAILURE!
+!ReceptiveAccount methodsFor: 'reports' stamp: 'ldmaf 5/25/2022 23:58:59' prior: 50476118!
+accountSummaryReport
+	|res|
+	res _ ''.
+	transactions do: [:aTransaction |
+			( aTransaction isKindOf: Deposit ) ifTrue: [res _ res , 'Deposito por ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: Withdraw ) ifTrue: [res _ res , 'Extraccion por ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: WithdrawTransfer ) ifTrue: [res _ res , 'Salida por transferencia de ', (aTransaction value asString), '. ' ].
+			( aTransaction isKindOf: DepositTransfer ) ifTrue: [res _ res , 'Entrada por transferencia de ', (aTransaction value asString), '. ' ].
+		].
+	res _ res , 'Balance ', (self balance asString). 
+	^res.! !
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:59:08'!
+FAILURE!
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/25/2022 23:59:08'!
+FAILURE!
+
+	accountSender accountSummaryReport !
+
+	accountReceiver accountSummaryReport !
+
+	'Entrada por transferencia de 10. Balance 10' = 'Entrada por transferencia de 10. Balance 10.'!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/26/2022 00:00:20' prior: 50476192!
+test04xxx
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10').! !
+
+!testRun: #ReportsTest #test04xxx stamp: 'ldmaf 5/26/2022 00:00:22'!
+PASSED!
+!ReportsTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/26/2022 00:01:13'!
+test04AccountSummaryReportWithOneTransferDisplaysReportInReceiverAndSender
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10').! !
+
+!methodRemoval: ReportsTest #test04xxx stamp: 'ldmaf 5/26/2022 00:01:13'!
+test04xxx
+	
+	|accountSender accountReceiver|
+	
+	accountSender _ ReceptiveAccount new.
+	Deposit register: 50 on: accountSender.
+	Withdraw register: 20 on: accountSender .
+	accountReceiver _ ReceptiveAccount new.
+	Transfer from: accountSender to: accountReceiver of: 10.
+	
+	self assert: (accountSender accountSummaryReport = 'Deposito por 50. Extraccion por 20. Salida por transferencia de 10. Balance 20').
+	self assert: (accountReceiver accountSummaryReport = 'Entrada por transferencia de 10. Balance 10').!
+
+----SNAPSHOT----(26 May 2022 00:01:47) CuisUniversity-5096.image priorSource: 4624366!
+
+----SNAPSHOT----(26 May 2022 00:01:49) CuisUniversity-5096.image priorSource: 4629095!
+
+----SNAPSHOT----(26 May 2022 00:01:50) CuisUniversity-5096.image priorSource: 4629183!
+
+----QUIT----(26 May 2022 00:02:06) CuisUniversity-5096.image priorSource: 4629271!
+
+----STARTUP---- (26 May 2022 20:00:49) as /home/clinux01/Descargas/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /media/clinux01/47FC-0197/PORTFOLIO2 2/Portfolio-Solucion.st----!
+
+----QUIT----(26 May 2022 21:42:25) CuisUniversity-5096.image priorSource: 4655823!
+
+----STARTUP---- (30 May 2022 20:05:18) as /home/clinux01/Descargas/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /home/clinux01/Descargas/MarsRover-WithHeading.st----!
+
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #AlgoTest category: 'MarsRover-WithHeading' stamp: 'ldmaf 5/30/2022 20:06:21'!
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 5/30/2022 20:17:36'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!AlgoTest methodsFor: 'no messages' stamp: 'ldmaf 5/30/2022 20:17:25'!
+tes01
+	| marsRover logger |
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover .
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+	
+	! !
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 20:17:50'!
+test01
+	| marsRover logger |
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover .
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+	
+	! !
+
+!methodRemoval: AlgoTest #tes01 stamp: 'ldmaf 5/30/2022 20:17:50'!
+tes01
+	| marsRover logger |
+	marsRover _ MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger _ MarsRoverLogger followPositionChangesOn: marsRover .
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+	
+	!
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:17:52'!
+ERROR!
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:17:58'!
+followPositionChangesOn: aMarsRover 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeFollowPositionChangesOn: aMarsRover ! !
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:19:28' prior: 50477931!
+followPositionChangesOn: aMarsRover 
+	! !
+!MarsRoverLogger methodsFor: 'no messages' stamp: 'ldmaf 5/30/2022 20:20:32'!
+readStream
+	^''! !
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:20:39'!
+ERROR!
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:20:39'!
+ERROR!
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:21:46' prior: 50477941!
+followPositionChangesOn: aMarsRover 
+	^self class new.! !
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:21:50'!
+ERROR!
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:21:50'!
+ERROR!
+!MarsRoverLogger class methodsFor: 'instance creation' stamp: 'ldmaf 5/30/2022 20:22:11' prior: 50477954!
+followPositionChangesOn: aMarsRover 
+	^MarsRoverLogger new.! !
+
+!classDefinition: #MarsRoverLogger category: 'MarsRover-WithHeading' stamp: 'ldmaf 5/30/2022 20:52:16'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 20:52:15' prior: 50477945!
+readStream
+	^ReadStream on: log contents.! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 20:52:29' overrides: 16920235!
+initialize
+	log _ ''.! !
+
+!testRun: #AlgoTest #test01 stamp: 'ldmaf 5/30/2022 20:52:33'!
+PASSED!
+
+!classRemoval: #MarsRoverLogger stamp: 'ldmaf 5/30/2022 20:57:49'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingWest stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingWest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingSouth stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingSouth
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingNorth stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingNorth
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingEast stamp: 'ldmaf 5/30/2022 20:57:50'!
+MarsRoverHeading subclass: #MarsRoverHeadingEast
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeading stamp: 'ldmaf 5/30/2022 20:57:51'!
+Object subclass: #MarsRoverHeading
+	instanceVariableNames: 'marsRover'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRover stamp: 'ldmaf 5/30/2022 20:57:51'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverTest stamp: 'ldmaf 5/30/2022 20:57:51'!
+TestCase subclass: #MarsRoverTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #AlgoTest stamp: 'ldmaf 5/30/2022 20:57:52'!
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+----End fileIn of /home/clinux01/Descargas/MarsRover-Logger.st----!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:05:32'!
+test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover
+
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test01 stamp: 'ldmaf 5/30/2022 21:05:32'!
+test01
+
+	| marsRover logger |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: ''.
+	
+	self assert: logger readStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:09:00'!
+test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test02 stamp: 'ldmaf 5/30/2022 21:09:00'!
+test02
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'f'.
+	
+	logStream := logger readStream.
+	self assert: '1@2' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:10:36'!
+test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	
+	logStream := logger readStream.
+	self assert: '1@0' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test03 stamp: 'ldmaf 5/30/2022 21:10:36'!
+test03
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'b'.
+	
+	logStream := logger readStream.
+	self assert: '1@0' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:11:10'!
+test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingEast.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'fb'.
+	
+	logStream := logger readStream.
+	self assert: '2@1' equals: logStream nextLine.
+	self assert: '1@1' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test04 stamp: 'ldmaf 5/30/2022 21:11:10'!
+test04
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingEast.
+	logger := MarsRoverLogger followPositionChangesOn: marsRover.
+	
+	marsRover process: 'fb'.
+	
+	logStream := logger readStream.
+	self assert: '2@1' equals: logStream nextLine.
+	self assert: '1@1' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:12:07'!
+test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	
+	logStream := logger readStream.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!methodRemoval: AlgoTest #test05 stamp: 'ldmaf 5/30/2022 21:12:07'!
+test05
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'r'.
+	
+	logStream := logger readStream.
+	self assert: 'East' equals: logStream nextLine.
+	self assert: logStream atEnd.
+!
+
+!testRun: #AlgoTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:17:46'!
+PASSED!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:22:56'!
+test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'l'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:23:02'!
+FAILURE!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:23:02'!
+FAILURE!
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:24:24' prior: 50478336!
+headWest
+	
+	head := MarsRoverHeadingWest for: self. 
+	headingLogger ifNotNil: [headingLogger headingChangedTo: head]! !
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:52'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:52'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:58'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:24:58'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:25:07'!
+ERROR!
+!MarsRoverHeadingNorth methodsFor: 'moving' stamp: 'ldmaf 5/30/2022 21:25:48'!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingWest: self! !
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:28:42'!
+ERROR!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:28:42'!
+ERROR!
+!MarsRoverHeadingWest methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:28:55'!
+accept: aMarsRoverLogger 
+	self shouldBeImplemented.! !
+!MarsRoverHeadingEast methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:29:47' prior: 50478533!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingEast: self! !
+!MarsRoverHeadingWest methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:30:00' prior: 50478903!
+accept: aVisitor 
+	^aVisitor visitMarsRoverHeadingWest: self! !
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:30:17'!
+visitMarsRoverHeadingWest: aMarsRoverHeadingWest
+	
+	log nextPutAll: 'West'; newLine! !
+
+!testRun: #AlgoTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #AlgoTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 5/30/2022 21:30:22'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 5/30/2022 21:30:26'!
+PASSED!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:32:26'!
+test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'll'.
+	
+	logStream := logger readStream.
+	self assert: 'South' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:28'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:28'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:50'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:32:50'!
+FAILURE!
+!MarsRoverHeadingNorth methodsFor: 'moving' stamp: 'ldmaf 5/30/2022 21:35:04' prior: 50478891!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingNorth: self! !
+!MarsRoverHeadingSouth methodsFor: 'moving' stamp: 'ldmaf 5/30/2022 21:35:46'!
+accept: aVisitor
+
+	^aVisitor visitMarsRoverHeadingSouth: self! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:35:53'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:35:53'!
+FAILURE!
+!MarsRoverLogger methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:36:39'!
+visitMarsRoverHeadingSouth: aMarsRoverHeadingSouth
+	
+	log nextPutAll: 'South'; newLine! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:36:55'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:36:55'!
+FAILURE!
+!AlgoTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 5/30/2022 21:37:32' prior: 50479003!
+test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent
+
+	| marsRover logger logStream |
+	
+	marsRover := MarsRover at: 1@1 heading: MarsRoverHeadingNorth.
+	logger := MarsRoverLogger followHeadingChangesOn: marsRover.
+	
+	marsRover process: 'll'.
+	
+	logStream := logger readStream.
+	self assert: 'West' equals: logStream nextLine.
+	self assert: 'South' equals: logStream nextLine.
+	self assert: logStream atEnd.
+! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:37:36'!
+FAILURE!
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:37:36'!
+FAILURE!
+!MarsRover methodsFor: 'heading' stamp: 'ldmaf 5/30/2022 21:38:40' prior: 50478332!
+headSouth
+	
+	head := MarsRoverHeadingSouth for: self.
+	headingLogger ifNotNil: [headingLogger headingChangedTo: head].! !
+
+!testRun: #AlgoTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 5/30/2022 21:39:07'!
+PASSED!
+
+----QUIT----(30 May 2022 21:41:18) CuisUniversity-5096.image priorSource: 4663559!
+
+----STARTUP---- (2 June 2022 18:38:04) as /home/clinux01/Descargas/linux64/CuisUniversity-5096.image!
+
+
+!classRemoval: #MarsRoverLogger stamp: 'ldmaf 6/2/2022 18:38:13'!
+Object subclass: #MarsRoverLogger
+	instanceVariableNames: 'log'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingWest stamp: 'ldmaf 6/2/2022 18:38:13'!
+MarsRoverHeading subclass: #MarsRoverHeadingWest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingSouth stamp: 'ldmaf 6/2/2022 18:38:13'!
+MarsRoverHeading subclass: #MarsRoverHeadingSouth
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingNorth stamp: 'ldmaf 6/2/2022 18:38:13'!
+MarsRoverHeading subclass: #MarsRoverHeadingNorth
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeadingEast stamp: 'ldmaf 6/2/2022 18:38:14'!
+MarsRoverHeading subclass: #MarsRoverHeadingEast
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverHeading stamp: 'ldmaf 6/2/2022 18:38:14'!
+Object subclass: #MarsRoverHeading
+	instanceVariableNames: 'marsRover'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRover stamp: 'ldmaf 6/2/2022 18:38:14'!
+Object subclass: #MarsRover
+	instanceVariableNames: 'position head positionLogger headingLogger'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #MarsRoverTest stamp: 'ldmaf 6/2/2022 18:38:14'!
+TestCase subclass: #MarsRoverTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+!classRemoval: #AlgoTest stamp: 'ldmaf 6/2/2022 18:38:15'!
+TestCase subclass: #AlgoTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'MarsRover-WithHeading'!
+
+----End fileIn of /home/clinux01/Descargas/MarsRover-WithHeading.st----!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test01WindowLogsNothingWhenNoCommandsAreSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test02WindowLogsPositionWhenForwardCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test03WindowLogsPositionWhenBackwardCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test04WindowLogsOnlyCurrentChangeWhenMultipleCommandsAreSentStepByStep stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test05WindowLogsHeadingWhenRightRotateCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test06WindowLogsHeadingWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverCurrentPositionWindowTest #test07WindowLogsHeadingAndPositionWhenMultipleCommandsAreSentStepByStep stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test01LoggerLogsNothingWhenNoCommandsWhereSentToMarsRover stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test02LoggerLogsOnlyOneLineWhenForwardCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test03LoggerLogsOnlyOneLineWhenBackwardCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test04LoggerLogsOnlyTwoLinesWhenForwardAndBackwardCommandsAreSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test05LoggerLogsOnlyOneLineWhenRightRotateCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test06LoggerLogsOnlyOneLineWhenLeftRotateCommandIsSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test07LoggerLogsOnlyTwoLinesWhenTwoLeftRotateCommandAreSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test08LoggerLogsOnlyTwoLinesWhenLeftAndRightRotateCommandAreSent stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverLoggerTest #test09LoggerLogsChangesOfBothRotationsAndPositionsCommands stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test01DoesNotMoveWhenNoCommand stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test02IsAtFailsForDifferentPosition stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test03IsAtFailsForDifferentHeading stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test04IncrementsYAfterMovingForwardWhenHeadingNorth stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test06DecrementsYAfterMovingBackwardsWhenHeadingNorth stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test07PointToEashAfterRotatingRightWhenHeadingNorth stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test08PointsToWestAfterRotatingLeftWhenPointingNorth stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test09DoesNotProcessInvalidCommand stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test10CanProcessMoreThanOneCommand stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test11IncrementsXAfterMovingForwareWhenHeadingEast stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test12DecrementsXAfterMovingBackwardWhenHeadingEast stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test13PointsToSouthAfterRotatingRightWhenHeadingEast stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test14PointsToNorthAfterRotatingLeftWhenPointingEast stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test15ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingSouth stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverTest #test16ForwardBackwardsAndRotateRightWorkAsExpectedWhenPointingWest stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test01BothVisitorsLogCorrectlyWhenSingleCommandIsExecuted stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+!testRun: #MarsRoverVisitorTest #test02BothVisitorsLogCorrectlyWhenMultipleCommandsAreExecuted stamp: 'ldmaf 6/2/2022 18:38:40'!
+PASSED!
+
+----QUIT----(2 June 2022 18:42:09) CuisUniversity-5096.image priorSource: 4718390!
+
+----STARTUP---- (2 June 2022 20:38:04) as /home/clinux01/Descargas/linux64/CuisUniversity-5096.image!
+
+
+Object subclass: #CartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #CartTest category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:42:05'!
+Object subclass: #CartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cart category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:43:31'!
+Object subclass: #Cart
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CartTest methodsFor: 'no messages' stamp: 'ldmaf 6/2/2022 20:43:26'!
+test01CartIsEmptyWhenIsCreated
+	|aCart|
+	
+	aCart _ Cart new! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 20:44:14' prior: 50480500!
+test01CartIsEmptyWhenIsCreated
+	|aCart|
+	
+	aCart _ Cart new.
+	
+	self assert: (true equals: (aCart isEmpty))! !
+
+TestCase subclass: #CartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #CartTest category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:44:28'!
+TestCase subclass: #CartTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:44:30'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:44:30'!
+ERROR!
+!Cart methodsFor: 'assertions' stamp: 'ldmaf 6/2/2022 20:44:41'!
+isEmpty
+	self shouldBeImplemented.! !
+!Cart methodsFor: 'assertions' stamp: 'ldmaf 6/2/2022 20:44:49' prior: 50480527!
+isEmpty
+	^true.! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:44:51'!
+ERROR!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 20:45:00' prior: 50480505!
+test01CartIsEmptyWhenIsCreated
+	|aCart|
+	
+	aCart _ Cart new.
+	
+	self assert: (aCart isEmpty)! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:45:01'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:45:01'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:45:19'!
+PASSED!
+
+!classDefinition: #CartTest category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:45:56'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 20:45:55'!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart|
+	
+	aCart _ Cart new.
+	
+	aCart add: aProduct
+	
+	self assert: (aCart isEmpty)! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 20:46:15' prior: 50480560!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aBook|
+	
+	aCart _ Cart new.
+	
+	aCart add: aBook.
+	
+	self assert: (aCart isEmpty not)! !
+
+!classDefinition: #Book category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:47:41'!
+Object subclass: #Book
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 20:47:37' prior: 50480567!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aBook|
+	
+	aCart _ Cart new.
+	aBook _ Book with: '9782253096405'.
+	aCart add: aBook.
+	
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:47:54'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:47:54'!
+ERROR!
+!Book class methodsFor: 'instance creation' stamp: 'ldmaf 6/2/2022 20:47:58'!
+with: aString 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeWith: aString ! !
+!Book class methodsFor: 'instance creation' stamp: 'ldmaf 6/2/2022 20:48:38' prior: 50480596!
+with: anISBN 
+	^self new initializeWith: anISBN.! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:48:40'!
+ERROR!
+
+!classDefinition: #Book category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:48:47'!
+Object subclass: #Book
+	instanceVariableNames: 'iSBN'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Book methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 20:48:47'!
+initializeWith: anISBN 
+	self shouldBeImplemented.
+	iSBN := anISBN.! !
+!Book methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 20:49:01' prior: 50480618!
+initializeWith: anISBN 
+	ISBN _ anISBN.! !
+!Book methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 20:49:12' prior: 50480623!
+initializeWith: anISBN 
+	ISBN _ anISBN.! !
+
+!classDefinition: #Book category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:49:21'!
+Object subclass: #Book
+	instanceVariableNames: 'iSBN isbn'
+	classVariableNames: 'ISBN'
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Book methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 20:49:20' prior: 50480627!
+initializeWith: anISBN 
+	isbn _ anISBN.! !
+
+Object subclass: #Book
+	instanceVariableNames: 'isbn'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Book category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:49:36'!
+Object subclass: #Book
+	instanceVariableNames: 'isbn'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:49:42'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:49:42'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 20:49:53'!
+add: aBook 
+	self shouldBeImplemented.! !
+
+!classDefinition: #Cart category: 'TusLibros' stamp: 'ldmaf 6/2/2022 20:50:36'!
+Object subclass: #Cart
+	instanceVariableNames: 'items'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 20:50:35' prior: 50480659!
+add: aBook 
+	items add: aBook.! !
+!Cart methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 20:50:57' overrides: 16920235!
+initialize
+	items _ OrderedCollection new.! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:51:01'!
+FAILURE!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:51:01'!
+FAILURE!
+!Cart methodsFor: 'assertions' stamp: 'ldmaf 6/2/2022 20:51:11' prior: 50480531!
+isEmpty
+	^items isEmpty.! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:51:15'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:51:25'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:51:29'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 20:51:32'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 20:51:32'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 20:56:17'!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aBook|
+	
+	aCart _ Cart new.
+	aBook _ Book with: '9786070776564'.
+	
+	self should: [aCart add: aBook] raise: Error description: 'Cannot add a book not registered in our inventory.'.! !
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 20:56:19'!
+FAILURE!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 20:56:24'!
+FAILURE!
+
+Object subclass: #Cart
+	instanceVariableNames: 'items inventory'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cart category: 'TusLibros' stamp: 'ldmaf 6/2/2022 21:10:58'!
+Object subclass: #Cart
+	instanceVariableNames: 'items inventory'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cart category: 'TusLibros' stamp: 'ldmaf 6/2/2022 21:11:26'!
+Object subclass: #Cart
+	instanceVariableNames: 'items inventory catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cart methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 21:11:25' prior: 50480674 overrides: 16920235!
+initialize
+	items _ OrderedCollection new.
+	catalogue _ OrderedCollection new.! !
+
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cart category: 'TusLibros' stamp: 'ldmaf 6/2/2022 21:11:34'!
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:12:42' prior: 50480670!
+add: aBook 
+	(catalogue includes: aBook) ifFalse: [self error: ''.].
+	items add: aBook.! !
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:12:44' prior: 50480757!
+add: aBook 
+	(catalogue includes: aBook) ifFalse: [self error: ''].
+	items add: aBook.! !
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:12:58' prior: 50480763!
+add: aBook 
+	(catalogue includes: aBook) ifFalse: [self error: 'Cannot add a book not registered in our inventory.'].
+	items add: aBook.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:14:11' prior: 50480704!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aBook aCatalogue|
+	aCatalogue _ OrderedCollection new.
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9786070776564'.
+	
+	self should: [aCart add: aBook] raise: Error description: 'Cannot add a book not registered in our inventory.'.! !
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 21:14:14'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 21:14:14'!
+ERROR!
+!Cart class methodsFor: 'instance creation' stamp: 'ldmaf 6/2/2022 21:14:19'!
+with: anOrderedCollection 
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeWith: anOrderedCollection ! !
+!Cart class methodsFor: 'instance creation' stamp: 'ldmaf 6/2/2022 21:14:30' prior: 50480796!
+with: aCatalogue
+	^self new initializeWith: aCatalogue! !
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 21:14:31'!
+ERROR!
+!Cart methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 21:14:36'!
+initializeWith: aCatalogue 
+	self shouldBeImplemented.
+	catalogue := aCatalogue.! !
+!Cart methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 21:14:51' prior: 50480813!
+initializeWith: aCatalogue 
+	items _ OrderedCollection new.
+	catalogue _ aCatalogue.! !
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 21:14:56'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 21:14:59'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:15:15' prior: 50480777!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aBook aCatalogue|
+	
+	aCatalogue _ OrderedCollection new.
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9786070776564'.
+	
+	self should: [aCart add: aBook] raise: Error description: 'Cannot add a book not registered in our inventory.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:16:05' prior: 50480581!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aBook|
+	
+	aCart _ Cart with: (OrderedCollection with: '9782253096405').
+	aBook _ Book with: '9782253096405'.
+	aCart add: aBook.
+	
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:16:09'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:16:09'!
+ERROR!
+
+	(OrderedCollection with: '9782253096405')!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:17:13' prior: 50480845!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aBook aCatalogue|
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9782253096405'.
+	aCart add: aBook.
+	
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:17:25'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:17:32'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:17:32'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:19:18'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:19:44' prior: 50480769!
+add: aBook 
+	(catalogue includes: aBook) ifFalse: [self error: 'Cannot add a book not registered in our inventory.'].
+	items add: aBook.! !
+!Cart methodsFor: 'initialize' stamp: 'ldmaf 6/2/2022 21:20:30' prior: 50480819!
+initializeWith: aCatalogue 
+	items _ OrderedCollection new.
+	catalogue _ OrderedCollection new.
+	aCatalogue do: [:isbn | catalogue add: (Book with: isbn)].! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:20:34'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:20:34'!
+ERROR!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:21:14' prior: 50480863!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aBook aCatalogue|
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9782253096405'.
+	aCart add: aBook.
+	
+	self assert: (aCart isEmpty not)! !
+
+	(catalogue includes: aBook)!
+
+	catalogue first!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:22:09' prior: 50480887!
+add: aBook 
+	(catalogue includes: aBook) ifFalse: [self error: 'Cannot add a book not registered in our inventory.'].
+	items add: aBook.! !
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:23:46' prior: 50480921!
+add: aBook 
+	(catalogue anySatisfy: [:aCatalogueBook | 
+			(aCatalogueBook isbn) = (aBook isbn)
+		]) ifFalse: [self error: 'Cannot add a book not registered in our inventory.'].
+	items add: aBook.! !
+!Book methodsFor: 'nil' stamp: 'ldmaf 6/2/2022 21:24:01'!
+isbn
+	^isbn! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/2/2022 21:24:28'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/2/2022 21:24:31'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/2/2022 21:24:35'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:29:17'!
+test04CartCanAddMultipleAmountsOfTheSameBook
+	|aCart aBook aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9789500708517'.
+	aCart add: 10 of: aBook.
+	
+	self assert: (aCart booksQuantity = 10).! !
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'ldmaf 6/2/2022 21:29:24'!
+ERROR!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'ldmaf 6/2/2022 21:29:24'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:29:27'!
+add: aSmallInteger of: aBook 
+	self shouldBeImplemented.! !
+
+----End fileIn of /home/clinux01/Descargas/linux64/Packages/TerseGuide.pck.st----!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:31:47' prior: 50480968!
+add: anAmount of: aBook 
+	anAmount timesRepeat: [self add: aBook].! !
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'ldmaf 6/2/2022 21:31:53'!
+ERROR!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'ldmaf 6/2/2022 21:31:53'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:31:58'!
+booksQuantity
+	self shouldBeImplemented.! !
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/2/2022 21:32:27' prior: 50483903!
+booksQuantity
+	^items size.! !
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'ldmaf 6/2/2022 21:32:31'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/2/2022 21:35:15'!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aBook aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9789500708517'.
+	aCart add: 10 of: aBook.
+	
+	self assert: false.! !
+
+----QUIT----(2 June 2022 21:38:26) CuisUniversity-5096.image priorSource: 4762464!
+
+----STARTUP---- (4 June 2022 15:49:05) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----End fileIn of /home/lisandro/Documents/Facultad/ING1/linux64/TusLibros.st----!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'ldmaf 6/4/2022 15:50:41'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'ldmaf 6/4/2022 15:50:41'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'ldmaf 6/4/2022 15:50:41'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'ldmaf 6/4/2022 15:50:41'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'ldmaf 6/4/2022 15:50:41'!
+FAILURE!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'ldmaf 6/4/2022 15:50:41'!
+FAILURE!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/4/2022 15:53:25' prior: 50483982!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aBook aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ Book with: '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'ldmaf 6/4/2022 15:53:27'!
+FAILURE!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'ldmaf 6/4/2022 15:53:27'!
+FAILURE!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/4/2022 15:54:04' prior: 50484044!
+add: anAmount of: aBook 
+	(anAmount <= 0) ifTrue: [self error: ''].
+	anAmount timesRepeat: [self add: aBook].! !
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/4/2022 15:54:18' prior: 50484125!
+add: anAmount of: aBook 
+	(anAmount <= 0) ifTrue: [self error: 'Cannot add an invalid amount of books.'].
+	anAmount timesRepeat: [self add: aBook].! !
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'ldmaf 6/4/2022 15:54:25'!
+PASSED!
+
+OrderedCollection with: '9789500708517' with: '9781644730942'.!
+
+OrderedCollection with: '9789500708517' with: '9781644730942'.!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/4/2022 15:56:40'!
+test06CartAddedBooksAreCorrect
+	|aCart aBook1 aBook2 aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517' with: '9781644730942'.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ Book with: '9789500708517'.
+	aBook2 _ Book with: '9781644730942'.
+	
+	! !
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'ldmaf 6/4/2022 15:58:46'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'ldmaf 6/4/2022 15:58:54'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/4/2022 15:59:05' prior: 50484147!
+test06CartAddedBooksAreCorrect
+	|aCart aBook1 aBook2 aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517' with: '9781644730942'.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ Book with: '9789500708517'.
+	aBook2 _ Book with: '9781644730942'.
+	
+	aCart add: aBook1.
+	aCart add: 3 of: aBook2.
+	self assert: (aCart doesInclude: 3 of: aBook2).
+	self assert: (aCart doesInclude: 1 of: aBook1).
+	self assert: (aCart booksQuantity = 4).
+	
+	
+	! !
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'ldmaf 6/4/2022 15:59:16'!
+ERROR!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'ldmaf 6/4/2022 15:59:16'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/4/2022 15:59:21'!
+doesInclude: aSmallInteger of: aBook 
+	self shouldBeImplemented.! !
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/4/2022 16:00:38' prior: 50484186!
+doesInclude: anAmount of: aBook 
+	^(items occurrencesOf: aBook = anAmount).! !
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'ldmaf 6/4/2022 16:00:40'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'ldmaf 6/4/2022 16:00:54' prior: 50484191!
+doesInclude: anAmount of: aBook 
+	^(items occurrencesOf: aBook) = anAmount.! !
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'ldmaf 6/4/2022 16:00:57'!
+PASSED!
+!Cart methodsFor: 'assertions' stamp: 'ldmaf 6/4/2022 16:03:30'!
+contents
+	^items copy.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/4/2022 16:06:58'!
+test07CartCanRequestItsContents
+	|aCart aBook1 aBook2 aCatalogue cartContents|
+	
+	aCatalogue _ OrderedCollection with: '9788499983196' with: '9786070731747'.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ Book with: '9788499983196'.
+	aBook2 _ Book with: '9786070731747'.
+	
+	aCart add: aBook1.
+	aCart add: 2 of: aBook2.
+	cartContents _ aCart contents.
+	self assert: (( cartContents occurrencesOf: aBook1 ) = 1).
+	self assert: (( cartContents occurrencesOf: aBook2 ) = 2).
+	
+	! !
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'ldmaf 6/4/2022 16:07:00'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'ldmaf 6/4/2022 16:07:40' prior: 50484211!
+test07CartCanRequestItsContents
+	|aCart aBook1 aBook2 aCatalogue cartContents|
+	
+	aCatalogue _ OrderedCollection with: '9788499983196' with: '9786070731747'.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ Book with: '9788499983196'.
+	aBook2 _ Book with: '9786070731747'.
+	
+	aCart add: aBook1.
+	aCart add: 2 of: aBook2.
+	cartContents _ aCart contents.
+	self assert: (( cartContents occurrencesOf: aBook1 ) = 1).
+	self assert: (( cartContents occurrencesOf: aBook2 ) = 2).
+	self assert: (cartContents size = 3).
+	
+	! !
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'ldmaf 6/4/2022 16:07:42'!
+PASSED!
+
+----QUIT----(4 June 2022 16:16:43) CuisUniversity-5096.image priorSource: 4866980!
+
+----STARTUP---- (4 June 2022 16:17:05) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5096.image!
+
+
+----QUIT----(4 June 2022 16:17:21) CuisUniversity-5096.image priorSource: 4883295!
