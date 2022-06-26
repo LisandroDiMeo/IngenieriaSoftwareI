@@ -1,0 +1,2744 @@
+
+
+----STARTUP---- (9 June 2022 17:27:37) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+!classRemoval: #Cashier stamp: 'LDMAF 6/9/2022 17:27:50'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue products totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cart stamp: 'LDMAF 6/9/2022 17:27:51'!
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CheckoutTest stamp: 'LDMAF 6/9/2022 17:27:51'!
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/9/2022 17:27:51'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+Date new!
+
+Date today year!
+
+Date today year!
+
+Date today year!
+
+Date today year!
+
+Date today year start!
+
+Date today year duration!
+
+----STARTUP---- (23 June 2022 17:42:51) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+TestCase subclass: #ImportTest
+	instanceVariableNames: 'session'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #ImportTest category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+TestCase subclass: #ImportTest
+	instanceVariableNames: 'session'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 21:04:22'!
+              assert: aCustomer names: aName lastName: aLastName idType: anIdType idNumber: anIdNumber
+	
+	self assert: aName equals: aCustomer firstName.
+	self assert: aLastName equals: aCustomer lastName.
+	self assert: anIdType equals: aCustomer identificationType.
+	self assert: anIdNumber equals: aCustomer identificationNumber.
+	! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 21:12:08'!
+            assertAddressOf: aCustomer streetName: aStreetName streetNumber: aStreetNumber town: aTown zipCode: aZipCode province: aProvince
+	|address|
+	
+	address _ aCustomer addressAt: aStreetName.
+	
+	self assert: aStreetName equals: address streetName.
+	self assert: aStreetNumber equals: address streetNumber.
+	self assert: aTown equals: address town.
+	self assert: aZipCode equals: address zipCode.
+	self assert: aProvince equals: address province.! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 21:24:27'!
+                   assertJuanPerezWasImportedCorrectly: importedCustomer
+
+	self assert: importedCustomer names: 'Juan' lastName: 'Perez' idType: 'C' idNumber: '23-25666777-9'. 
+	self assertAddressOf: importedCustomer streetName: 'Alem' streetNumber: 1122 town: 'CABA' zipCode: 1001 province: 'CABA'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 21:23:32'!
+                    assertPepeSanchezWasImportedCorrectly: importedCustomer
+
+	self assert: importedCustomer names: 'Pepe' lastName: 'Sanchez' idType: 'D' idNumber: '22333444'. 	
+	self assertAddressOf: importedCustomer streetName: 'San Martin' streetNumber: 3322 town: 'Olivos' zipCode: 1636 province:'BsAs'.
+	self assertAddressOf: importedCustomer streetName: 'Maipu' streetNumber: 888 town: 'Florida' zipCode: 1122 province: 'Buenos Aires'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 20:35:16'!
+       customerIdentifiedAs: idType withNumber: idNumber 
+
+	^ (session select: [:aCustomer | aCustomer identificationType = idType and: [aCustomer identificationNumber = idNumber]]
+			ofType: Customer) anyOne! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'IG 6/16/2022 19:42:10' overrides: 16961394!
+                 setUp
+
+	session := DataBaseSession for: (Array with: Address with: Customer).
+	session beginTransaction! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'IG 6/16/2022 19:43:06' overrides: 16961402!
+                   tearDown
+
+	session commit.
+	session close! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 21:24:49'!
+  test01Import
+	
+	(CustomerImporter from: (self validData) into: session) value.	
+	self assert: 2 equals: (session selectAllOfType: Customer) size.
+	self assertPepeSanchezWasImportedCorrectly: (self customerIdentifiedAs: 'D' withNumber: '22333444').
+	self assertJuanPerezWasImportedCorrectly: (self customerIdentifiedAs: 'C' withNumber: '23-25666777-9').! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 20:54:04'!
+           validData
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+A,San Martin,3322,Olivos,1636,BsAs
+A,Maipu,888,Florida,1122,Buenos Aires
+C,Juan,Perez,C,23-25666777-9
+A,Alem,1122,CABA,1001,CABA'! !
+
+Object subclass: #Address
+	instanceVariableNames: 'id streetName streetNumber town zipCode province'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #Address category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+Object subclass: #Address
+	instanceVariableNames: 'id streetName streetNumber town zipCode province'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!Address methodsFor: 'province' stamp: 'HAW 5/22/2022 00:19:29'!
+ province
+
+	^province! !
+!Address methodsFor: 'province' stamp: 'HAW 5/22/2022 00:19:29'!
+       province: aProvince
+
+	province := aProvince
+	! !
+!Address methodsFor: 'street' stamp: 'HAW 5/22/2022 00:19:29'!
+                streetName
+
+	^streetName ! !
+!Address methodsFor: 'street' stamp: 'HAW 5/22/2022 00:19:29'!
+    streetName: aStreetName
+
+	streetName := aStreetName ! !
+!Address methodsFor: 'street' stamp: 'HAW 5/22/2022 00:19:29'!
+         streetNumber
+
+	^streetNumber ! !
+!Address methodsFor: 'street' stamp: 'HAW 5/22/2022 00:19:29'!
+streetNumber: aStreetNumber
+
+	streetNumber := aStreetNumber ! !
+!Address methodsFor: 'twon' stamp: 'HAW 5/22/2022 00:19:29'!
+   town
+
+	^town! !
+!Address methodsFor: 'twon' stamp: 'HAW 5/22/2022 00:19:29'!
+                   town: aTown
+
+	town := aTown! !
+!Address methodsFor: 'zip code' stamp: 'HAW 5/22/2022 00:19:29'!
+zipCode
+
+	^zipCode! !
+!Address methodsFor: 'zip code' stamp: 'HAW 5/22/2022 00:19:29'!
+         zipCode: aZipCode
+
+	zipCode := aZipCode! !
+!Address methodsFor: 'is at' stamp: 'IG 6/16/2022 19:59:25'!
+                        isAt: aStreetName
+ 
+	^streetName = aStreetName! !
+
+Object subclass: #Customer
+	instanceVariableNames: 'id firstName lastName identificationType identificationNumber addresses'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #Customer category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+Object subclass: #Customer
+	instanceVariableNames: 'id firstName lastName identificationType identificationNumber addresses'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!Customer methodsFor: 'addresses' stamp: 'HAW 5/22/2022 00:19:29'!
+                         addAddress: anAddress
+
+	addresses add: anAddress ! !
+!Customer methodsFor: 'addresses' stamp: 'IG 6/16/2022 19:58:53'!
+         addressAt: aStreetName 
+
+	^addresses detect: [:anAddress | anAddress isAt: aStreetName].! !
+!Customer methodsFor: 'addresses' stamp: 'HAW 5/22/2022 00:19:29'!
+ addresses
+
+	^ addresses! !
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+       firstName
+
+	^firstName ! !
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+       firstName: aName
+
+	firstName := aName! !
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+                         lastName
+
+	^lastName ! !
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+         lastName: aLastName
+
+	lastName := aLastName
+! !
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+        identificationNumber
+
+	^identificationNumber ! !
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+       identificationNumber: anIdentificationNumber
+
+	identificationNumber := anIdentificationNumber! !
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+                       identificationType
+
+	^identificationType ! !
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+           identificationType: anIdentificationType
+
+	identificationType := anIdentificationType! !
+!Customer methodsFor: 'initialization' stamp: 'HAW 5/22/2022 00:19:29' overrides: 16920235!
+           initialize
+
+	super initialize.
+	addresses := OrderedCollection new.! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+Customer class
+	instanceVariableNames: ''!
+
+!classDefinition: 'Customer class' category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+Customer class
+	instanceVariableNames: ''!
+!Customer class methodsFor: 'importing' stamp: 'HAW 5/22/2022 00:25:18'!
+                          importCustomers
+
+	"
+	self importCustomers
+	"
+	| inputStream session newCustomer line |
+
+	inputStream := StandardFileStream new open: 'input.txt' forWrite: false.
+	session := DataBaseSession for: (Array with: Address with: Customer).
+	session beginTransaction.
+
+	line := inputStream nextLine.
+	[ line notNil ] whileTrue: [
+		(line beginsWith: 'C') ifTrue: [ | customerData |
+			customerData := line findTokens: $,.
+			newCustomer := Customer new.
+			newCustomer firstName: customerData second.
+			newCustomer lastName: customerData third.
+			newCustomer identificationType: customerData fourth.
+			newCustomer identificationNumber: customerData fourth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | addressData newAddress |
+			addressData := line findTokens: $,.
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: addressData second.
+			newAddress streetNumber: addressData third asNumber .
+			newAddress town: addressData fourth.
+			newAddress zipCode: addressData fifth asNumber .
+			newAddress province: addressData fourth ].
+
+		line := inputStream nextLine. ].
+
+	session commit.
+	session close.
+
+	inputStream close.
+	! !
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'initialization' stamp: 'IG 6/16/2022 20:14:00'!
+              initializeFrom: aStream into: aSession
+	
+	session := aSession.
+	stream := aStream.! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'IG 6/16/2022 20:13:31' overrides: 16902254!
+           value
+
+	"
+	self importCustomers
+	"
+	| newCustomer line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		(line beginsWith: 'C') ifTrue: [ | customerData |
+			customerData := line findTokens: $,.
+			newCustomer := Customer new.
+			newCustomer firstName: customerData second.
+			newCustomer lastName: customerData third.
+			newCustomer identificationType: customerData fourth.
+			newCustomer identificationNumber: customerData fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | addressData newAddress |
+			addressData := line findTokens: $,.
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: addressData second.
+			newAddress streetNumber: addressData third asNumber .
+			newAddress town: addressData fourth.
+			newAddress zipCode: addressData fifth asNumber .
+			newAddress province: addressData sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+CustomerImporter class
+	instanceVariableNames: ''!
+
+!classDefinition: 'CustomerImporter class' category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+CustomerImporter class
+	instanceVariableNames: ''!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'IG 6/16/2022 20:13:31'!
+            from: aStream into: aSession
+	^self new initializeFrom: aStream into: aSession! !
+
+Object subclass: #DataBaseSession
+	instanceVariableNames: 'configuration tables id'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #DataBaseSession category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+Object subclass: #DataBaseSession
+	instanceVariableNames: 'configuration tables id'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!DataBaseSession methodsFor: 'transaction management' stamp: 'HAW 5/22/2022 00:19:29'!
+                beginTransaction
+
+	! !
+!DataBaseSession methodsFor: 'transaction management' stamp: 'HAW 5/22/2022 19:17:36'!
+                  commit
+
+	(tables at: Customer ifAbsent: [#()]) do: [ :aCustomer | self persistAddressesOf: aCustomer ]
+	! !
+!DataBaseSession methodsFor: 'closing' stamp: 'HAW 5/22/2022 00:19:29'!
+            close
+
+	! !
+!DataBaseSession methodsFor: 'persistence - private' stamp: 'HAW 5/22/2022 00:19:29'!
+                              defineIdOf: anObject
+
+	anObject instVarNamed: 'id' put: (self newIdFor: anObject).! !
+!DataBaseSession methodsFor: 'persistence - private' stamp: 'HAW 5/22/2022 00:19:29'!
+                    delay
+
+	(Delay forMilliseconds: 100) wait! !
+!DataBaseSession methodsFor: 'persistence - private' stamp: 'HAW 5/22/2022 19:29:06'!
+                             objectsOfType: aType
+
+	^ tables at: aType ifAbsent: [ #() ]! !
+!DataBaseSession methodsFor: 'persistence - private' stamp: 'HAW 5/22/2022 00:19:29'!
+           persistAddressesOf: anObjectWithAddresses
+
+	anObjectWithAddresses addresses do: [ :anAddress | self persist: anAddress ]
+	! !
+!DataBaseSession methodsFor: 'initialization' stamp: 'HAW 5/22/2022 00:19:29'!
+                   initializeFor: aConfiguration
+
+	configuration := aConfiguration.
+	tables := Dictionary new.
+	id := 0.! !
+!DataBaseSession methodsFor: 'id' stamp: 'HAW 5/22/2022 00:19:29'!
+                    newIdFor: anObject
+
+	id := id + 1.
+	^id! !
+!DataBaseSession methodsFor: 'persistance' stamp: 'HAW 5/22/2022 00:19:29'!
+         persist: anObject
+
+	| table |
+
+	self delay.
+	table := tables at: anObject class ifAbsentPut: [ Set new ].
+
+	self defineIdOf: anObject.
+	table add: anObject.
+
+	(anObject isKindOf: Customer) ifTrue: [ self persistAddressesOf: anObject ].! !
+!DataBaseSession methodsFor: 'selecting' stamp: 'HAW 5/22/2022 19:29:06'!
+       select: aCondition ofType: aType
+
+	self delay.
+	^(self objectsOfType: aType) select: aCondition ! !
+!DataBaseSession methodsFor: 'selecting' stamp: 'HAW 5/22/2022 19:29:06'!
+                  selectAllOfType: aType
+
+	self delay.
+	^(self objectsOfType: aType) copy ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+DataBaseSession class
+	instanceVariableNames: ''!
+
+!classDefinition: 'DataBaseSession class' category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 17:42:59'!
+DataBaseSession class
+	instanceVariableNames: ''!
+!DataBaseSession class methodsFor: 'instance creation' stamp: 'HAW 5/22/2022 00:19:29'!
+                 for: aConfiguration
+
+	^self new initializeFor: aConfiguration! !
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/CustomerImporter.st----!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:29:02' prior: 50331986 overrides: 16902254!
+                          value
+
+	"
+	self importCustomers
+	"
+	| newCustomer line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [ | customerData |
+			customerData := record.
+			newCustomer := Customer new.
+			newCustomer firstName: customerData second.
+			newCustomer lastName: customerData third.
+			newCustomer identificationType: customerData fourth.
+			newCustomer identificationNumber: customerData fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | addressData newAddress |
+			addressData := record.
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: addressData second.
+			newAddress streetNumber: addressData third asNumber .
+			newAddress town: addressData fourth.
+			newAddress zipCode: addressData fifth asNumber .
+			newAddress province: addressData sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:30:28' prior: 50332132 overrides: 16902254!
+                value
+
+	"
+	self importCustomers
+	"
+	| newCustomer line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:33:32' prior: 50332166 overrides: 16902254!
+          value
+
+	"
+	self importCustomers
+	"
+	|  line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:33:33'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:33:50' prior: 50332196 overrides: 16902254!
+           value
+
+	"
+	self importCustomers
+	"
+	 
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:33:50'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:33:55' prior: 50332234 overrides: 16902254!
+                       value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:12'!
+              importCustomer: record
+
+	newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:12' prior: 50332272 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:36' prior: 50332312 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:55'!
+    importAddress: record
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:55' prior: 50332334 overrides: 16902254!
+           value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress: record ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:35:24' prior: 50332369 overrides: 16902254!
+             value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress: record ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line record'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:36:06'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:26' prior: 50332383 overrides: 16902254!
+                     value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		recordd := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:28' prior: 50332417 overrides: 16902254!
+          value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		recordd := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line record'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:36:40'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:47' prior: 50332300!
+ importCustomer: record
+
+	newCustomer := Customer new.
+			newCustomer firstName: recordd second.
+			newCustomer lastName: recordd third.
+			newCustomer identificationType: recordd fourth.
+			newCustomer identificationNumber: recordd fifth.
+			session persist: newCustomer! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:59' prior: 50332355!
+                importAddress: record
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: recordd second.
+			newAddress streetNumber: recordd third asNumber .
+			newAddress town: recordd fourth.
+			newAddress zipCode: recordd fifth asNumber .
+			newAddress province: recordd sixth! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:37:37'!
+          importCustomer
+
+	newCustomer := Customer new.
+			newCustomer firstName: recordd second.
+			newCustomer lastName: recordd third.
+			newCustomer identificationType: recordd fourth.
+			newCustomer identificationNumber: recordd fifth.
+			session persist: newCustomer! !
+
+!methodRemoval: CustomerImporter #importCustomer: stamp: 'LDMAF 6/23/2022 18:37:37'!
+importCustomer: record
+
+	newCustomer := Customer new.
+			newCustomer firstName: recordd second.
+			newCustomer lastName: recordd third.
+			newCustomer identificationType: recordd fourth.
+			newCustomer identificationNumber: recordd fifth.
+			session persist: newCustomer!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:37:59'!
+  importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: recordd second.
+			newAddress streetNumber: recordd third asNumber .
+			newAddress town: recordd fourth.
+			newAddress zipCode: recordd fifth asNumber .
+			newAddress province: recordd sixth! !
+
+!methodRemoval: CustomerImporter #importAddress: stamp: 'LDMAF 6/23/2022 18:37:59'!
+importAddress: record
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: recordd second.
+			newAddress streetNumber: recordd third asNumber .
+			newAddress town: recordd fourth.
+			newAddress zipCode: recordd fifth asNumber .
+			newAddress province: recordd sixth!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:38:18'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line record'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:38:18' prior: 50332430 overrides: 16902254!
+                    value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:38:18' prior: 50332487!
+                     importCustomer
+
+	newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer! !
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:38:18' prior: 50332509!
+                   importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:38:55'!
+                       hasLineToImport
+
+	line := stream nextLine.
+	[ line notNil ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:38:55' prior: 50332545 overrides: 16902254!
+               value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:09'!
+   createRecord
+
+	^ record := line findTokens: $,! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:09' prior: 50332589 overrides: 16902254!
+                            value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		self createRecord.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:44' prior: 50332606 overrides: 16902254!
+           value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		self createRecord.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+].
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:54'!
+                            importRecord
+
+	(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:54' prior: 50332618 overrides: 16902254!
+            value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		self createRecord.
+		self importRecord.
+].
+	! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:40:01'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:40:01'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:40:24' prior: 50332583!
+            hasLineToImport
+
+	line := stream nextLine.
+	^[ line notNil ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:41:06' prior: 50332648!
+  hasLineToImport
+
+	line := stream nextLine.
+	^ line notNil! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:09'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:09'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:41:28' prior: 50332636 overrides: 16902254!
+                   value
+
+	"
+	self importCustomers
+	"
+	[self hasLineToImport] whileTrue: [
+		self createRecord.
+		self importRecord.
+].
+	! !
+!Behavior method!
+                    for: aConfiguration
+	^ [
+	([
+	(self coverAll:
+		{24 to: 27}) new ] valueCoveringAll:
+		{29 to: 31}) initializeFor:
+		(aConfiguration
+			cover: (48 to: 61)
+			declaredAt: (6 to: 19)) ] valueCoveringAll:
+		{33 to: 46}.! !
+!Behavior method!
+                  initializeFor: aConfiguration
+	(configuration _ aConfiguration
+		cover: (50 to: 63)
+		declaredAt: (16 to: 29))
+		cover: (33 to: 45)
+		declaredAt: (33 to: 45).
+	(tables _ [
+	(Dictionary
+		cover: (77 to: 86)
+		declaredAt: (77 to: 86)) new ] valueCoveringAll:
+		{88 to: 90})
+		cover: (67 to: 72)
+		declaredAt: (67 to: 72).
+	(id _ 0 coverAll:
+		{100 to: 100})
+		cover: (94 to: 95)
+		declaredAt: (94 to: 95).! !
+!Behavior method!
+                       beginTransaction
+	^ self.! !
+!Behavior method!
+                 from: aStream into: aSession
+	^ [
+	([
+	(self coverAll:
+		{32 to: 35}) new ] valueCoveringAll:
+		{37 to: 39})
+		initializeFrom:
+			(aStream
+				cover: (57 to: 63)
+				declaredAt: (7 to: 13))
+		into:
+			(aSession
+				cover: (71 to: 78)
+				declaredAt: (21 to: 28)) ] valueCoveringAll:
+		{41 to: 55. 65 to: 69}.! !
+!Behavior method!
+                      initializeFrom: aStream into: aSession
+	(session _ aSession
+		cover: (54 to: 61)
+		declaredAt: (31 to: 38))
+		cover: (43 to: 49)
+		declaredAt: (43 to: 49).
+	(stream _ aStream
+		cover: (75 to: 81)
+		declaredAt: (17 to: 23))
+		cover: (65 to: 70)
+		declaredAt: (65 to: 70).! !
+!Behavior method!
+                            value
+	"
+	self importCustomers
+	"
+	[
+	[
+	[
+	(self coverAll:
+		{38 to: 41}) hasLineToImport ] valueCoveringAll:
+		{43 to: 57} ] whileTrue: [
+		[
+		(self coverAll:
+			{75 to: 78}) createRecord ] valueCoveringAll:
+			{80 to: 91}.
+		[
+		(self coverAll:
+			{96 to: 99}) importRecord ] valueCoveringAll:
+			{101 to: 112} ]] valueCoveringAll:
+		{60 to: 69}.! !
+!Behavior method!
+            hasLineToImport
+	(line _ [
+	(stream
+		cover: (27 to: 32)
+		declaredAt: (27 to: 32)) nextLine ] valueCoveringAll:
+		{34 to: 41})
+		cover: (19 to: 22)
+		declaredAt: (19 to: 22).
+	^ [
+	(line
+		cover: (47 to: 50)
+		declaredAt: (19 to: 22)) notNil ] valueCoveringAll:
+		{52 to: 57}.! !
+!Behavior method!
+                     createRecord
+	^ (record _ [
+	(line
+		cover: (28 to: 31)
+		declaredAt: (28 to: 31)) findTokens:
+		($, coverAll:
+			{45 to: 46}) ] valueCoveringAll:
+		{33 to: 43})
+		cover: (18 to: 23)
+		declaredAt: (18 to: 23).! !
+!Behavior method!
+                         importRecord
+	[
+	([
+	(line
+		cover: (17 to: 20)
+		declaredAt: (17 to: 20)) beginsWith:
+		('C' coverAll:
+			{34 to: 36}) ] valueCoveringAll:
+		{22 to: 32}) ifTrue: [
+		[
+		(self coverAll:
+			{48 to: 51}) importCustomer ] valueCoveringAll:
+			{53 to: 66} ]] valueCoveringAll:
+		{39 to: 45}.
+	[
+	([
+	(line
+		cover: (75 to: 78)
+		declaredAt: (17 to: 20)) beginsWith:
+		('A' coverAll:
+			{92 to: 94}) ] valueCoveringAll:
+		{80 to: 90}) ifTrue: [
+		[
+		(self coverAll:
+			{107 to: 110}) importAddress ] valueCoveringAll:
+			{112 to: 124} ]] valueCoveringAll:
+		{97 to: 103}.! !
+!Behavior method!
+                  importCustomer
+	(newCustomer _ [
+	(Customer
+		cover: (33 to: 40)
+		declaredAt: (33 to: 40)) new ] valueCoveringAll:
+		{42 to: 44})
+		cover: (18 to: 28)
+		declaredAt: (18 to: 28).
+	[
+	(newCustomer
+		cover: (50 to: 60)
+		declaredAt: (18 to: 28)) firstName:
+		([
+		(record
+			cover: (73 to: 78)
+			declaredAt: (73 to: 78)) second ] valueCoveringAll:
+			{80 to: 85}) ] valueCoveringAll:
+		{62 to: 71}.
+	[
+	(newCustomer
+		cover: (91 to: 101)
+		declaredAt: (18 to: 28)) lastName:
+		([
+		(record
+			cover: (113 to: 118)
+			declaredAt: (73 to: 78)) third ] valueCoveringAll:
+			{120 to: 124}) ] valueCoveringAll:
+		{103 to: 111}.
+	[
+	(newCustomer
+		cover: (130 to: 140)
+		declaredAt: (18 to: 28)) identificationType:
+		([
+		(record
+			cover: (162 to: 167)
+			declaredAt: (73 to: 78)) fourth ] valueCoveringAll:
+			{169 to: 174}) ] valueCoveringAll:
+		{142 to: 160}.
+	[
+	(newCustomer
+		cover: (180 to: 190)
+		declaredAt: (18 to: 28)) identificationNumber:
+		([
+		(record
+			cover: (214 to: 219)
+			declaredAt: (73 to: 78)) fifth ] valueCoveringAll:
+			{221 to: 225}) ] valueCoveringAll:
+		{192 to: 212}.
+	[
+	(session
+		cover: (231 to: 237)
+		declaredAt: (231 to: 237)) persist:
+		(newCustomer
+			cover: (248 to: 258)
+			declaredAt: (18 to: 28)) ] valueCoveringAll:
+		{239 to: 246}.! !
+!Behavior method!
+                  initialize
+	[ super initialize ] valueCoveringAll:
+		{20 to: 29}.
+	(addresses _ [
+	(OrderedCollection
+		cover: (46 to: 62)
+		declaredAt: (46 to: 62)) new ] valueCoveringAll:
+		{64 to: 66})
+		cover: (33 to: 41)
+		declaredAt: (33 to: 41).! !
+!Behavior method!
+                              firstName: aName
+	(firstName _ aName
+		cover: (33 to: 37)
+		declaredAt: (12 to: 16))
+		cover: (20 to: 28)
+		declaredAt: (20 to: 28).! !
+!Behavior method!
+      lastName: aLastName
+	(lastName _ aLastName
+		cover: (35 to: 43)
+		declaredAt: (11 to: 19))
+		cover: (23 to: 30)
+		declaredAt: (23 to: 30).! !
+!Behavior method!
+identificationType: anIdentificationType
+	(identificationType _ anIdentificationType
+		cover: (66 to: 85)
+		declaredAt: (21 to: 40))
+		cover: (44 to: 61)
+		declaredAt: (44 to: 61).! !
+!Behavior method!
+                      identificationNumber: anIdentificationNumber
+	(identificationNumber _ anIdentificationNumber
+		cover: (72 to: 93)
+		declaredAt: (23 to: 44))
+		cover: (48 to: 67)
+		declaredAt: (48 to: 67).! !
+!Behavior method!
+              persist: anObject
+	| table |
+	[
+	(self coverAll:
+		{33 to: 36}) delay ] valueCoveringAll:
+		{38 to: 42}.
+	(table _ [
+	(tables
+		cover: (55 to: 60)
+		declaredAt: (55 to: 60))
+		at:
+			([
+			(anObject
+				cover: (66 to: 73)
+				declaredAt: (10 to: 17)) class ] valueCoveringAll:
+				{75 to: 79})
+		ifAbsentPut: [
+			[
+			(Set
+				cover: (96 to: 98)
+				declaredAt: (96 to: 98)) new ] valueCoveringAll:
+				{100 to: 102} ]] valueCoveringAll:
+		{62 to: 64. 81 to: 92})
+		cover: (46 to: 50)
+		declaredAt: (23 to: 27).
+	[
+	(self coverAll:
+		{109 to: 112}) defineIdOf:
+		(anObject
+			cover: (126 to: 133)
+			declaredAt: (10 to: 17)) ] valueCoveringAll:
+		{114 to: 124}.
+	[
+	(table
+		cover: (137 to: 141)
+		declaredAt: (23 to: 27)) add:
+		(anObject
+			cover: (148 to: 155)
+			declaredAt: (10 to: 17)) ] valueCoveringAll:
+		{143 to: 146}.
+	[
+	([
+	(anObject
+		cover: (161 to: 168)
+		declaredAt: (10 to: 17)) isKindOf:
+		(Customer
+			cover: (180 to: 187)
+			declaredAt: (180 to: 187)) ] valueCoveringAll:
+		{170 to: 178}) ifTrue: [
+		[
+		(self coverAll:
+			{200 to: 203}) persistAddressesOf:
+			(anObject
+				cover: (225 to: 232)
+				declaredAt: (10 to: 17)) ] valueCoveringAll:
+			{205 to: 223} ]] valueCoveringAll:
+		{190 to: 196}.! !
+!Behavior method!
+    delay
+	[
+	([
+	(Delay
+		cover: (10 to: 14)
+		declaredAt: (10 to: 14)) forMilliseconds:
+		(100 coverAll:
+			{33 to: 35}) ] valueCoveringAll:
+		{16 to: 31}) wait ] valueCoveringAll:
+		{38 to: 41}.! !
+!Behavior method!
+         defineIdOf: anObject
+	[
+	(anObject
+		cover: (24 to: 31)
+		declaredAt: (13 to: 20))
+		instVarNamed:
+			('id' coverAll:
+				{47 to: 50})
+		put:
+			([
+			(self coverAll:
+				{58 to: 61}) newIdFor:
+				(anObject
+					cover: (73 to: 80)
+					declaredAt: (13 to: 20)) ] valueCoveringAll:
+				{63 to: 71}) ] valueCoveringAll:
+		{33 to: 45. 52 to: 55}.! !
+!Behavior method!
+                  newIdFor: anObject
+	(id _ [
+	(id
+		cover: (22 to: 23)
+		declaredAt: (22 to: 23)) +
+		(1 coverAll:
+			{33 to: 33}) ] valueCoveringAll:
+		{31 to: 31})
+		cover: (28 to: 29)
+		declaredAt: (22 to: 23).
+	^ id
+		cover: (38 to: 39)
+		declaredAt: (22 to: 23).! !
+!Behavior method!
+                persistAddressesOf: anObjectWithAddresses
+	[
+	([
+	(anObjectWithAddresses
+		cover: (45 to: 65)
+		declaredAt: (21 to: 41)) addresses ] valueCoveringAll:
+		{67 to: 75}) do: [ :anAddress |
+		[
+		(self coverAll:
+			{96 to: 99}) persist:
+			(anAddress
+				cover: (110 to: 118)
+				declaredAt: (84 to: 92)) ] valueCoveringAll:
+			{101 to: 108} ]] valueCoveringAll:
+		{77 to: 79}.! !
+!Behavior method!
+                      addresses
+	^ addresses
+		cover: (15 to: 23)
+		declaredAt: (15 to: 23).! !
+!Behavior method!
+    importAddress
+	| newAddress |
+	(newAddress _ [
+	(Address
+		cover: (49 to: 55)
+		declaredAt: (49 to: 55)) new ] valueCoveringAll:
+		{57 to: 59})
+		cover: (35 to: 44)
+		declaredAt: (19 to: 28).
+	[
+	(newCustomer
+		cover: (65 to: 75)
+		declaredAt: (65 to: 75)) addAddress:
+		(newAddress
+			cover: (89 to: 98)
+			declaredAt: (19 to: 28)) ] valueCoveringAll:
+		{77 to: 87}.
+	[
+	(newAddress
+		cover: (104 to: 113)
+		declaredAt: (19 to: 28)) streetName:
+		([
+		(record
+			cover: (127 to: 132)
+			declaredAt: (127 to: 132)) second ] valueCoveringAll:
+			{134 to: 139}) ] valueCoveringAll:
+		{115 to: 125}.
+	[
+	(newAddress
+		cover: (145 to: 154)
+		declaredAt: (19 to: 28)) streetNumber:
+		([
+		([
+		(record
+			cover: (170 to: 175)
+			declaredAt: (127 to: 132)) third ] valueCoveringAll:
+			{177 to: 181}) asNumber ] valueCoveringAll:
+			{183 to: 190}) ] valueCoveringAll:
+		{156 to: 168}.
+	[
+	(newAddress
+		cover: (197 to: 206)
+		declaredAt: (19 to: 28)) town:
+		([
+		(record
+			cover: (214 to: 219)
+			declaredAt: (127 to: 132)) fourth ] valueCoveringAll:
+			{221 to: 226}) ] valueCoveringAll:
+		{208 to: 212}.
+	[
+	(newAddress
+		cover: (232 to: 241)
+		declaredAt: (19 to: 28)) zipCode:
+		([
+		([
+		(record
+			cover: (252 to: 257)
+			declaredAt: (127 to: 132)) fifth ] valueCoveringAll:
+			{259 to: 263}) asNumber ] valueCoveringAll:
+			{265 to: 272}) ] valueCoveringAll:
+		{243 to: 250}.
+	[
+	(newAddress
+		cover: (279 to: 288)
+		declaredAt: (19 to: 28)) province:
+		([
+		(record
+			cover: (300 to: 305)
+			declaredAt: (127 to: 132)) sixth ] valueCoveringAll:
+			{307 to: 311}) ] valueCoveringAll:
+		{290 to: 298}.! !
+!Behavior method!
+      addAddress: anAddress
+	[
+	(addresses
+		cover: (25 to: 33)
+		declaredAt: (25 to: 33)) add:
+		(anAddress
+			cover: (40 to: 48)
+			declaredAt: (13 to: 21)) ] valueCoveringAll:
+		{35 to: 38}.! !
+!Behavior method!
+               streetName: aStreetName
+	(streetName _ aStreetName
+		cover: (41 to: 51)
+		declaredAt: (13 to: 23))
+		cover: (27 to: 36)
+		declaredAt: (27 to: 36).! !
+!Behavior method!
+                        streetNumber: aStreetNumber
+	(streetNumber _ aStreetNumber
+		cover: (47 to: 59)
+		declaredAt: (15 to: 27))
+		cover: (31 to: 42)
+		declaredAt: (31 to: 42).! !
+!Behavior method!
+                town: aTown
+	(town _ aTown
+		cover: (23 to: 27)
+		declaredAt: (7 to: 11))
+		cover: (15 to: 18)
+		declaredAt: (15 to: 18).! !
+!Behavior method!
+                 zipCode: aZipCode
+	(zipCode _ aZipCode
+		cover: (32 to: 39)
+		declaredAt: (10 to: 17))
+		cover: (21 to: 27)
+		declaredAt: (21 to: 27).! !
+!Behavior method!
+    province: aProvince
+	(province _ aProvince
+		cover: (35 to: 43)
+		declaredAt: (11 to: 19))
+		cover: (23 to: 30)
+		declaredAt: (23 to: 30).! !
+!Behavior method!
+selectAllOfType: aType
+	[
+	(self coverAll:
+		{26 to: 29}) delay ] valueCoveringAll:
+		{31 to: 35}.
+	^ [
+	([
+	(self coverAll:
+		{41 to: 44}) objectsOfType:
+		(aType
+			cover: (61 to: 65)
+			declaredAt: (18 to: 22)) ] valueCoveringAll:
+		{46 to: 59}) copy ] valueCoveringAll:
+		{68 to: 71}.! !
+!Behavior method!
+          objectsOfType: aType
+	^ [
+	(tables
+		cover: (26 to: 31)
+		declaredAt: (26 to: 31))
+		at:
+			(aType
+				cover: (37 to: 41)
+				declaredAt: (16 to: 20))
+		ifAbsent: [
+			#() coverAll:
+				{55 to: 57} ]] valueCoveringAll:
+		{33 to: 35. 43 to: 51}.! !
+!Behavior method!
+                      select: aCondition ofType: aType
+	[
+	(self coverAll:
+		{36 to: 39}) delay ] valueCoveringAll:
+		{41 to: 45}.
+	^ [
+	([
+	(self coverAll:
+		{51 to: 54}) objectsOfType:
+		(aType
+			cover: (71 to: 75)
+			declaredAt: (28 to: 32)) ] valueCoveringAll:
+		{56 to: 69}) select:
+		(aCondition
+			cover: (86 to: 95)
+			declaredAt: (9 to: 18)) ] valueCoveringAll:
+		{78 to: 84}.! !
+!Behavior method!
+                              identificationType
+	^ identificationType
+		cover: (23 to: 40)
+		declaredAt: (23 to: 40).! !
+!Behavior method!
+                  identificationNumber
+	^ identificationNumber
+		cover: (25 to: 44)
+		declaredAt: (25 to: 44).! !
+!Behavior method!
+              firstName
+	^ firstName
+		cover: (14 to: 22)
+		declaredAt: (14 to: 22).! !
+!Behavior method!
+    lastName
+	^ lastName
+		cover: (13 to: 20)
+		declaredAt: (13 to: 20).! !
+!Behavior method!
+      addressAt: aStreetName
+	^ [
+	(addresses
+		cover: (28 to: 36)
+		declaredAt: (28 to: 36)) detect: [ :anAddress |
+		[
+		(anAddress
+			cover: (60 to: 68)
+			declaredAt: (48 to: 56)) isAt:
+			(aStreetName
+				cover: (76 to: 86)
+				declaredAt: (12 to: 22)) ] valueCoveringAll:
+			{70 to: 74} ]] valueCoveringAll:
+		{38 to: 44}.! !
+!Behavior method!
+        isAt: aStreetName
+	^ [
+	(streetName
+		cover: (23 to: 32)
+		declaredAt: (23 to: 32)) =
+		(aStreetName
+			cover: (36 to: 46)
+			declaredAt: (7 to: 17)) ] valueCoveringAll:
+		{34 to: 34}.! !
+!Behavior method!
+                  streetName
+	^ streetName
+		cover: (15 to: 24)
+		declaredAt: (15 to: 24).! !
+!Behavior method!
+  streetNumber
+	^ streetNumber
+		cover: (17 to: 28)
+		declaredAt: (17 to: 28).! !
+!Behavior method!
+                              town
+	^ town
+		cover: (9 to: 12)
+		declaredAt: (9 to: 12).! !
+!Behavior method!
+                zipCode
+	^ zipCode
+		cover: (12 to: 18)
+		declaredAt: (12 to: 18).! !
+!Behavior method!
+        province
+	^ province
+		cover: (13 to: 20)
+		declaredAt: (13 to: 20).! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:33'!
+PASSED!
+!Behavior method!
+                      commit
+	[
+	([
+	(tables
+		cover: (11 to: 16)
+		declaredAt: (11 to: 16))
+		at:
+			(Customer
+				cover: (22 to: 29)
+				declaredAt: (22 to: 29))
+		ifAbsent: [
+			#() coverAll:
+				{42 to: 44} ]] valueCoveringAll:
+		{18 to: 20. 31 to: 39}) do: [ :aCustomer |
+		[
+		(self coverAll:
+			{67 to: 70}) persistAddressesOf:
+			(aCustomer
+				cover: (92 to: 100)
+				declaredAt: (55 to: 63)) ] valueCoveringAll:
+			{72 to: 90} ]] valueCoveringAll:
+		{48 to: 50}.! !
+!Behavior method!
+        close
+	^ self.! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:41'!
+PASSED!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:43:15' prior: 50332628!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ self importAddress ].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:43:21' prior: 50333109!
+ importRecord
+
+	(line beginsWith: 'C') ifTrue: [ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ self importAddress ].! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:43:46'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:51:56'!
+                             test02CustomerRecordMustBeCOnly
+	
+	self should: [	
+	(CustomerImporter from: (self validData) into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidrecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:52:09' prior: 50333126!
+ test02CustomerRecordMustBeCOnly
+	
+	self 
+	should: [	(CustomerImporter from: (self validData) into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidrecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:52:13'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:52:13'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:55:35' prior: 50333116!
+                            importRecord
+
+	(line beginsWith: 'C') ifTrue: [ ^ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ ^ self importAddress ].
+	
+	self class! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:56:32' prior: 50333161!
+              importRecord
+
+	(line beginsWith: 'C') ifTrue: [ ^ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidrecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:56:37' prior: 50333169!
+ importRecord
+
+	(line beginsWith: 'C') ifTrue: [ ^ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:56:45' prior: 50333140!
+                              test02CustomerRecordMustBeCOnly
+	
+	self 
+	should: [	(CustomerImporter from: (self validData) into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 18:57:27'!
+       invalidRecordTypeErrorDecription
+	^ 'Invalid Record'! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:57:41'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:57:42'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:57:42'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:58:27'!
+FAILURE!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:58:33'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:58:34'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:58:34'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:01:05' prior: 50333178!
+                      importRecord
+
+	self isCustomerRecord ifTrue: [ ^ self importCustomer ].
+	self isAddressRecord ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:01:06'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:01:06'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:01:59'!
+                      isCustomerRecord
+	^ (record first = 'C')! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:02:17'!
+      isAddressRecord
+	^ (record first = 'A')! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:02:22'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:02:23'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:02:23'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:03:07' prior: 50333188!
+                            test02CustomerRecordMustBeCOnly
+	
+	self 
+	should: [	(CustomerImporter from: self invalidCustomerRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:03:36'!
+       invalidCustomerRecord
+
+	^ ReadStream on: 'CC,Pepe,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:03:41'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:03:41'!
+PASSED!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:29:29' prior: 50332558!
+      importCustomer
+
+	newCustomer := Customer new.
+	newCustomer firstName: record second.
+	newCustomer lastName: record third.
+	newCustomer identificationType: record fourth.
+	newCustomer identificationNumber: record fifth.
+	session persist: newCustomer! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:30:41'!
+                   test03AddressRecordsMustBeAOnly
+	
+	self 
+	should: [	(CustomerImporter from: self invalidAddressRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:30:52'!
+        invalidAddressRecord
+
+	^ ReadStream on: 'CC,Pepe,Sanchez,D,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:31:14' prior: 50333310!
+                       invalidAddressRecord
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:31:16' prior: 50333316!
+               invalidAddressRecord
+
+	^ ReadStream on: 'AA,San Martin,3322,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 19:31:23'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:33:41'!
+                           test04StartingWithCommaShouldRaiseError
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:34:03'!
+                        invalidRecordStartsWithComma
+
+	^ ReadStream on: ',A,San Martin,3322,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:34:07'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:34:07'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:35:10'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:35:10'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:35:33' prior: 50333346!
+                              invalidRecordStartsWithComma
+
+	^ ReadStream on: '\,A,San Martin,3322,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:35:37'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:35:37'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 19:35:38'!
+PASSED!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:35:38'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:37:18' prior: 50333366!
+    invalidRecordStartsWithComma
+
+	^ ReadStream on: ',A,San Martin,3322,Olivos,1636,BsAs'! !
+
+	^ record := line findTokens: $,!
+
+line findTokens: $,!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:39:51'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:41:10'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:43:02' prior: 50332653!
+                            hasLineToImport
+
+	line := stream nextLine.
+	(self isRegisterLine: line) ifFalse: [self error: 'opa'].
+	^ line notNil! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:45:44' prior: 50333384!
+       invalidRecordStartsWithComma
+
+	^ ReadStream on: ',A,San Martin,3322,,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:46:07'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:46:23' prior: 50333399!
+                              hasLineToImport
+
+	line := stream nextLine.
+	"(self isRegisterLine: line) ifFalse: [self error: 'opa']."
+	^ line notNil! !
+
+	^ record := line findTokens: $,!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:50:48'!
+                  test04RecordsMustHaveCorrectAmountOfFields
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!methodRemoval: ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:50:48'!
+test04StartingWithCommaShouldRaiseError
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+
+'Hola, como, estan, putos' split!
+
+'Hola, como, estan, putos' findTokens: $,!
+
+'Hola,,como, estan, putos' findTokens: $,!
+
+'Hola, ,como, estan, putos' findTokens: $,!
+
+OrderedCollection with: ''!
+
+'Hola, ,como, estan, putos' findTokens: $,!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:57:37'!
+      test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!methodRemoval: ImportTest #test04RecordsMustHaveCorrectAmountOfFields stamp: 'LDMAF 6/23/2022 19:57:37'!
+test04RecordsMustHaveCorrectAmountOfFields
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:57:55' prior: 50333461!
+    test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:58:12'!
+                    invalidRecordWithCommasTogether
+
+	^ ReadStream on: ',A,San Martin,3322,,Olivos,1636,BsAs'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:58:34' prior: 50333506!
+  invalidRecordWithCommasTogether
+
+	^ ReadStream on: 'C,,Pepe,Sanchez,,D,22333444'! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 19:58:44'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 19:58:44'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:59:17' prior: 50333296!
+                 test03AddressRecordsMustBeAOnly
+	
+	self 
+	should: [	(CustomerImporter from: self invalidAddressRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size]! !
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 19:59:20'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 19:59:39'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:00:02'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:00:09'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:00:09'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:01:37' prior: 50333416!
+      hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordTypeErrorDecription ].
+	^ line notNil! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:02:27'!
+                 hasCommasTogether: aLine
+		! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:05:53' prior: 50333564!
+   hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,])  ]
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:06:59' prior: 50333568!
+                               hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ]
+		]! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:07:11'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:07:11'!
+FAILURE!
+
+true and: [false]!
+
+true and: false!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:08:17' prior: 50333577!
+                hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: char = $,) ifTrue: [^true] ]
+		]! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:08:25'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:08:25'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:08:45' prior: 50333594!
+                        hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ]
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:10:58' prior: 50333610!
+                hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true].
+			prevChar _ char ]
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:11:43' prior: 50333619!
+                            hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:11:53' prior: 50333629!
+                     hasCommasTogether: aLine
+	|prevChar|
+	prevChar _ nil.
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		]! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:11:59'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:12:02'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:12:15'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:13:42'!
+             test05RecordsShouldNotHaveBlankCells
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithBlankCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:14:23'!
+                            invalidRecordWithBlankCells
+
+	^ ReadStream on: 'C, ,Pepe, ,Sanchez,,D,22333444'! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:14:30'!
+PASSED!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:15:17' prior: 50333556!
+       hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:15:35'!
+      invalidRecordHasCommasTogether
+	^ 'Invalid Record, must not have commas together'! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:15:39' prior: 50333691!
+invalidRecordHasCommasTogether
+	^ 'Invalid record, must not have commas together'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:16:02' prior: 50333512!
+          invalidRecordWithCommasTogether
+
+	^ ReadStream on: 'C,,Pepe,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:16:19'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:16:19'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:17:27' prior: 50333703!
+                          invalidRecordWithCommasTogether
+
+	^ ReadStream on: 'C,,Pepe,Sanchez,D,,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:17:34' prior: 50333674!
+           invalidRecordWithBlankCells
+
+	^ ReadStream on: 'C, ,Pepe, ,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:17:45'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:17:45'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:18:06' prior: 50333491!
+                           test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:18:25'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:18:25'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:22:00' prior: 50333683!
+                       hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	(self hasBlankCells: line) ifTrue: [self error: self class invalidRecordBlankCells ].
+	^ line notNil! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:22:36'!
+                         test04RecordsShouldNotHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!methodRemoval: ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:22:36'!
+test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+
+'Hola, ,como' asOrderedCollection !
+
+(('Hola, ,como' asOrderedCollection) occurrencesOf: $ ) > 0!
+
+(('Hola matias, ,como' asOrderedCollection) occurrencesOf: $ ) > 0!
+
+(('Hola matias,,como' asOrderedCollection) occurrencesOf: $ ) > 0  !
+
+(('Hola matias,,como' asOrderedCollection) occurrencesOf: $ ) > 0!
+
+('Hola matias,,como' asOrderedCollection)!
+
+('Hola matias, ,como' findTokens: $,)!
+
+(('Hola matias, ,como' findTokens: $,) occurrencesOf: $ ) > 0!
+
+(('Hola matias, ,como' findTokens: $,) occurrencesOf: ' ') > 0!
+
+(('Hola matias,  ,como' findTokens: $,) occurrencesOf: ' ') > 0!
+
+'ey mis ops son medio opa, lo fumo con falopa' trim !
+
+'ey mis ops son medio opa, lo fumo con falopa' trimmed: ' '!
+
+'ey mis ops son medio opa, lo fumo con falopa' withoutTrailingBlanks !
+
+'ey mis ops son medio opa, lo fumo con  falopa' withoutTrailingBlanks !
+
+'ey mis ops son medio opa, lo fumo con falopa' withoutSeparators !
+
+'ey         mis ops son medio opa, lo fumo con falopa' withoutSeparators !
+
+'            ' withoutSeparators isEmpty !
+
+(('Hola matias,  ,como' findTokens: $,) occurrencesOf: ' ') anySatisfy: [:s | s withoutSeparators isEmpty ]!
+
+('Hola matias,  ,como' findTokens: $,) anySatisfy: [:s | s withoutSeparators isEmpty ]!
+
+('Hola matias,DROGA,como' findTokens: $,) anySatisfy: [:s | s withoutSeparators isEmpty ] ifEmpty: ['nada']!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:47' prior: 50332600!
+      createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:54' prior: 50333840!
+                          createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:58' prior: 50333849!
+                         createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ].
+	^record! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:59' prior: 50333858!
+                createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ].
+	^record.! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:34:09' prior: 50333757!
+               hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:34:26' prior: 50333867!
+   createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self error: self class invalidRecordWithBlankSpaces ].
+	^record.! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:35:04'!
+                              ensureRecordHasNotBlankCells
+
+	^ record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self error: self class invalidRecordWithBlankSpaces ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:35:04' prior: 50333884!
+        createRecord
+	
+	record := line findTokens: $,.
+	self ensureRecordHasNotBlankCells.
+	^record.! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:35:23'!
+     invalidRecordHasBlankSpaces
+	^ 'Invalid record, must not have blank cells'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:35:34' prior: 50333659!
+                 test05RecordsShouldNotHaveBlankCells
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithBlankCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasBlankSpaces equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:35:38'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:35:38'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:35:55'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:37:10'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:38:10' prior: 50333639!
+                hasCommasTogether: aLine
+	|prevChar|
+	prevChar _ nil.
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		].
+	^false! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:16'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:16'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:38:40' prior: 50333893!
+             ensureRecordHasNotBlankCells
+
+	^ (record anySatisfy: [:s | s withoutSeparators isEmpty ]) ifTrue: [self error: self class invalidRecordWithBlankSpaces ]! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:46'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:46'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:39:14'!
+                           invalidRecordWithBlankSpaces
+	^ 'Invalid record, must not have blank cells'! !
+
+!methodRemoval: CustomerImporter class #invalidRecordHasBlankSpaces stamp: 'LDMAF 6/23/2022 20:39:14'!
+invalidRecordHasBlankSpaces
+	^ 'Invalid record, must not have blank cells'!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:39:18'!
+ERROR!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:39:18'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:39:18'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:39:18'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:39:18'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:39:35'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:39:50'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:43:34'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:44:13' prior: 50333941!
+       hasCommasTogether: aLine
+	|prevChar|
+	prevChar _ nil.
+	aLine isNil ifTrue: [^false].
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		].
+	^false! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:44:19'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:44:20'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:44:20'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:44:20'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:44:20'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:44:20'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:44:50' prior: 50333913!
+      test05RecordsShouldNotHaveBlankCells
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithBlankCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordWithBlankSpaces equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:44:55'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:44:55'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:44:55'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:44:56'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:44:56'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:45:33'!
+                   test06RecordShouldNotStartWithComma
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordWithBlankSpaces equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:45:35'!
+FAILURE!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:45:35'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:46:32' prior: 50334067!
+test06RecordShouldNotStartWithComma
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordStartsWithComma equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:46:37'!
+ERROR!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:46:37'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:46:54'!
+          invalidRecordStartsWithComma
+	^ 'Invalid record, must not start with comma'! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:48:39' prior: 50333876!
+                   hasLineToImport
+
+	line := stream nextLine.
+	(self startWithComma: line) ifTrue: [self error: self class invalidRecordStartsWithComma ].
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:48:59'!
+                      startsWithComma: aLine
+	! !
+
+'Hola matias,DROGA,como' first !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:49:40' prior: 50334126!
+    startsWithComma: aLine
+	^(aLine first = $,)! !
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:49:46'!
+ERROR!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:49:46'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:50:09' prior: 50334115!
+       hasLineToImport
+
+	line := stream nextLine.
+	(self startsWithComma: line) ifTrue: [self error: self class invalidRecordStartsWithComma ].
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:50:55' prior: 50333406!
+  invalidRecordStartsWithComma
+
+	^ ReadStream on: ',C,Pepe,Sanchez,D,22333444'! !
+
+	^(aLine first = $,)!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:53:12'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:53:15'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:53:28'!
+ERROR!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:53:29'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:53:40'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:54:26' prior: 50334131!
+                            startsWithComma: aLine
+	aLine isNil ifTrue: [^false].
+	^(aLine first = $,).! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:54:31'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:02:56'!
+            test07CustomerRecordShouldHaveFiveCells
+	
+	self 
+	should: [	(CustomerImporter from: self customerRecordWithMoreThanFiveCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidCustomerRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:03:00'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:03:07'!
+customerRecordWithMoreThanFiveCells
+	self shouldBeImplemented.! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:04:35' prior: 50334232!
+                             customerRecordWithMoreThanFiveCells
+	^ ReadStream on: 'CC,Pepe,Sanchez,D,22333444,999999'! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:04:43'!
+ERROR!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:04:43'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 21:05:37'!
+                    invalidCustomerRecordWithIncorrectSize
+	^ 'Invalid amount of cells in customer record'! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:05:50'!
+FAILURE!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:05:50'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:06:39' prior: 50334238!
+             customerRecordWithMoreThanFiveCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444,999999'! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:06:46'!
+FAILURE!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:06:46'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:07:11' prior: 50333242!
+              isCustomerRecord
+	^ (record first = 'C') and: [record size = 5]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:08:43' prior: 50333228!
+                               importRecord
+
+	self isCustomerRecord ifTrue: [ ^ self importCustomer ] ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize ].
+	self isAddressRecord ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:18' prior: 50334277!
+                          isCustomerRecord
+	(record size = 5) ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize ]
+	^ (record first = 'C')! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:23' prior: 50334295!
+                         isCustomerRecord
+	(record size = 5) ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize ].
+	^ (record first = 'C')! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:52' prior: 50334303!
+                        isCustomerRecord
+	^ (record first = 'C') and: [record size = 5]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:56' prior: 50334311!
+                               isCustomerRecord
+	^ (record first = 'C').! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:12:44' prior: 50334283!
+                     importRecord
+
+	self isCustomerRecord ifTrue: [ 
+		(self ensureCustomerRecordHasCorrectSize).
+		^ self importCustomer.
+	].
+	self isAddressRecord ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:13:35'!
+  ensureCustomerRecordHasCorrectSize
+
+	(record size = 5) ifFalse: [self error: self class customerRecordWithMoreThanFiveCells].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:13:48' prior: 50334332!
+ ensureCustomerRecordHasCorrectSize
+	(record size = 5) ifFalse: [self error: self class customerRecordWithMoreThanFiveCells].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:14:33' prior: 50334339!
+  ensureCustomerRecordHasCorrectSize
+	(record size = 5) ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize].! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:15:07'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:15:19'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:15:57'!
+  test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithMoreThanFiveCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:16:45'!
+              addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:19:53'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:19:53'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:20:26' prior: 50334378!
+         test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithMoreThanSixCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 21:20:39'!
+     invalidAddressRecordWithIncorrectSize
+	^ 'Invalid amount of cells in address record'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:44'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:44'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:58'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:58'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:21:25'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:21:46'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:22:27' prior: 50334393!
+                       addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+	A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:22:31'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:22:31'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:23:04' prior: 50334322!
+             importRecord
+
+	self isCustomerRecord ifTrue: [ 
+		(self ensureCustomerRecordHasCorrectSize).
+		^ self importCustomer.
+	].
+	self isAddressRecord ifTrue: [ 
+		(self ensureAddressRecordHasCorrectSize).
+		^ self importAddress 
+	].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:23:24'!
+                 ensureAddressRecordHasCorrectSize
+	(record size = 6) ifFalse: [self error: self class invalidAddressRecordWithIncorrectSize ].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:23:36'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:23:36'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:23:54'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:25:02' prior: 50334447!
+                               addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:07'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:07'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:25:14' prior: 50334406!
+           test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithMoreThanSixCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:16'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 21:25:21'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+----QUIT----(23 June 2022 21:25:58) CuisUniversity-5053.image priorSource: 4615012!

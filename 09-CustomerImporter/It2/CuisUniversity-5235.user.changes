@@ -1,0 +1,704 @@
+
+
+----STARTUP---- (26 June 2022 15:45:10) as /home/lisandro/Documents/Facultad/ING1/linux64/CuisUniversity-5235.image!
+
+
+----End fileIn of /media/lisandro/47FC-0197/IngSoftI/23-05/CustomerImporter.st----!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 15:46:17'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 15:46:17'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 15:46:17'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 15:46:17'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 15:46:18'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 15:46:18'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 15:46:18'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 15:46:18'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 15:57:53'!
+test09xxx
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithBlankCell into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordStartsWithBlankCell equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 15:57:57'!
+ERROR!
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 15:57:57'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 15:58:04'!
+invalidRecordStartsWithBlankCell
+	self shouldBeImplemented.! !
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 15:58:06'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 15:59:20' prior: 50332393!
+invalidRecordStartsWithBlankCell
+	^ ReadStream on: ' ,C,Pepe,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 15:59:25'!
+ERROR!
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 15:59:25'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'ldm 6/26/2022 15:59:36'!
+invalidRecordStartsWithBlankCell
+	"DO NOT FORGET TO RENAME COLLABORATORS AND REMOVE THIS COMMENT!!!!"
+	self shouldBeImplemented.
+	^self new initializeInvalidRecordStartsWithBlankCell! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'ldm 6/26/2022 15:59:55' prior: 50332412!
+invalidRecordStartsWithBlankCell
+	! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'ldm 6/26/2022 16:00:51' prior: 50332422!
+invalidRecordStartsWithBlankCell
+	^'Record should not start with blank.'! !
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 16:00:59'!
+FAILURE!
+
+!testRun: #ImportTest #test09xxx stamp: 'ldm 6/26/2022 16:00:59'!
+FAILURE!
+
+!methodRemoval: ImportTest #test09xxx stamp: 'ldm 6/26/2022 16:01:28'!
+test09xxx
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithBlankCell into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordStartsWithBlankCell equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:05:04'!
+addressRecordWithWrongAmountOfCells
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:05:04' prior: 50331887!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!methodRemoval: ImportTest #addressRecordWithMoreThanSixCells stamp: 'ldm 6/26/2022 16:05:04'!
+addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+A,San Martin,3322,Olivos,1636,BsAs,9999,999'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:05:37'!
+customerRecordWithWrongAmountOfCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444,999999'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:05:37' prior: 50331872!
+test07CustomerRecordShouldHaveFiveCells
+	
+	self 
+	should: [	(CustomerImporter from: self customerRecordWithWrongAmountOfCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidCustomerRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+
+!methodRemoval: ImportTest #customerRecordWithMoreThanFiveCells stamp: 'ldm 6/26/2022 16:05:37'!
+customerRecordWithMoreThanFiveCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444,999999'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:06:07' prior: 50332480!
+customerRecordWithWrongAmountOfCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D'! !
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:06:10'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:06:10'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:06:10'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:06:10'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:06:10'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:06:11'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:06:11'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:06:11'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:05:37' prior: 50332508!
+customerRecordWithWrongAmountOfCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444,999999'! !
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:06:21'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:06:21'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:06:21'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:06:21'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:06:21'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:06:22'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:06:22'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:06:22'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:06:41' prior: 50332539!
+customerRecordWithWrongAmountOfCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D'! !
+
+'a' = 'A'!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:11:15'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:11:16'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:11:27'!
+addressRecordWithWrongAmountOfCellsX
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:11:38' prior: 50332600!
+addressRecordWithWrongAmountOfCellsX
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs,9999,999
+C,Pepe,Sanchez,D,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:11:49' prior: 50332458!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCellsX into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:11:51'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:12:52' prior: 50332616!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:12:54'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:13:07'!
+test09xxxx
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:16:02' prior: 50332653!
+test09xxxx
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCellsX into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:16:27'!
+addressRecordBeforeCustomerRecord
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs,9999,999
+C,Pepe,Sanchez,D,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:16:27' prior: 50332668!
+test09xxxx
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordBeforeCustomerRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!methodRemoval: ImportTest #addressRecordWithWrongAmountOfCellsX stamp: 'ldm 6/26/2022 16:16:27'!
+addressRecordWithWrongAmountOfCellsX
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs,9999,999
+C,Pepe,Sanchez,D,22333444'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:16:48' prior: 50332682!
+addressRecordBeforeCustomerRecord
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs
+C,Pepe,Sanchez,D,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:17:44' prior: 50332689!
+test09xxxx
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordBeforeCustomerRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter addressWithoutCustomer equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:17:44' prior: 50332635!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter addressWithoutCustomer equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:17:53'!
+ERROR!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:17:53'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'ldm 6/26/2022 16:20:18' prior: 50332147!
+importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			"newAddress canBeAddedTo: newCustomer.".
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+
+----SNAPSHOT----(26 June 2022 16:20:54) CuisUniversity-5235.image priorSource: 7115021!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'ldm 6/26/2022 16:21:34' prior: 50332752!
+importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			"newAddress canBeAddedTo: newCustomer.".
+			newCustomer isNil ifTrue: [self error: self class invalidAddressRecordWithIncorrectSize].
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:21:40'!
+ERROR!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:21:40'!
+ERROR!
+!CustomerImporter class methodsFor: 'errors' stamp: 'ldm 6/26/2022 16:22:00'!
+addressWithoutCustomer
+	self shouldBeImplemented.! !
+!CustomerImporter class methodsFor: 'errors' stamp: 'ldm 6/26/2022 16:22:36' prior: 50332791!
+addressWithoutCustomer
+	^'No customer was found with requested address.'! !
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:22:37'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'ldm 6/26/2022 16:22:50' prior: 50332769!
+importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			"newAddress canBeAddedTo: newCustomer.".
+			newCustomer isNil ifTrue: [self error: self class addressWithoutCustomer].
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:22:53'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:22:53'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:22:53'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:22:54'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:22:54'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:22:54'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:22:54'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:22:54'!
+FAILURE!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:22:54'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:22:54'!
+FAILURE!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:23:10'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:23:14'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:23:14'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:23:14'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:23:14'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:23:14'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:23:14'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:23:15'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:23:15'!
+FAILURE!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:23:15'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:23:15'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:23:42' prior: 50332732!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithWrongAmountOfCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:23:46'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:23:50'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:23:50'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:23:50'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:23:50'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:23:50'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:23:50'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:23:51'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:23:51'!
+PASSED!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:23:51'!
+PASSED!
+
+----SNAPSHOT----(26 June 2022 16:23:54) CuisUniversity-5235.image priorSource: 35686!
+!CustomerImporter methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:24:50' prior: 50332091!
+initializeFrom: aStream into: aSession
+	
+	session := aSession.
+	stream := aStream.
+	newCustomer := Customer nullCustomer.! !
+
+!methodRemoval: Customer class #importCustomers stamp: 'ldm 6/26/2022 16:25:56'!
+importCustomers
+
+	"
+	self importCustomers
+	"
+	| inputStream session newCustomer line |
+
+	inputStream := StandardFileStream new open: 'input.txt' forWrite: false.
+	session := DataBaseSession for: (Array with: Address with: Customer).
+	session beginTransaction.
+
+	line := inputStream nextLine.
+	[ line notNil ] whileTrue: [
+		(line beginsWith: 'C') ifTrue: [ | customerData |
+			customerData := line findTokens: $,.
+			newCustomer := Customer new.
+			newCustomer firstName: customerData second.
+			newCustomer lastName: customerData third.
+			newCustomer identificationType: customerData fourth.
+			newCustomer identificationNumber: customerData fourth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | addressData newAddress |
+			addressData := line findTokens: $,.
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: addressData second.
+			newAddress streetNumber: addressData third asNumber .
+			newAddress town: addressData fourth.
+			newAddress zipCode: addressData fifth asNumber .
+			newAddress province: addressData fourth ].
+
+		line := inputStream nextLine. ].
+
+	session commit.
+	session close.
+
+	inputStream close.
+	!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:26:05'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:26:23'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:27:03'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:27:03'!
+ERROR!
+!Customer class methodsFor: 'nil' stamp: 'ldm 6/26/2022 16:27:39'!
+nullCustomer
+	^self new initializeNullCustomer.! !
+!Customer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:28:09'!
+initializeNullCustomer
+
+	super initialize.
+	addresses := OrderedCollection new.! !
+!Customer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:28:39' prior: 50332024 overrides: 16920235!
+initialize
+
+	"super initialize."
+	addresses := OrderedCollection new.! !
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:28:43'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:28:44'!
+PASSED!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:28:44'!
+FAILURE!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:28:45'!
+FAILURE!
+!Customer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:30:23' prior: 50333042!
+initializeNullCustomer
+
+	"super initialize."
+	addresses := OrderedCollection new.
+	! !
+
+!classDefinition: #Customer category: 'CustomerImporter' stamp: 'ldm 6/26/2022 16:33:07'!
+Object subclass: #Customer
+	instanceVariableNames: 'id firstName lastName identificationType identificationNumber addresses addAddressBehavior'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!Customer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:33:06' prior: 50333083!
+initializeNullCustomer
+
+	"super initialize."
+	addresses := OrderedCollection new.
+	addAddressBehavior := [:address | self error: 'soy nulo'].! !
+
+----SNAPSHOT----(26 June 2022 16:34:09) CuisUniversity-5235.image priorSource: 40907!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'ldm 6/26/2022 16:46:37' prior: 50332804!
+importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer isNil ifTrue: [self error: self class addressWithoutCustomer].
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+!CustomerImporter methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:47:11' prior: 50332933!
+initializeFrom: aStream into: aSession
+	
+	session := aSession.
+	stream := aStream.! !
+
+!testRun: #ImportTest #test01Import stamp: 'ldm 6/26/2022 16:47:14'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'ldm 6/26/2022 16:47:15'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'ldm 6/26/2022 16:47:15'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'ldm 6/26/2022 16:47:15'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'ldm 6/26/2022 16:47:15'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'ldm 6/26/2022 16:47:15'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'ldm 6/26/2022 16:47:15'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'ldm 6/26/2022 16:47:16'!
+PASSED!
+
+!testRun: #ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:47:16'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:47:50'!
+test09ImportAddressBeforeItsCustomerRecordShouldThrowError
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordBeforeCustomerRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter addressWithoutCustomer equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!methodRemoval: ImportTest #test09xxxx stamp: 'ldm 6/26/2022 16:47:50'!
+test09xxxx
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordBeforeCustomerRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter addressWithoutCustomer equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].!
+
+----SNAPSHOT----(26 June 2022 16:49:20) CuisUniversity-5235.image priorSource: 46576!
+
+----QUIT----(26 June 2022 16:49:39) CuisUniversity-5235.image priorSource: 49152!

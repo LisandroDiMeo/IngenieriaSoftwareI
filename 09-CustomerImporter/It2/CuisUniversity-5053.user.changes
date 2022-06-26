@@ -1,0 +1,6001 @@
+
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:22:26'!
+catalogueIncludes: aBook
+
+	^ (catalogue anySatisfy: [:aCatalogueBook | 
+			(aCatalogueBook isbn) = (aBook isbn)
+		]) ifFalse: [self error: 'Cannot add a book not registered in our inventory.']! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:22:26' prior: 50473685!
+add: aBook 
+	self catalogueIncludes: aBook.
+	items add: aBook.! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:22:33'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:24:14' prior: 50473552!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aCatalogue|
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aCart add: '9782253096405'.
+	
+	self assert: (aCart isEmpty not)! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:24:41' prior: 50473563!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aCatalogue|
+	
+	aCatalogue _ OrderedCollection new.
+	aCart _ Cart with: aCatalogue.
+	
+	self should: [aCart add: '9786070776564'] raise: Error description: 'Cannot add a book not registered in our inventory.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:24:57' prior: 50473575!
+test04CartCanAddMultipleAmountsOfTheSameBook
+	|aCart aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aCart add: 10 of: '9789500708517'.
+	
+	self assert: (aCart booksQuantity = 10).! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:25:21' prior: 50473586!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	
+	self should: [aCart add: 0 of: '9789500708517'] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: '9789500708517'] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:25:43' prior: 50473602!
+test06CartAddedBooksAreCorrect
+	|aCart aBook1 aBook2 aCatalogue|
+	
+	aCatalogue _ OrderedCollection with: '9789500708517' with: '9781644730942'.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ '9789500708517'.
+	aBook2 _ '9781644730942'.
+	
+	aCart add: aBook1.
+	aCart add: 3 of: aBook2.
+	self assert: (aCart doesInclude: 3 of: aBook2).
+	self assert: (aCart doesInclude: 1 of: aBook1).
+	self assert: (aCart booksQuantity = 4).
+	
+	
+	! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:25:53' prior: 50473619!
+test07CartCanRequestItsContents
+	|aCart aBook1 aBook2 aCatalogue cartContents|
+	
+	aCatalogue _ OrderedCollection with: '9788499983196' with: '9786070731747'.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ '9788499983196'.
+	aBook2 _ '9786070731747'.
+	
+	aCart add: aBook1.
+	aCart add: 2 of: aBook2.
+	cartContents _ aCart contents.
+	self assert: (( cartContents occurrencesOf: aBook1 ) = 1).
+	self assert: (( cartContents occurrencesOf: aBook2 ) = 2).
+	self assert: (cartContents size = 3).
+	
+	! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:26:08' prior: 50473805!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: '9789500708517'] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: '9789500708517'] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:26:26' prior: 50473857!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:26:48' prior: 50473794!
+test04CartCanAddMultipleAmountsOfTheSameBook
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	aCart add: 10 of: aBook.
+	
+	self assert: (aCart booksQuantity = 10).! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:27:07' prior: 50473782!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection new.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9786070776564'.
+	
+	self should: [aCart add: aBook] raise: Error description: 'Cannot add a book not registered in our inventory.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:27:35' prior: 50473772!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aCatalogue aBook |
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9782253096405'.
+	aCart add: aBook.
+
+	
+	self assert: (aCart isEmpty not)! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:27:45' prior: 50473914!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aCatalogue aBook |
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9782253096405'.
+	aCart add: aBook.
+
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:27:53'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:27:53'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:27:53'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:27:53'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:27:53'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:27:53'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:27:53'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:28:29' prior: 50473735!
+catalogueIncludes: aBook
+
+	^ (catalogue 		includes: aBook) ifFalse: [self error: 'Cannot add a book not registered in our inventory.']! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:28:38'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:28:38'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:28:38'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:28:38'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:28:38'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:28:38'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:28:38'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:28:49'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:28:49'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:28:49'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:28:49'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:28:49'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:28:49'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:28:49'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:28:51'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:29:11'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:30:38'!
+ERROR!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:30:50' prior: 50473925!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aCatalogue aBook |
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9782253096405'.
+	aCart add: aBook.
+
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:30:56'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:30:56'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:30:56'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:30:56'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:30:56'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:30:56'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:30:56'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:31:12'!
+ERROR!
+
+or := OrderedCollection with: '123'.!
+
+or includes: '123'!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:32:42' prior: 50473958!
+catalogueIncludes: aBook
+
+	^ ((catalogue 		includes: aBook) ifFalse: [self error: 'Cannot add a book not registered in our inventory.'])! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:32:45'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:32:45'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:32:45'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:32:45'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:32:45'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:32:45'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:32:45'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:33:41'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:33:41'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:33:41'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:33:41'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:33:41'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:33:41'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:33:41'!
+ERROR!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:34:32' prior: 50474058!
+catalogueIncludes: aBook
+
+	^ (catalogue 		includes: aBook) ! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:34:50' prior: 50473744!
+add: aBook 
+	(self catalogueIncludes: aBook) ifFalse: [self error: 'Cannot add a book not registered in our inventory.'].
+	items add: aBook.! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:34:54'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:34:54'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:34:54'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:34:54'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:34:54'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:34:54'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:34:54'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:34:58'!
+ERROR!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:35:29' prior: 50474020!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aCatalogue aBook |
+	aCatalogue _ (OrderedCollection with: '9782253096405').
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9782253096405'.
+	aCart add: aBook.
+
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:35:31'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:35:31'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:35:38'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:35:38'!
+ERROR!
+!Cart methodsFor: 'initialize' stamp: 'LDMAF 6/6/2022 17:37:05' prior: 50473713!
+initializeWith: aCatalogue 
+	items _ OrderedCollection new.
+	catalogue _ aCatalogue .! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:37:08'!
+PASSED!
+
+!classRemoval: #Book stamp: 'LDMAF 6/6/2022 17:37:18'!
+Object subclass: #Book
+	instanceVariableNames: 'isbn'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:41:41' prior: 50473874!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: 'hola' of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:42:16'!
+isAValidQuantity: anAmount
+
+	^ (anAmount <= 0) ifTrue: [self error: 'Cannot add an invalid amount of books.']! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:42:16' prior: 50473694!
+add: anAmount of: aBook 
+	self isAValidQuantity: anAmount.
+	anAmount timesRepeat: [self add: aBook].! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:42:43' prior: 50474225!
+isAValidQuantity: anAmount
+
+	^ ((anAmount <= 0) or: []).! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:43:03' prior: 50474232!
+add: anAmount of: aBook 
+	(self isAValidQuantity: anAmount) ifFalse: [self error: 'Cannot add an invalid amount of books.'].
+	anAmount timesRepeat: [self add: aBook].! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:43:34' prior: 50474238!
+isAValidQuantity: anAmount
+
+	^ ((anAmount <= 0) or: [anAmount class = Integer]).! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:43:45' prior: 50474251!
+isAValidQuantity: anAmount
+
+	^ ((anAmount > 0) or: [anAmount class = Integer]).! !
+
+1 isKindOf: Integer!
+
+1.1 isKindOf: Integer!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:44:39' prior: 50474257!
+isAValidQuantity: anAmount
+
+	^ ((anAmount > 0) or: [anAmount isKindOf: Integer]).! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:44:42'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:44:42'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:44:42'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:44:42'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:44:42'!
+FAILURE!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:44:42'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:44:42'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:44:42'!
+FAILURE!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:45:08'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:45:08'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:45:08'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:45:08'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:45:08'!
+FAILURE!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:45:08'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:45:08'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:45:08'!
+FAILURE!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:45:22'!
+FAILURE!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:45:53'!
+FAILURE!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:47:13'!
+isAnInvalidQuantity: anAmount
+
+	^ ((anAmount > 0) or: [anAmount isKindOf: Integer]).! !
+!Cart methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 17:47:13' prior: 50474243!
+add: anAmount of: aBook 
+	(self isAnInvalidQuantity: anAmount) ifFalse: [self error: 'Cannot add an invalid amount of books.'].
+	anAmount timesRepeat: [self add: aBook].! !
+
+!methodRemoval: Cart #isAValidQuantity: stamp: 'LDMAF 6/6/2022 17:47:13'!
+isAValidQuantity: anAmount
+
+	^ ((anAmount > 0) or: [anAmount isKindOf: Integer]).!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:47:25' prior: 50474329!
+isAnInvalidQuantity: anAmount
+
+	^ ((anAmount <= 0) or: [(anAmount isKindOf: Integer) not]).! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:47:39' prior: 50474335!
+add: anAmount of: aBook 
+	(self isAnInvalidQuantity: anAmount) ifTrue: [self error: 'Cannot add an invalid amount of books.'].
+	anAmount timesRepeat: [self add: aBook].! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:47:46'!
+PASSED!
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 17:49:06' prior: 50474348!
+isAnInvalidQuantity: anAmount
+
+	^ (((anAmount isKindOf: Integer) not) or: [anAmount <= 0]).! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 17:49:30'!
+PASSED!
+
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #CheckoutTest category: 'TusLibros' stamp: 'LDMAF 6/6/2022 18:25:40'!
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CheckoutTest methodsFor: 'nil' stamp: 'LDMAF 6/6/2022 18:26:12'!
+test01CheckoutOfAnEmptyCartShouldFail! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:26:14'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:26:42' prior: 50474424!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue |
+	aCatalogue := OrderedCollection new.! !
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 18:29:11'!
+Object subclass: #Cashier
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:29:02' prior: 50474432!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error description: 'Cannot checkout an empty cart.'! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:29:16'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:29:16'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:29:25'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:29:50'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:29:55' prior: 50474445!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error description: 'Cannot checkout an empty cart.'.! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:29:58'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:29:58'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:30:09'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:30:09'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:30:38' prior: 50474470!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error description: 'Cannot checkout an empty cart.'.
+	self should: [aCart add: 0 of: ''] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:30:44'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:30:49' prior: 50474495!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error description: 'Cannot checkout an empty cart.'.
+! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:30:54'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:31:05'!
+PASSED!
+
+!classRemoval: #Cashier stamp: 'LDMAF 6/6/2022 18:31:36'!
+Object subclass: #Cashier
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cart stamp: 'LDMAF 6/6/2022 18:31:36'!
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CheckoutTest stamp: 'LDMAF 6/6/2022 18:31:36'!
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/6/2022 18:31:36'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros.st----!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:31:50'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 18:32:16'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:32:26' prior: 50474629!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error description: 'Cannot falopa add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: 'hola' of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 18:32:28'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:32:36' prior: 50474798!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: 'hola' of: aBook] raise: Error description: 'Cannot add an invalid amount of books.'.! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:33:44'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:34:18' prior: 50474694!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error withMessageText: 'Cannot checkout an empty cart.'.
+! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:34:20'!
+FAILURE!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:34:20'!
+FAILURE!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:34:38' prior: 50474822!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection with: '9789500708517'.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error withMessageText: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error withMessageText: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: 'hola' of: aBook] raise: Error withMessageText: 'Cannot add an invalid amount of books.'.! !
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:34:45' prior: 50474606!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ OrderedCollection new.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9786070776564'.
+	
+	self should: [aCart add: aBook] raise: Error withMessageText: 'Cannot add a book not registered in our inventory.'.! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 18:34:51'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:34:56'!
+FAILURE!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:34:56'!
+FAILURE!
+!CheckoutTest methodsFor: 'assertions' stamp: 'LDMAF 6/6/2022 18:35:04' overrides: 16961444!
+assert: aFalse description: aBlockClosure 
+	self shouldBeImplemented.! !
+
+!methodRemoval: CheckoutTest #assert:description: stamp: 'LDMAF 6/6/2022 18:35:16'!
+assert: aFalse description: aBlockClosure 
+	self shouldBeImplemented.!
+!Cashier methodsFor: 'no messages' stamp: 'LDMAF 6/6/2022 18:35:51'!
+checkout: aCart
+	^''! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:36:07' prior: 50474936!
+checkout: aCart
+	^'Cannot checkout an empty cart.'! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:36:11'!
+FAILURE!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:36:11'!
+FAILURE!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:36:20'!
+FAILURE!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:36:20'!
+FAILURE!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:36:40' prior: 50474940!
+checkout: aCart
+	^self error: 'Cannot checkout an empty cart.'! !
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 18:36:43'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 18:38:37'!
+test02CheckoutOfACartWithOneItemShouldBeOk
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789701062883'.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error withMessageText: 'Cannot checkout an empty cart.'.
+! !
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldBeOk stamp: 'LDMAF 6/6/2022 18:38:48'!
+PASSED!
+
+Date new!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:10:41' prior: 50474966!
+test02CheckoutOfACartWithOneItemShouldBeOk
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789701062883'.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	self assert: false.
+! !
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:11:06'!
+test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789701062883'.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	self assert: false.
+! !
+
+!methodRemoval: CheckoutTest #test02CheckoutOfACartWithOneItemShouldBeOk stamp: 'LDMAF 6/6/2022 19:11:06'!
+test02CheckoutOfACartWithOneItemShouldBeOk
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789701062883'.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	self assert: false.
+!
+
+prices _ Dictionary new.!
+
+	prices add: '9780316769532'->20; add: '9780062513809'->3; add: '9789504974567'->1.!
+
+prices!
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 19:17:37'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 19:17:38'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue prices'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:17:36' overrides: 16920235!
+initialize
+	catalogue _ Bag with: '9780316769532' with: '9780062513809' with: '9789504974567'.
+	prices _ Dictionary new.
+	prices add: '9780316769532'->20; add: '9780062513809'->15; add: '9789504974567'->10.
+	! !
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:19:14' prior: 50474993!
+test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789504974567'.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	self assert: ((aCashier checkout: aCart) total = 10).
+! !
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice stamp: 'LDMAF 6/6/2022 19:19:23'!
+ERROR!
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice stamp: 'LDMAF 6/6/2022 19:19:23'!
+ERROR!
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 19:20:57'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue prices totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:20:56' prior: 50474958!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	totalPurchase _ 10.! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:21:09' prior: 50475031 overrides: 16920235!
+initialize
+	catalogue _ Bag with: '9780316769532' with: '9780062513809' with: '9789504974567'.
+	prices _ Dictionary new.
+	prices add: '9780316769532'->20; add: '9780062513809'->15; add: '9789504974567'->10.
+	totalPurchase _ 0.
+	! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:21:29'!
+total
+	^totalPurchase.! !
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice stamp: 'LDMAF 6/6/2022 19:21:34'!
+ERROR!
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice stamp: 'LDMAF 6/6/2022 19:21:34'!
+ERROR!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:21:56' prior: 50475041!
+test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789504974567'.
+	aCart := Cart with: aCatalogue.
+	aCart add: '9789504974567'.
+	aCashier := Cashier new.
+	self assert: ((aCashier checkout: aCart) total = 10).
+! !
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice stamp: 'LDMAF 6/6/2022 19:21:59'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:22:42'!
+test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789504974567'.
+	aCart := Cart with: aCatalogue.
+	aCart add: '9789504974567'.
+	aCashier := Cashier new.
+	self assert: ((aCashier checkout: aCart) total = 10).
+! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 19:23:23'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:23:28' prior: 50475115!
+test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := OrderedCollection with: '9789504974567'.
+	aCart := Cart with: aCatalogue.
+	aCart add: 3 of: '9789504974567'.
+	aCashier := Cashier new.
+	self assert: ((aCashier checkout: aCart) total = 30).
+! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 19:23:31'!
+FAILURE!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 19:23:31'!
+FAILURE!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:27:13' prior: 50475068!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	totalPurchase _ 10.! !
+
+Object subclass: #Catalogue
+	instanceVariableNames: 'itemList'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Catalogue category: 'TusLibros' stamp: 'LDMAF 6/6/2022 19:28:35'!
+Object subclass: #Catalogue
+	instanceVariableNames: 'itemList'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Catalogue class methodsFor: 'nil' stamp: 'LDMAF 6/6/2022 19:42:13'!
+with: aDictionary
+	^self new initializeWith: aDictionary! !
+!Catalogue methodsFor: 'nil' stamp: 'LDMAF 6/6/2022 19:42:37'!
+initializeWith: aDictionary
+	itemList _ aDictionary! !
+!Catalogue methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:42:59' overrides: 16920235!
+initialize
+	itemList _ Dictionary new.! !
+!Cart methodsFor: 'initialize' stamp: 'LDMAF 6/6/2022 19:43:19' prior: 50474755 overrides: 16920235!
+initialize
+	items _ OrderedCollection new.
+	catalogue _ Catalogue new.! !
+!Cart methodsFor: 'operations' stamp: 'LDMAF 6/6/2022 19:44:24' prior: 50474742!
+catalogueIncludes: aBook
+
+	^ (catalogue 		includesKey: aBook) ! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:45:22' prior: 50475076 overrides: 16920235!
+initialize
+	catalogue _ Bag with: '9780316769532' with: '9780062513809' with: '9789504974567'.
+	prices _ Catalogue new.
+	prices add: '9780316769532'->20; add: '9780062513809'->15; add: '9789504974567'->10.
+	totalPurchase _ 0.
+	! !
+
+!methodRemoval: Cart #initialize stamp: 'LDMAF 6/6/2022 19:47:06'!
+initialize
+	items _ OrderedCollection new.
+	catalogue _ Catalogue new.!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:48:40'!
+initializeWith: aCatalogue
+	catalogue _ aCatalogue.
+	totalPurchase _ 0.
+	! !
+
+!methodRemoval: Cashier #initialize stamp: 'LDMAF 6/6/2022 19:48:46'!
+initialize
+	catalogue _ Bag with: '9780316769532' with: '9780062513809' with: '9789504974567'.
+	prices _ Catalogue new.
+	prices add: '9780316769532'->20; add: '9780062513809'->15; add: '9789504974567'->10.
+	totalPurchase _ 0.
+	!
+
+!classRemoval: #Catalogue stamp: 'LDMAF 6/6/2022 19:53:02'!
+Object subclass: #Catalogue
+	instanceVariableNames: 'itemList'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:56:14' prior: 50475132!
+test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10.
+	aCart := Cart with: aCatalogue.
+	aCart add: 3 of: '9789504974567'.
+	aCashier := Cashier new.
+	self assert: ((aCashier checkout: aCart) total = 30).
+! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:56:20'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 19:56:20'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 19:56:20'!
+FAILURE!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 19:56:20'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 19:56:20'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 19:56:20'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 19:56:20'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:56:59'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 19:56:59'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 19:56:59'!
+FAILURE!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 19:56:59'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 19:56:59'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 19:56:59'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 19:56:59'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:57:05'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:57:05'!
+ERROR!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:57:50' prior: 50474590!
+test01CartIsEmptyWhenIsCreated
+	|aCart|
+	
+	aCart _ Cart with: Dictionary new.
+	
+	self assert: (aCart isEmpty)! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:57:52'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:57:52'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 19:57:52'!
+ERROR!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 19:57:52'!
+FAILURE!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 19:57:52'!
+ERROR!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 19:57:52'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 19:57:52'!
+ERROR!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 19:57:52'!
+ERROR!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:57:57'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:58:03' prior: 50475294!
+test01CartIsEmptyWhenIsCreated
+	|aCart|
+	
+	aCart _ Cart with: (Dictionary new).
+	
+	self assert: (aCart isEmpty)! !
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 19:58:05'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 19:58:10'!
+ERROR!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 19:58:10'!
+ERROR!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:59:08' prior: 50474596!
+test02CartIsNotEmptyWhenAProductIsAdded
+	|aCart aCatalogue aBook |
+	aCatalogue _ Dictionary new.
+	aCatalogue add: '9782253096405'->10.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9782253096405'.
+	aCart add: aBook.
+
+	self assert: (aCart isEmpty not)! !
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 19:59:11'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:59:27' prior: 50474884!
+test03CantAddBooksNotEditedByEditorToCart
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ Dictionary new.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9786070776564'.
+	
+	self should: [aCart add: aBook] raise: Error withMessageText: 'Cannot add a book not registered in our inventory.'.! !
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 19:59:29'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 19:59:57' prior: 50474618!
+test04CartCanAddMultipleAmountsOfTheSameBook
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ Dictionary new.
+	aCatalogue add: '9789500708517'->2.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	aCart add: 10 of: aBook.
+	
+	self assert: (aCart booksQuantity = 10).! !
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 20:00:09'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:00:27' prior: 50474864!
+test05CartThrowsErrorWhenAnInvalidAmountIsRequested
+	|aCart aCatalogue aBook |
+	
+	aCatalogue _ Dictionary new.
+	aCatalogue add: '9789500708517'->10.
+	aCart _ Cart with: aCatalogue.
+	aBook _ '9789500708517'.
+	
+	self should: [aCart add: 0 of: aBook] raise: Error withMessageText: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: -1 of: aBook] raise: Error withMessageText: 'Cannot add an invalid amount of books.'.
+	self should: [aCart add: 'hola' of: aBook] raise: Error withMessageText: 'Cannot add an invalid amount of books.'.! !
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 20:00:31'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:01:18' prior: 50474648!
+test06CartAddedBooksAreCorrect
+	|aCart aBook1 aBook2 aCatalogue|
+	
+	aCatalogue _ Dictionary new.
+	aCatalogue add: '9789500708517'-> 20;add: '9781644730942'->10.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ '9789500708517'.
+	aBook2 _ '9781644730942'.
+	
+	aCart add: aBook1.
+	aCart add: 3 of: aBook2.
+	self assert: (aCart doesInclude: 3 of: aBook2).
+	self assert: (aCart doesInclude: 1 of: aBook1).
+	self assert: (aCart booksQuantity = 4).
+	
+	
+	! !
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 20:01:21'!
+PASSED!
+!CartTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:01:46' prior: 50474664!
+test07CartCanRequestItsContents
+	|aCart aBook1 aBook2 aCatalogue cartContents|
+	
+	aCatalogue _ Dictionary new.
+	aCatalogue add: '9788499983196'-> 20;add: '9786070731747'->10.
+	aCart _ Cart with: aCatalogue.
+	aBook1 _ '9788499983196'.
+	aBook2 _ '9786070731747'.
+	
+	aCart add: aBook1.
+	aCart add: 2 of: aBook2.
+	cartContents _ aCart contents.
+	self assert: (( cartContents occurrencesOf: aBook1 ) = 1).
+	self assert: (( cartContents occurrencesOf: aBook2 ) = 2).
+	self assert: (cartContents size = 3).
+	
+	! !
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 20:01:49'!
+PASSED!
+
+!testRun: #CartTest #test01CartIsEmptyWhenIsCreated stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CartTest #test02CartIsNotEmptyWhenAProductIsAdded stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CartTest #test03CantAddBooksNotEditedByEditorToCart stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CartTest #test04CartCanAddMultipleAmountsOfTheSameBook stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CartTest #test05CartThrowsErrorWhenAnInvalidAmountIsRequested stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CartTest #test06CartAddedBooksAreCorrect stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CartTest #test07CartCanRequestItsContents stamp: 'LDMAF 6/6/2022 20:01:52'!
+PASSED!
+
+!testRun: #CheckoutTest #test01CheckoutOfAnEmptyCartShouldFail stamp: 'LDMAF 6/6/2022 20:02:05'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:02:12' prior: 50474845!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue :=  Dictionary new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error withMessageText: 'Cannot checkout an empty cart.'.
+! !
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:02:35' prior: 50475099!
+test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567'->10.
+	aCart := Cart with: aCatalogue.
+	aCart add: '9789504974567'.
+	aCashier := Cashier new.
+	self assert: ((aCashier checkout: aCart) total = 10).
+! !
+
+!testRun: #CheckoutTest #test02CheckoutOfACartWithOneItemShouldHaveACorrectCheckoutPrice stamp: 'LDMAF 6/6/2022 20:02:38'!
+PASSED!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:02:46'!
+FAILURE!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:02:46'!
+FAILURE!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:05:06' prior: 50475153!
+checkout: aCart
+	| total |
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart items do: [:aBook | ].
+	totalPurchase _ 10.! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:05:38' prior: 50475520!
+checkout: aCart
+	| total |
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart items do: [:aBook | totalPurchase _ totalPurchase + catalogue at: aBook].
+	totalPurchase _ 10.! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:05:47' prior: 50475528!
+checkout: aCart
+	
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart items do: [:aBook | totalPurchase _ totalPurchase + catalogue at: aBook].
+	^totalPurchase.! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:05:53' prior: 50475538!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart items do: [:aBook | totalPurchase _ totalPurchase + catalogue at: aBook].
+	^totalPurchase.! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:06:17'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:06:17'!
+ERROR!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:06:40' prior: 50475547!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart contents do: [:aBook | totalPurchase _ totalPurchase + catalogue at: aBook].
+	^totalPurchase.! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:06:44'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:06:44'!
+ERROR!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:07:03' prior: 50475565!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart contents do: [:aBook | totalPurchase _ totalPurchase + (catalogue at: aBook)].
+	^totalPurchase.! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:07:08'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:07:08'!
+ERROR!
+
+dic := Dictionary new.!
+
+dic add: 'hola'->5.!
+
+dic at:'hola'!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:09:42'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:09:42'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:10:07'!
+ERROR!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:12:44' prior: 50475230!
+test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10.
+	aCart := Cart with: aCatalogue.
+	aCart add: 3 of: '9789504974567'.
+	aCashier := Cashier with: aCatalogue.
+	self assert: ((aCashier checkout: aCart) total = 30).
+! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:12:47'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:12:47'!
+ERROR!
+!Cashier class methodsFor: 'nil' stamp: 'LDMAF 6/6/2022 20:13:30'!
+with: aCatalogue
+	^self new initializeWith: aCatalogue! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:13:35'!
+ERROR!
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:13:35'!
+ERROR!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:14:01' prior: 50475583!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart contents do: [:aBook | totalPurchase _ totalPurchase + (catalogue at: aBook)].! !
+
+!testRun: #CheckoutTest #test03CheckoutOfACartWithManyTimesOfAnItemCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:14:09'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:21:01'!
+test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10; add: '9789505157532' -> 50.
+	aCart := Cart with: aCatalogue.
+	aCart add: 5 of: '9789504974567'.
+	aCart add: 3 of: '9789504974567'.
+	aCashier := Cashier with: aCatalogue.
+	self assert: ((aCashier checkout: aCart) total = 200).
+! !
+
+!testRun: #CheckoutTest #test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:21:04'!
+FAILURE!
+
+!testRun: #CheckoutTest #test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:21:04'!
+FAILURE!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:21:17' prior: 50475662!
+test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectPrice
+	| aCart aCatalogue aCashier |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10; add: '9789505157532' -> 50.
+	aCart := Cart with: aCatalogue.
+	aCart add: 5 of: '9789504974567'.
+	aCart add: 3 of: '9789505157532'.
+	aCashier := Cashier with: aCatalogue.
+	self assert: ((aCashier checkout: aCart) total = 200).
+! !
+
+!testRun: #CheckoutTest #test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectPrice stamp: 'LDMAF 6/6/2022 20:21:19'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:27:47'!
+test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts
+	| aCart aCatalogue aCashier expectedProducts |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10; add: '9789505157532' -> 50.
+	
+	aCart := Cart with: aCatalogue.
+	aCart add: 5 of: '9789504974567'.
+	aCart add: 3 of: '9789505157532'.
+	
+	aCashier := Cashier with: aCatalogue.
+	
+	expectedProducts := Bag new. 
+	expectedProducts add: '9789504974567' withOccurrences: 5.
+	expectedProducts add: '9789505157532' withOccurrences: 3.
+	
+	self assert: ((aCashier checkout: aCart) products = expectedProducts).
+! !
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:28:01'!
+test05CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts
+	| aCart aCatalogue aCashier expectedProducts |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10; add: '9789505157532' -> 50.
+	
+	aCart := Cart with: aCatalogue.
+	aCart add: 5 of: '9789504974567'.
+	aCart add: 3 of: '9789505157532'.
+	
+	aCashier := Cashier with: aCatalogue.
+	
+	expectedProducts := Bag new. 
+	expectedProducts add: '9789504974567' withOccurrences: 5.
+	expectedProducts add: '9789505157532' withOccurrences: 3.
+	
+	self assert: ((aCashier checkout: aCart) products = expectedProducts).
+! !
+
+!methodRemoval: CheckoutTest #test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts stamp: 'LDMAF 6/6/2022 20:28:01'!
+test04CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts
+	| aCart aCatalogue aCashier expectedProducts |
+	aCatalogue := Dictionary new.
+	aCatalogue add: '9789504974567' -> 10; add: '9789505157532' -> 50.
+	
+	aCart := Cart with: aCatalogue.
+	aCart add: 5 of: '9789504974567'.
+	aCart add: 3 of: '9789505157532'.
+	
+	aCashier := Cashier with: aCatalogue.
+	
+	expectedProducts := Bag new. 
+	expectedProducts add: '9789504974567' withOccurrences: 5.
+	expectedProducts add: '9789505157532' withOccurrences: 3.
+	
+	self assert: ((aCashier checkout: aCart) products = expectedProducts).
+!
+
+!testRun: #CheckoutTest #test05CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts stamp: 'LDMAF 6/6/2022 20:28:06'!
+ERROR!
+
+!testRun: #CheckoutTest #test05CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts stamp: 'LDMAF 6/6/2022 20:28:06'!
+ERROR!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:28:19'!
+products
+	^totalPurchase.! !
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 20:28:55'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue items totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 20:29:20'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue items totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue products totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classDefinition: #Cashier category: 'TusLibros' stamp: 'LDMAF 6/6/2022 20:29:26'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue products totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:29:32' prior: 50475782!
+products
+	^products.! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:29:58' prior: 50475649!
+checkout: aCart
+	(aCart isEmpty) ifTrue: [^self error: 'Cannot checkout an empty cart.'].
+	aCart contents do: [:aBook | 
+		totalPurchase _ totalPurchase + (catalogue at: aBook).
+		products add: aBook		
+		].! !
+!Cashier methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 20:30:09' prior: 50475209!
+initializeWith: aCatalogue
+	catalogue _ aCatalogue.
+	products _ Bag new.
+	totalPurchase _ 0.
+	! !
+
+!testRun: #CheckoutTest #test05CheckoutOfACartWithManyTimesOfManyItemsCheckoutsCorrectProducts stamp: 'LDMAF 6/6/2022 20:30:26'!
+PASSED!
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 21:02:15' prior: 50475482!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue :=  Dictionary new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error withMessageText: 'Cannot checkout an empty cart.'.
+	"TODO: Chequear que no pasa lo que no deberia pasar"! !
+!CheckoutTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/6/2022 21:30:00' prior: 50475843!
+test01CheckoutOfAnEmptyCartShouldFail
+	| aCart aCatalogue aCashier |
+	aCatalogue :=  Dictionary new.
+	aCart := Cart with: aCatalogue.
+	aCashier := Cashier new.
+	
+	self should: [aCashier checkout: aCart] raise: Error withMessageText: 'Cannot checkout an empty cart.'.
+	"TODO: Chequear que no pasa lo que no deberia pasar" ! !
+
+----QUIT----(6 June 2022 21:30:47) CuisUniversity-5053.image priorSource: 4540086!
+
+----STARTUP---- (9 June 2022 17:27:37) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+!classRemoval: #Cashier stamp: 'LDMAF 6/9/2022 17:27:50'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue products totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cart stamp: 'LDMAF 6/9/2022 17:27:51'!
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CheckoutTest stamp: 'LDMAF 6/9/2022 17:27:51'!
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/9/2022 17:27:51'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+Date new!
+
+Date today year!
+
+Date today year!
+
+Date today year!
+
+Date today year!
+
+Date today year start!
+
+Date today year duration!
+
+----STARTUP---- (9 June 2022 18:31:21) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+Date today!
+
+----STARTUP---- (13 June 2022 17:11:48) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+!classRemoval: #Cashier stamp: 'LDMAF 6/13/2022 17:12:06'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue products totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cart stamp: 'LDMAF 6/13/2022 17:12:06'!
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CheckoutTest stamp: 'LDMAF 6/13/2022 17:12:07'!
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/13/2022 17:12:07'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros.st----!
+
+!classRemoval: #TusLibrosService stamp: 'LDMAF 6/13/2022 21:20:10'!
+Object subclass: #TusLibrosService
+	instanceVariableNames: 'dictionary users carts tusLibrosCatalogue cartsTimestamps debitBehavior salesBook usersActiveCarts clientsCarts clientsPurchases'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #StoreTestObjectsFactory stamp: 'LDMAF 6/13/2022 21:20:10'!
+Object subclass: #StoreTestObjectsFactory
+	instanceVariableNames: 'today'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Sale stamp: 'LDMAF 6/13/2022 21:20:10'!
+Object subclass: #Sale
+	instanceVariableNames: 'total purchasedItems id'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CreditCard stamp: 'LDMAF 6/13/2022 21:20:11'!
+Object subclass: #CreditCard
+	instanceVariableNames: 'expiration number owner'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cashier stamp: 'LDMAF 6/13/2022 21:20:11'!
+Object subclass: #Cashier
+	instanceVariableNames: 'cart salesBook merchantProcessor creditCard total'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cart stamp: 'LDMAF 6/13/2022 21:20:11'!
+Object subclass: #Cart
+	instanceVariableNames: 'catalog items'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #TusLibrosInterfaceTest stamp: 'LDMAF 6/13/2022 21:20:12'!
+TestCase subclass: #TusLibrosInterfaceTest
+	instanceVariableNames: 'usersDicc today debitBehavior'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CashierTest stamp: 'LDMAF 6/13/2022 21:20:12'!
+TestCase subclass: #CashierTest
+	instanceVariableNames: 'testObjectsFactory debitBehavior'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/13/2022 21:20:12'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'testObjectsFactory'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros-Model Ejercicio it4.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibrosREST Ejercicio it4.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros-Tests Ejercicio it4.st----!
+
+!testRun: #TusLibrosSystemFacadeTest #test01CanCreateCartWithValidUserAndPassword stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test02CanNotCreateCartWithInvalidUser stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test03CanNotCreateCartWithInvalidPassword stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test04CanAddItemsToACreatedCart stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test05CanNotAddItemToNotCreatedCart stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test06CanNotAddItemNotSellByTheStore stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test08CanNotListCartOfInvalidCartId stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test09ListCartReturnsTheRightNumberOfItems stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test10CheckOutReturnsTransactionIdAndImpactsCustomerPurchases stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test10_1_CanNotCheckoutAnAlreadyCheckedOutCart stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test11CanNotCheckoutANotCreatedCart stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test12CanNotCheckoutAnEmptyCart stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test13CanNotCheckoutWithAnExpiredCreditCard stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test14ListPurchasesIncludesBoughtItems stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test15CanNotListPurchasesOfInvalidCustomer stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test16CanNotListPurchasesOfValidCustomerWithInvalidPassword stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test17CanNotAddToCartWhenSessionIsExpired stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test18CanNotListCartWhenSessionIsExpired stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test19CanNotCheckOutCartWhenSessionIsExpired stamp: 'LDMAF 6/13/2022 21:21:12'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:21:14'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test21StorePerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:21:16'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:21:45'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:21:47'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:22:43'!
+FAILURE!
+
+sema := Semaphore new.!
+
+sema signal!
+
+sema signal!
+
+sema wait!
+
+sema!
+
+sema wait!
+
+ioThread _ [1 + 1] fork!
+
+ioThread !
+
+[^(1 + 1)] fork!
+
+a _ 0.
+req _ [
+		(Delay forSeconds: 1) wait.
+		a + 1.
+	].!
+
+req _ [
+		(Delay forSeconds: 3) wait.
+		a + 1.
+	].!
+
+req fork!
+
+a!
+
+
+a _ 0.
+req _ [
+		(Delay forSeconds: 3) wait.
+		a _ a + 1.
+	].!
+
+
+a _ 0.
+req _ [
+		(Delay forSeconds: 3) wait.
+		a _ a + 1.
+	].!
+
+a!
+
+a !
+
+req fork!
+
+a!
+
+a!
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'LDMAF 6/13/2022 21:33:34' prior: 50333866!
+totalSales
+	|request|
+	
+	request _ [ |total|
+			(Delay forSeconds: 1) wait.
+			total _ salesBook sum: [:aSale | | totalQuantity |
+				totalQuantity := 0.
+				aSale lineItemsDo: [:aLineItem | totalQuantity := totalQuantity + aLineItem quantity].
+				totalQuantity].
+		].
+	request fork.
+	
+! !
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'LDMAF 6/13/2022 21:41:21' prior: 50335908!
+totalSales
+	|request|
+	
+	request _ [ |total|
+			(Delay forSeconds: 1) wait.
+			total _ salesBook sum: [:aSale | | totalQuantity |
+				totalQuantity := 0.
+				aSale lineItemsDo: [:aLineItem | totalQuantity := totalQuantity + aLineItem quantity].
+				totalQuantity].
+		].
+	request fork.
+	
+! !
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'LDMAF 6/13/2022 21:42:24' prior: 50335921!
+totalSales
+	|request deferredTotalSales|
+	deferredTotalSales _ [^0].
+	request _ [ |total|
+			(Delay forSeconds: 1) wait.
+			total _ salesBook sum: [:aSale | | totalQuantity |
+				totalQuantity := 0.
+				aSale lineItemsDo: [:aLineItem | totalQuantity := totalQuantity + aLineItem quantity].
+				totalQuantity].
+		].
+	request fork.
+	^deferredTotalSales.
+! !
+
+defValue _ [^0].
+
+req _ [
+		(Delay forSeconds: 3) wait.
+		defValue _ [^5].
+	].
+
+req fork.!
+
+defValue value.!
+
+defValue !
+
+defValue value!
+
+defValue _ [0].
+
+req _ [
+		(Delay forSeconds: 3) wait.
+		defValue _ [5].
+	].!
+
+defValue value!
+
+req fork.!
+
+defValue value!
+
+defValue value!
+
+defValue value!
+
+defValue _ [0].
+
+req _ [
+		(Delay forSeconds: 3) wait.
+		defValue _ [5].
+	].!
+
+req fork!
+
+defValue value!
+
+defValue value!
+
+defValue _ 0.
+
+req _ [
+		(Delay forSeconds: 3) wait.
+		defValue _ 5.
+	].
+
+req fork!
+
+defValue5 !
+
+defValue!
+
+
+defValue _ 0.
+
+req _ [
+		(Delay forSeconds: 3) wait.
+		defValue _ 5.
+	].
+
+req fork!
+
+defValue!
+
+defValue!
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'LDMAF 6/13/2022 21:47:10' prior: 50335934!
+totalSales
+	|request deferredTotalSales|
+	deferredTotalSales _ -1.
+	request _ [ |total|
+			(Delay forSeconds: 1) wait.
+			total _ salesBook sum: [:aSale | | totalQuantity |
+				totalQuantity := 0.
+				aSale lineItemsDo: [:aLineItem | totalQuantity := totalQuantity + aLineItem quantity].
+				totalQuantity].
+			deferredTotalSales _ total.
+		].
+	request fork.
+	^deferredTotalSales.
+! !
+!Behavior method!
+initialize
+	(today _ [
+	(DateAndTime
+		cover: (23 to: 33)
+		declaredAt: (23 to: 33)) now ] valueCoveringAll:
+		{35 to: 37})
+		cover: (14 to: 18)
+		declaredAt: (14 to: 18).! !
+!Behavior method!
+today
+	^ today
+		cover: (12 to: 16)
+		declaredAt: (12 to: 16).! !
+!Behavior method!
+now: aTime
+	^ [
+	([
+	(self coverAll:
+		{17 to: 20}) new ] valueCoveringAll:
+		{22 to: 24}) initializeNow:
+		(aTime
+			cover: (41 to: 45)
+			declaredAt: (6 to: 10)) ] valueCoveringAll:
+		{26 to: 39}.! !
+!Behavior method!
+initializeNow: aTime
+	(now _ aTime
+		cover: (32 to: 36)
+		declaredAt: (16 to: 20))
+		cover: (25 to: 27)
+		declaredAt: (25 to: 27).! !
+!Behavior method!
+defaultCatalog
+	^ [ | cascadeReceiver |
+	cascadeReceiver _ [
+	(Dictionary
+		cover: (21 to: 30)
+		declaredAt: (21 to: 30)) new ] valueCoveringAll:
+		{32 to: 34}.
+	[
+	cascadeReceiver
+		at:
+			([
+			(self coverAll:
+				{42 to: 45}) itemSellByTheStore ] valueCoveringAll:
+				{47 to: 64})
+		put:
+			([
+			(self coverAll:
+				{71 to: 74}) itemSellByTheStorePrice ] valueCoveringAll:
+				{76 to: 98}) ] valueCoveringAll:
+		{38 to: 40. 66 to: 69}.
+	[
+	cascadeReceiver
+		at:
+			([
+			(self coverAll:
+				{107 to: 110}) anotherItemSellByTheStore ] valueCoveringAll:
+				{112 to: 136})
+		put:
+			([
+			(self coverAll:
+				{143 to: 146}) anotherItemSellByTheStorePrice ] valueCoveringAll:
+				{148 to: 177}) ] valueCoveringAll:
+		{103 to: 105. 138 to: 141}.
+	[ cascadeReceiver yourself ] valueCoveringAll:
+		{182 to: 189} ] value.! !
+!Behavior method!
+itemSellByTheStore
+	^ 'validBook' coverAll:
+		{25 to: 35}.! !
+!Behavior method!
+itemSellByTheStorePrice
+	^ 10 coverAll:
+		{29 to: 30}.! !
+!Behavior method!
+anotherItemSellByTheStore
+	^ 'anotherValidBook' coverAll:
+		{31 to: 48}.! !
+!Behavior method!
+anotherItemSellByTheStorePrice
+	^ 15 coverAll:
+		{36 to: 37}.! !
+!Behavior method!
+authenticatingWith: aValidUsersAndPasswords acceptingItemsOf: aCatalog registeringOn: aSalesBook debitingThrought: aMerchantProcessor measuringTimeWith: aClock
+	^ [
+	([
+	(self coverAll:
+		{172 to: 175}) new ] valueCoveringAll:
+		{177 to: 179})
+		initializeAuthenticatingWith:
+			(aValidUsersAndPasswords
+				cover: (214 to: 236)
+				declaredAt: (21 to: 43))
+		acceptingItemsOf:
+			(aCatalog
+				cover: (259 to: 266)
+				declaredAt: (65 to: 72))
+		registeringOn:
+			(aSalesBook
+				cover: (286 to: 295)
+				declaredAt: (91 to: 100))
+		debitingThrought:
+			(aMerchantProcessor
+				cover: (318 to: 335)
+				declaredAt: (122 to: 139))
+		measuringTimeWith:
+			(aClock
+				cover: (359 to: 364)
+				declaredAt: (162 to: 167)) ] valueCoveringAll:
+		{184 to: 212. 241 to: 257. 271 to: 284. 300 to: 316. 340 to: 357}.! !
+!Behavior method!
+initializeAuthenticatingWith: aValidUsersAndPasswords acceptingItemsOf: aCatalog registeringOn: aSalesBook debitingThrought: aMerchantProcessor measuringTimeWith: aClock
+	(validUsersAndPasswords _ aValidUsersAndPasswords
+		cover: (207 to: 229)
+		declaredAt: (31 to: 53))
+		cover: (181 to: 202)
+		declaredAt: (181 to: 202).
+	(catalog _ aCatalog
+		cover: (244 to: 251)
+		declaredAt: (75 to: 82))
+		cover: (233 to: 239)
+		declaredAt: (233 to: 239).
+	(salesBook _ aSalesBook
+		cover: (268 to: 277)
+		declaredAt: (101 to: 110))
+		cover: (255 to: 263)
+		declaredAt: (255 to: 263).
+	(merchantProcessor _ aMerchantProcessor
+		cover: (302 to: 319)
+		declaredAt: (132 to: 149))
+		cover: (281 to: 297)
+		declaredAt: (281 to: 297).
+	(clock _ aClock
+		cover: (332 to: 337)
+		declaredAt: (172 to: 177))
+		cover: (323 to: 327)
+		declaredAt: (323 to: 327).
+	(cartSessions _ [
+	(Dictionary
+		cover: (359 to: 368)
+		declaredAt: (359 to: 368)) new ] valueCoveringAll:
+		{370 to: 372})
+		cover: (343 to: 354)
+		declaredAt: (343 to: 354).
+	(lastId _ 0 coverAll:
+		{386 to: 386})
+		cover: (376 to: 381)
+		declaredAt: (376 to: 381).! !
+!Behavior method!
+createCartFor: aUser authenticatedWith: aPassword
+	^ [
+	(self coverAll:
+		{55 to: 58})
+		if:
+			(aUser
+				cover: (64 to: 68)
+				declaredAt: (16 to: 20))
+		authenticatesWith:
+			(aPassword
+				cover: (89 to: 97)
+				declaredAt: (41 to: 49))
+		do: [ | cartId cartSession |
+			(cartId _ [
+			(self coverAll:
+				{142 to: 145}) generateCartId ] valueCoveringAll:
+				{147 to: 160})
+				cover: (132 to: 137)
+				declaredAt: (107 to: 112).
+			(cartSession _ [
+			(CartSession
+				cover: (180 to: 190)
+				declaredAt: (180 to: 190))
+				ownedBy:
+					(aUser
+						cover: (201 to: 205)
+						declaredAt: (16 to: 20))
+				with:
+					([
+					(Cart
+						cover: (214 to: 217)
+						declaredAt: (214 to: 217)) acceptingItemsOf:
+						(catalog
+							cover: (237 to: 243)
+							declaredAt: (237 to: 243)) ] valueCoveringAll:
+						{219 to: 235})
+				on:
+					(self coverAll:
+						{250 to: 253}) ] valueCoveringAll:
+				{192 to: 199. 207 to: 211. 246 to: 248})
+				cover: (165 to: 175)
+				declaredAt: (114 to: 124).
+			[
+			(cartSessions
+				cover: (259 to: 270)
+				declaredAt: (259 to: 270))
+				at:
+					(cartId
+						cover: (276 to: 281)
+						declaredAt: (107 to: 112))
+				put:
+					(cartSession
+						cover: (288 to: 298)
+						declaredAt: (114 to: 124)) ] valueCoveringAll:
+				{272 to: 274. 283 to: 286}.
+			cartId
+				cover: (305 to: 310)
+				declaredAt: (107 to: 112) ]] valueCoveringAll:
+		{60 to: 62. 70 to: 87. 99 to: 101}.! !
+!Behavior method!
+if: aUser authenticatesWith: aPassword do: aBlock
+	^ [
+	([
+	(self coverAll:
+		{56 to: 59})
+		does:
+			(aUser
+				cover: (67 to: 71)
+				declaredAt: (5 to: 9))
+		authenticatesWith:
+			(aPassword
+				cover: (92 to: 100)
+				declaredAt: (30 to: 38)) ] valueCoveringAll:
+		{61 to: 65. 73 to: 90})
+		ifTrue:
+			(aBlock
+				cover: (114 to: 119)
+				declaredAt: (44 to: 49))
+		ifFalse: [
+			[
+			(self coverAll:
+				{135 to: 138}) signalInvalidUserAndOrPassword ] valueCoveringAll:
+				{140 to: 169} ]] valueCoveringAll:
+		{106 to: 112. 124 to: 131}.! !
+!Behavior method!
+does: aUser authenticatesWith: aPassword
+	"Recordar que esto es solo un ejemplo. No se deben guardar passwords en un sistema de verdad sino un
+	hash o similar - Hernan"
+	| storedPassword |
+	(storedPassword _ [
+	(validUsersAndPasswords
+		cover: (215 to: 236)
+		declaredAt: (215 to: 236))
+		at:
+			(aUser
+				cover: (242 to: 246)
+				declaredAt: (7 to: 11))
+		ifAbsent: [ ^ false coverAll:
+				{261 to: 265} ]] valueCoveringAll:
+		{238 to: 240. 248 to: 256})
+		cover: (197 to: 210)
+		declaredAt: (177 to: 190).
+	^ [
+	(aPassword
+		cover: (272 to: 280)
+		declaredAt: (32 to: 40)) =
+		(storedPassword
+			cover: (284 to: 297)
+			declaredAt: (177 to: 190)) ] valueCoveringAll:
+		{282 to: 282}.! !
+!Behavior method!
+generateCartId
+	"Recuerden que esto es un ejemplo, por lo que voy a generar ids numericos consecutivos, pero en una 
+	implementacion real no deberian se numeros consecutivos ni nada que genere problemas de seguridad - Hernan"
+	(lastId _ [
+	(lastId
+		cover: (232 to: 237)
+		declaredAt: (232 to: 237)) +
+		(1 coverAll:
+			{251 to: 251}) ] valueCoveringAll:
+		{249 to: 249})
+		cover: (242 to: 247)
+		declaredAt: (232 to: 237).
+	^ lastId
+		cover: (256 to: 261)
+		declaredAt: (232 to: 237).! !
+!Behavior method!
+acceptingItemsOf: aCatalog
+	^ [
+	([
+	(self coverAll:
+		{31 to: 34}) new ] valueCoveringAll:
+		{36 to: 38}) initializeAcceptingItemsOf:
+		(aCatalog
+			cover: (68 to: 75)
+			declaredAt: (19 to: 26)) ] valueCoveringAll:
+		{40 to: 66}.! !
+!Behavior method!
+initializeAcceptingItemsOf: aCatalog
+	(catalog _ aCatalog
+		cover: (51 to: 58)
+		declaredAt: (29 to: 36))
+		cover: (40 to: 46)
+		declaredAt: (40 to: 46).
+	(items _ [
+	(Bag
+		cover: (71 to: 73)
+		declaredAt: (71 to: 73)) new ] valueCoveringAll:
+		{75 to: 77})
+		cover: (62 to: 66)
+		declaredAt: (62 to: 66).! !
+!Behavior method!
+ownedBy: aCustomer with: aCart on: aSystemFacade
+	^ [
+	([
+	(self coverAll:
+		{53 to: 56}) new ] valueCoveringAll:
+		{58 to: 60})
+		initializeOwnedBy:
+			(aCustomer
+				cover: (81 to: 89)
+				declaredAt: (10 to: 18))
+		with:
+			(aCart
+				cover: (97 to: 101)
+				declaredAt: (26 to: 30))
+		on:
+			(aSystemFacade
+				cover: (107 to: 119)
+				declaredAt: (36 to: 48)) ] valueCoveringAll:
+		{62 to: 79. 91 to: 95. 103 to: 105}.! !
+!Behavior method!
+initializeOwnedBy: aCustomer with: aCart on: aSystemFacade
+	(owner _ aCustomer
+		cover: (71 to: 79)
+		declaredAt: (20 to: 28))
+		cover: (62 to: 66)
+		declaredAt: (62 to: 66).
+	(cart _ aCart
+		cover: (91 to: 95)
+		declaredAt: (36 to: 40))
+		cover: (83 to: 86)
+		declaredAt: (83 to: 86).
+	(systemFacade _ aSystemFacade
+		cover: (115 to: 127)
+		declaredAt: (46 to: 58))
+		cover: (99 to: 110)
+		declaredAt: (99 to: 110).
+	(lastUsedTime _ [
+	(self coverAll:
+		{147 to: 150}) now ] valueCoveringAll:
+		{152 to: 154})
+		cover: (131 to: 142)
+		declaredAt: (131 to: 142).! !
+!Behavior method!
+now
+	^ [
+	(systemFacade
+		cover: (8 to: 19)
+		declaredAt: (8 to: 19)) now ] valueCoveringAll:
+		{21 to: 23}.! !
+!Behavior method!
+now
+	^ [
+	(clock
+		cover: (9 to: 13)
+		declaredAt: (9 to: 13)) now ] valueCoveringAll:
+		{15 to: 17}.! !
+!Behavior method!
+now
+	^ now
+		cover: (10 to: 12)
+		declaredAt: (10 to: 12).! !
+!Behavior method!
+add: anAmount of: aBook toCartIdentifiedAs: aCartId
+	[
+	(self coverAll:
+		{55 to: 58})
+		withCartSessionIdentifiedAs:
+			(aCartId
+				cover: (89 to: 95)
+				declaredAt: (45 to: 51))
+		do: [ :cartSession |
+			[
+			(cartSession
+				cover: (118 to: 128)
+				declaredAt: (104 to: 114))
+				addToCart:
+					(anAmount
+						cover: (141 to: 148)
+						declaredAt: (6 to: 13))
+				of:
+					(aBook
+						cover: (154 to: 158)
+						declaredAt: (19 to: 23)) ] valueCoveringAll:
+				{130 to: 139. 150 to: 152} ]] valueCoveringAll:
+		{60 to: 87. 97 to: 99}.! !
+!Behavior method!
+withCartSessionIdentifiedAs: aCartId do: aBlock
+	| cartSession |
+	(cartSession _ [
+	(cartSessions
+		cover: (85 to: 96)
+		declaredAt: (85 to: 96))
+		at:
+			(aCartId
+				cover: (102 to: 108)
+				declaredAt: (30 to: 36))
+		ifAbsent: [
+			[
+			(self coverAll:
+				{121 to: 124}) signalInvalidCartId ] valueCoveringAll:
+				{126 to: 144} ]] valueCoveringAll:
+		{98 to: 100. 110 to: 118})
+		cover: (70 to: 80)
+		declaredAt: (53 to: 63).
+	^ [
+	(cartSession
+		cover: (151 to: 161)
+		declaredAt: (53 to: 63)) do:
+		(aBlock
+			cover: (167 to: 172)
+			declaredAt: (42 to: 47)) ] valueCoveringAll:
+		{163 to: 165}.! !
+!Behavior method!
+do: aBlock
+	| now |
+	(now _ [
+	(self coverAll:
+		{31 to: 34}) now ] valueCoveringAll:
+		{36 to: 38})
+		cover: (24 to: 26)
+		declaredAt: (16 to: 18).
+	[
+	(self coverAll:
+		{42 to: 45}) assertIsNotExpirtedAt:
+		(now
+			cover: (70 to: 72)
+			declaredAt: (16 to: 18)) ] valueCoveringAll:
+		{47 to: 68}.
+	^ [
+	[
+	[
+	(aBlock
+		cover: (82 to: 87)
+		declaredAt: (5 to: 10)) value:
+		(self coverAll:
+			{96 to: 99}) ] valueCoveringAll:
+		{89 to: 94} ] ensure: [
+		(lastUsedTime _ now
+			cover: (129 to: 131)
+			declaredAt: (16 to: 18))
+			cover: (113 to: 124)
+			declaredAt: (113 to: 124) ]] valueCoveringAll:
+		{103 to: 109}.! !
+!Behavior method!
+assertIsNotExpirtedAt: aTime
+	[
+	([
+	(self coverAll:
+		{33 to: 36}) isExpiredAt:
+		(aTime
+			cover: (51 to: 55)
+			declaredAt: (24 to: 28)) ] valueCoveringAll:
+		{38 to: 49}) ifTrue: [
+		[
+		(self coverAll:
+			{68 to: 71}) signalCartSessionExpired ] valueCoveringAll:
+			{73 to: 96} ]] valueCoveringAll:
+		{58 to: 64}.! !
+!Behavior method!
+isExpiredAt: aTime
+	^ [
+	([
+	(lastUsedTime
+		cover: (27 to: 38)
+		declaredAt: (27 to: 38)) +
+		([
+		(systemFacade
+			cover: (42 to: 53)
+			declaredAt: (42 to: 53)) sessionDuration ] valueCoveringAll:
+			{55 to: 69}) ] valueCoveringAll:
+		{40 to: 40}) <
+		(aTime
+			cover: (74 to: 78)
+			declaredAt: (14 to: 18)) ] valueCoveringAll:
+		{72 to: 72}.! !
+!Behavior method!
+sessionDuration
+	^ [
+	(30 coverAll:
+		{21 to: 22}) minutes ] valueCoveringAll:
+		{24 to: 30}.! !
+!Behavior method!
+addToCart: anAmount of: aBook
+	^ [
+	(cart
+		cover: (34 to: 37)
+		declaredAt: (34 to: 37))
+		add:
+			(anAmount
+				cover: (44 to: 51)
+				declaredAt: (12 to: 19))
+		of:
+			(aBook
+				cover: (57 to: 61)
+				declaredAt: (25 to: 29)) ] valueCoveringAll:
+		{39 to: 42. 53 to: 55}.! !
+!Behavior method!
+add: aQuantity of: anItem
+	[
+	(self coverAll:
+		{29 to: 32}) assertIsValidQuantity:
+		(aQuantity
+			cover: (57 to: 65)
+			declaredAt: (6 to: 14)) ] valueCoveringAll:
+		{34 to: 55}.
+	[
+	(self coverAll:
+		{69 to: 72}) assertIsValidItem:
+		(anItem
+			cover: (93 to: 98)
+			declaredAt: (20 to: 25)) ] valueCoveringAll:
+		{74 to: 91}.
+	[
+	(items
+		cover: (103 to: 107)
+		declaredAt: (103 to: 107))
+		add:
+			(anItem
+				cover: (114 to: 119)
+				declaredAt: (20 to: 25))
+		withOccurrences:
+			(aQuantity
+				cover: (138 to: 146)
+				declaredAt: (6 to: 14)) ] valueCoveringAll:
+		{109 to: 112. 121 to: 136}.! !
+!Behavior method!
+assertIsValidQuantity: aQuantity
+	[
+	([
+	(aQuantity
+		cover: (36 to: 44)
+		declaredAt: (24 to: 32)) strictlyPositive ] valueCoveringAll:
+		{46 to: 61}) ifFalse: [
+		[
+		(self coverAll:
+			{73 to: 76}) signalInvalidQuantity ] valueCoveringAll:
+			{78 to: 98} ]] valueCoveringAll:
+		{63 to: 70}.! !
+!Behavior method!
+assertIsValidItem: anItem
+	[
+	([
+	(catalog
+		cover: (30 to: 36)
+		declaredAt: (30 to: 36)) includesKey:
+		(anItem
+			cover: (51 to: 56)
+			declaredAt: (20 to: 25)) ] valueCoveringAll:
+		{38 to: 49}) ifFalse: [
+		[
+		(self coverAll:
+			{70 to: 73}) signalInvalidItem ] valueCoveringAll:
+			{75 to: 91} ]] valueCoveringAll:
+		{59 to: 66}.! !
+!Behavior method!
+validCreditCardNumber
+	^ '1234567890123456' coverAll:
+		{27 to: 44}.! !
+!Behavior method!
+validOwnerName
+	^ 'Pepe Sanchez' coverAll:
+		{20 to: 33}.! !
+!Behavior method!
+notExpiredMonthOfYear
+	^ [
+	(Month
+		cover: (27 to: 31)
+		declaredAt: (27 to: 31))
+		month:
+			([
+			(today
+				cover: (40 to: 44)
+				declaredAt: (40 to: 44)) monthIndex ] valueCoveringAll:
+				{46 to: 55})
+		year:
+			([
+			([
+			(today
+				cover: (63 to: 67)
+				declaredAt: (40 to: 44)) yearNumber ] valueCoveringAll:
+				{69 to: 78}) +
+				(1 coverAll:
+					{81 to: 82}) ] valueCoveringAll:
+				{80 to: 80}) ] valueCoveringAll:
+		{33 to: 38. 57 to: 61}.! !
+!Behavior method!
+checkOutCartIdentifiedAs: aCartId withCreditCardNumbered: aCreditCartNumber ownedBy: anOwner expiringOn: anExpirationMonthOfYear
+	^ [
+	(self coverAll:
+		{133 to: 136})
+		withCartSessionIdentifiedAs:
+			(aCartId
+				cover: (170 to: 176)
+				declaredAt: (27 to: 33))
+		do: [ :cartSession | | ticket |
+			(ticket _ [
+			(cartSession
+				cover: (227 to: 237)
+				declaredAt: (188 to: 198))
+				checkOutCartWithCreditCardNumbered:
+					(aCreditCartNumber
+						cover: (280 to: 296)
+						declaredAt: (59 to: 75))
+				ownedBy:
+					(anOwner
+						cover: (312 to: 318)
+						declaredAt: (86 to: 92))
+				expiringOn:
+					(anExpirationMonthOfYear
+						cover: (337 to: 359)
+						declaredAt: (106 to: 128)) ] valueCoveringAll:
+				{244 to: 278. 303 to: 310. 325 to: 335})
+				cover: (217 to: 222)
+				declaredAt: (204 to: 209).
+			[
+			(self coverAll:
+				{365 to: 368}) removeCartId:
+				(aCartId
+					cover: (384 to: 390)
+					declaredAt: (27 to: 33)) ] valueCoveringAll:
+				{370 to: 382}.
+			[
+			(ticket
+				cover: (396 to: 401)
+				declaredAt: (204 to: 209)) transactionId ] valueCoveringAll:
+				{403 to: 415} ]] valueCoveringAll:
+		{141 to: 168. 181 to: 183}.! !
+!Behavior method!
+checkOutCartWithCreditCardNumbered: aCreditCartNumber ownedBy: anOwner expiringOn: anExpirationMonthOfYear
+	^ [
+	([
+	(Cashier
+		cover: (113 to: 119)
+		declaredAt: (113 to: 119))
+		toCheckout:
+			(cart
+				cover: (136 to: 139)
+				declaredAt: (136 to: 139))
+		ownedBy:
+			(owner
+				cover: (153 to: 157)
+				declaredAt: (153 to: 157))
+		charging:
+			([
+			(CreditCard
+				cover: (172 to: 181)
+				declaredAt: (172 to: 181))
+				numbered:
+					(aCreditCartNumber
+						cover: (193 to: 209)
+						declaredAt: (37 to: 53))
+				ownedBy:
+					(anOwner
+						cover: (220 to: 226)
+						declaredAt: (64 to: 70))
+				expiringOn:
+					(anExpirationMonthOfYear
+						cover: (240 to: 262)
+						declaredAt: (84 to: 106)) ] valueCoveringAll:
+				{183 to: 191. 211 to: 218. 228 to: 238})
+		throught:
+			([
+			(systemFacade
+				cover: (278 to: 289)
+				declaredAt: (278 to: 289)) merchantProcessor ] valueCoveringAll:
+				{291 to: 307})
+		on:
+			([
+			(self coverAll:
+				{316 to: 319}) today ] valueCoveringAll:
+				{321 to: 325})
+		registeringOn:
+			([
+			(systemFacade
+				cover: (345 to: 356)
+				declaredAt: (278 to: 289)) salesBook ] valueCoveringAll:
+				{358 to: 366}) ] valueCoveringAll:
+		{124 to: 134. 144 to: 151. 161 to: 169. 268 to: 276. 312 to: 314. 330 to: 343}) checkOut ] valueCoveringAll:
+		{369 to: 376}.! !
+!Behavior method!
+numbered: aNumber ownedBy: anOwnerName expiringOn: aMonth
+	[
+	(self coverAll:
+		{63 to: 66}) assertIsValidNumber:
+		(aNumber
+			cover: (89 to: 95)
+			declaredAt: (11 to: 17)) ] valueCoveringAll:
+		{68 to: 87}.
+	[
+	(self coverAll:
+		{99 to: 102}) assertIsValidOwnerName:
+		(anOwnerName
+			cover: (128 to: 138)
+			declaredAt: (28 to: 38)) ] valueCoveringAll:
+		{104 to: 126}.
+	^ [
+	([
+	(self coverAll:
+		{145 to: 148}) new ] valueCoveringAll:
+		{150 to: 152})
+		initializeNumbered:
+			(aNumber
+				cover: (174 to: 180)
+				declaredAt: (11 to: 17))
+		ownedBy:
+			(anOwnerName
+				cover: (191 to: 201)
+				declaredAt: (28 to: 38))
+		expiringOn:
+			(aMonth
+				cover: (215 to: 220)
+				declaredAt: (52 to: 57)) ] valueCoveringAll:
+		{154 to: 172. 182 to: 189. 203 to: 213}.! !
+!Behavior method!
+assertIsValidNumber: aNumber
+	[
+	([
+	([
+	(aNumber
+		cover: (32 to: 38)
+		declaredAt: (22 to: 28)) size ] valueCoveringAll:
+		{40 to: 43}) =
+		(16 coverAll:
+			{47 to: 48}) ] valueCoveringAll:
+		{45 to: 45}) ifFalse: [
+		[
+		(self coverAll:
+			{61 to: 64}) signalInvalidNumber ] valueCoveringAll:
+			{66 to: 84} ]] valueCoveringAll:
+		{50 to: 57}.
+	[
+	([
+	(aNumber
+		cover: (91 to: 97)
+		declaredAt: (22 to: 28)) anySatisfy: [ :aCharacter |
+		[
+		([
+		(aCharacter
+			cover: (127 to: 136)
+			declaredAt: (114 to: 123)) isDigit ] valueCoveringAll:
+			{138 to: 144}) not ] valueCoveringAll:
+			{146 to: 148} ]] valueCoveringAll:
+		{99 to: 109}) ifTrue: [
+		[
+		(self coverAll:
+			{163 to: 166}) signalInvalidNumber ] valueCoveringAll:
+			{168 to: 186} ]] valueCoveringAll:
+		{153 to: 159}.! !
+!Behavior method!
+assertIsValidOwnerName: anOwnerName
+	[
+	([
+	(anOwnerName
+		cover: (39 to: 49)
+		declaredAt: (25 to: 35)) isEmpty ] valueCoveringAll:
+		{51 to: 57}) ifTrue: [
+		[
+		(self coverAll:
+			{69 to: 72}) signalInvalidOwnerName ] valueCoveringAll:
+			{74 to: 95} ]] valueCoveringAll:
+		{59 to: 65}.! !
+!Behavior method!
+initializeNumbered: aNumber ownedBy: anOwnerName expiringOn: aMonth
+	(number _ aNumber
+		cover: (83 to: 89)
+		declaredAt: (21 to: 27))
+		cover: (73 to: 78)
+		declaredAt: (73 to: 78).
+	(ownerName _ anOwnerName
+		cover: (106 to: 116)
+		declaredAt: (38 to: 48))
+		cover: (93 to: 101)
+		declaredAt: (93 to: 101).
+	(expiration _ aMonth
+		cover: (134 to: 139)
+		declaredAt: (62 to: 67))
+		cover: (120 to: 129)
+		declaredAt: (120 to: 129).! !
+!Behavior method!
+merchantProcessor
+	^ merchantProcessor
+		cover: (23 to: 39)
+		declaredAt: (23 to: 39).! !
+!Behavior method!
+today
+	^ [
+	(systemFacade
+		cover: (10 to: 21)
+		declaredAt: (10 to: 21)) today ] valueCoveringAll:
+		{23 to: 27}.! !
+!Behavior method!
+today
+	^ [
+	(clock
+		cover: (11 to: 15)
+		declaredAt: (11 to: 15)) today ] valueCoveringAll:
+		{17 to: 21}.! !
+!Behavior method!
+today
+	^ [
+	(now
+		cover: (11 to: 13)
+		declaredAt: (11 to: 13)) date ] valueCoveringAll:
+		{15 to: 18}.! !
+!Behavior method!
+salesBook
+	^ salesBook
+		cover: (15 to: 23)
+		declaredAt: (15 to: 23).! !
+!Behavior method!
+toCheckout: aCart ownedBy: anOwner charging: aCreditCard throught: aMerchantProcessor on: aDate registeringOn: aSalesBook
+	[
+	(self coverAll:
+		{126 to: 129}) assertIsNotEmpty:
+		(aCart
+			cover: (149 to: 153)
+			declaredAt: (13 to: 17)) ] valueCoveringAll:
+		{131 to: 147}.
+	[
+	(self coverAll:
+		{157 to: 160})
+		assertIsNotExpired:
+			(aCreditCard
+				cover: (182 to: 192)
+				declaredAt: (46 to: 56))
+		on:
+			(aDate
+				cover: (198 to: 202)
+				declaredAt: (91 to: 95)) ] valueCoveringAll:
+		{162 to: 180. 194 to: 196}.
+	^ [
+	([
+	(self coverAll:
+		{209 to: 212}) new ] valueCoveringAll:
+		{214 to: 216})
+		initializeToCheckout:
+			(aCart
+				cover: (240 to: 244)
+				declaredAt: (13 to: 17))
+		ownedBy:
+			(anOwner
+				cover: (255 to: 261)
+				declaredAt: (28 to: 34))
+		charging:
+			(aCreditCard
+				cover: (273 to: 283)
+				declaredAt: (46 to: 56))
+		throught:
+			(aMerchantProcessor
+				cover: (295 to: 312)
+				declaredAt: (68 to: 85))
+		registeringOn:
+			(aSalesBook
+				cover: (329 to: 338)
+				declaredAt: (112 to: 121)) ] valueCoveringAll:
+		{218 to: 238. 246 to: 253. 263 to: 271. 285 to: 293. 314 to: 327}.! !
+!Behavior method!
+assertIsNotEmpty: aCart
+	[
+	([
+	(aCart
+		cover: (29 to: 33)
+		declaredAt: (19 to: 23)) isEmpty ] valueCoveringAll:
+		{35 to: 41}) ifTrue: [
+		[
+		(self coverAll:
+			{52 to: 55}) signalCartCanNotBeEmpty ] valueCoveringAll:
+			{57 to: 79} ]] valueCoveringAll:
+		{43 to: 49}.! !
+!Behavior method!
+isEmpty
+	^ [
+	(items
+		cover: (13 to: 17)
+		declaredAt: (13 to: 17)) isEmpty ] valueCoveringAll:
+		{19 to: 25}.! !
+!Behavior method!
+assertIsNotExpired: aCreditCard on: aDate
+	[
+	([
+	(aCreditCard
+		cover: (47 to: 57)
+		declaredAt: (21 to: 31)) isExpiredOn:
+		(aDate
+			cover: (72 to: 76)
+			declaredAt: (37 to: 41)) ] valueCoveringAll:
+		{59 to: 70}) ifTrue: [
+		[
+		(self coverAll:
+			{88 to: 91}) signalCanNotChargeAnExpiredCreditCard ] valueCoveringAll:
+			{93 to: 129} ]] valueCoveringAll:
+		{79 to: 85}.! !
+!Behavior method!
+isExpiredOn: aDate
+	^ [
+	([
+	(expiration
+		cover: (25 to: 34)
+		declaredAt: (25 to: 34)) start ] valueCoveringAll:
+		{36 to: 40}) <
+		([
+		([
+		(Month
+			cover: (45 to: 49)
+			declaredAt: (45 to: 49))
+			month:
+				([
+				(aDate
+					cover: (58 to: 62)
+					declaredAt: (14 to: 18)) monthIndex ] valueCoveringAll:
+					{64 to: 73})
+			year:
+				([
+				(aDate
+					cover: (81 to: 85)
+					declaredAt: (14 to: 18)) yearNumber ] valueCoveringAll:
+					{87 to: 96}) ] valueCoveringAll:
+			{51 to: 56. 75 to: 79}) start ] valueCoveringAll:
+			{99 to: 103}) ] valueCoveringAll:
+		{42 to: 42}.! !
+!Behavior method!
+initializeToCheckout: aCart ownedBy: anOwner charging: aCreditCard throught: aMerchantProcessor registeringOn: aSalesBook
+	(cart _ aCart
+		cover: (134 to: 138)
+		declaredAt: (23 to: 27))
+		cover: (126 to: 129)
+		declaredAt: (126 to: 129).
+	(owner _ anOwner
+		cover: (151 to: 157)
+		declaredAt: (38 to: 44))
+		cover: (142 to: 146)
+		declaredAt: (142 to: 146).
+	(creditCard _ aCreditCard
+		cover: (175 to: 185)
+		declaredAt: (56 to: 66))
+		cover: (161 to: 170)
+		declaredAt: (161 to: 170).
+	(merchantProcessor _ aMerchantProcessor
+		cover: (210 to: 227)
+		declaredAt: (78 to: 95))
+		cover: (189 to: 205)
+		declaredAt: (189 to: 205).
+	(salesBook _ aSalesBook
+		cover: (244 to: 253)
+		declaredAt: (112 to: 121))
+		cover: (231 to: 239)
+		declaredAt: (231 to: 239).! !
+!Behavior method!
+checkOut
+	[
+	(self coverAll:
+		{12 to: 15}) createTicket ] valueCoveringAll:
+		{17 to: 28}.
+	[
+	(self coverAll:
+		{32 to: 35}) debitTotal ] valueCoveringAll:
+		{37 to: 46}.
+	[
+	(self coverAll:
+		{50 to: 53}) registerSale ] valueCoveringAll:
+		{55 to: 66}.
+	^ ticket
+		cover: (73 to: 78)
+		declaredAt: (73 to: 78).! !
+!Behavior method!
+createTicket
+	| lineItems |
+	(lineItems _ [
+	(OrderedCollection
+		cover: (46 to: 62)
+		declaredAt: (46 to: 62)) new ] valueCoveringAll:
+		{64 to: 66})
+		cover: (33 to: 41)
+		declaredAt: (18 to: 26).
+	[
+	(cart
+		cover: (70 to: 73)
+		declaredAt: (70 to: 73)) itemsAndQuantitiesDo: [ :anItem :aQuantity |
+		[
+		(lineItems
+			cover: (123 to: 131)
+			declaredAt: (18 to: 26)) add:
+			([
+			(self coverAll:
+				{139 to: 142})
+				createLineItemOf:
+					(anItem
+						cover: (162 to: 167)
+						declaredAt: (100 to: 105))
+				quantity:
+					(aQuantity
+						cover: (179 to: 187)
+						declaredAt: (108 to: 116)) ] valueCoveringAll:
+				{144 to: 160. 169 to: 177}) ] valueCoveringAll:
+			{133 to: 136} ]] valueCoveringAll:
+		{75 to: 95}.
+	(ticket _ [
+	(Ticket
+		cover: (205 to: 210)
+		declaredAt: (205 to: 210)) of:
+		(lineItems
+			cover: (216 to: 224)
+			declaredAt: (18 to: 26)) ] valueCoveringAll:
+		{212 to: 214})
+		cover: (195 to: 200)
+		declaredAt: (195 to: 200).! !
+!Behavior method!
+itemsAndQuantitiesDo: aBlock
+	^ [
+	([
+	(items
+		cover: (35 to: 39)
+		declaredAt: (35 to: 39)) contents ] valueCoveringAll:
+		{41 to: 48}) keysAndValuesDo: [ :anItem :aQuantity |
+		[
+		(aBlock
+			cover: (90 to: 95)
+			declaredAt: (23 to: 28))
+			value:
+				(anItem
+					cover: (104 to: 109)
+					declaredAt: (70 to: 75))
+			value:
+				(aQuantity
+					cover: (118 to: 126)
+					declaredAt: (78 to: 86)) ] valueCoveringAll:
+			{97 to: 102. 111 to: 116} ]] valueCoveringAll:
+		{50 to: 65}.! !
+!Behavior method!
+createLineItemOf: anItem quantity: aQuantity
+	^ [
+	(LineItem
+		cover: (50 to: 57)
+		declaredAt: (50 to: 57))
+		of:
+			(anItem
+				cover: (63 to: 68)
+				declaredAt: (19 to: 24))
+		quantity:
+			(aQuantity
+				cover: (80 to: 88)
+				declaredAt: (36 to: 44))
+		total:
+			([
+			(self coverAll:
+				{98 to: 101})
+				totalOf:
+					(anItem
+						cover: (112 to: 117)
+						declaredAt: (19 to: 24))
+				quantity:
+					(aQuantity
+						cover: (129 to: 137)
+						declaredAt: (36 to: 44)) ] valueCoveringAll:
+				{103 to: 110. 119 to: 127}) ] valueCoveringAll:
+		{59 to: 61. 70 to: 78. 90 to: 95}.! !
+!Behavior method!
+totalOf: anItem quantity: aQuantity
+	^ [
+	([
+	([
+	(cart
+		cover: (42 to: 45)
+		declaredAt: (42 to: 45)) catalog ] valueCoveringAll:
+		{47 to: 53}) at:
+		(anItem
+			cover: (59 to: 64)
+			declaredAt: (10 to: 15)) ] valueCoveringAll:
+		{55 to: 57}) *
+		(aQuantity
+			cover: (69 to: 77)
+			declaredAt: (27 to: 35)) ] valueCoveringAll:
+		{67 to: 67}.! !
+!Behavior method!
+catalog
+	^ catalog
+		cover: (14 to: 20)
+		declaredAt: (14 to: 20).! !
+!Behavior method!
+of: anItem quantity: aQuantity total: aTotal
+	^ [
+	([
+	(self coverAll:
+		{49 to: 52}) new ] valueCoveringAll:
+		{54 to: 56})
+		initializeOf:
+			(anItem
+				cover: (72 to: 77)
+				declaredAt: (5 to: 10))
+		quantity:
+			(aQuantity
+				cover: (89 to: 97)
+				declaredAt: (22 to: 30))
+		total:
+			(aTotal
+				cover: (106 to: 111)
+				declaredAt: (39 to: 44)) ] valueCoveringAll:
+		{58 to: 70. 79 to: 87. 99 to: 104}.! !
+!Behavior method!
+initializeOf: anItem quantity: aQuantity total: aTotal
+	(item _ anItem
+		cover: (66 to: 71)
+		declaredAt: (15 to: 20))
+		cover: (58 to: 61)
+		declaredAt: (58 to: 61).
+	(quantity _ aQuantity
+		cover: (87 to: 95)
+		declaredAt: (32 to: 40))
+		cover: (75 to: 82)
+		declaredAt: (75 to: 82).
+	(total _ aTotal
+		cover: (108 to: 113)
+		declaredAt: (49 to: 54))
+		cover: (99 to: 103)
+		declaredAt: (99 to: 103).! !
+!Behavior method!
+of: aCollectionOfLineItems
+	^ [
+	([
+	(self coverAll:
+		{31 to: 34}) new ] valueCoveringAll:
+		{36 to: 38}) initializeOf:
+		(aCollectionOfLineItems
+			cover: (54 to: 75)
+			declaredAt: (5 to: 26)) ] valueCoveringAll:
+		{40 to: 52}.! !
+!Behavior method!
+initializeOf: aCollectionOfLineItems
+	(lineItems _ aCollectionOfLineItems
+		cover: (54 to: 75)
+		declaredAt: (15 to: 36))
+		cover: (41 to: 49)
+		declaredAt: (41 to: 49).! !
+!Behavior method!
+debitTotal
+	| transactionId |
+	(transactionId _ [
+	(merchantProcessor
+		cover: (52 to: 68)
+		declaredAt: (52 to: 68))
+		debit:
+			([
+			(ticket
+				cover: (77 to: 82)
+				declaredAt: (77 to: 82)) total ] valueCoveringAll:
+				{84 to: 88})
+		from:
+			(creditCard
+				cover: (96 to: 105)
+				declaredAt: (96 to: 105)) ] valueCoveringAll:
+		{70 to: 75. 90 to: 94})
+		cover: (35 to: 47)
+		declaredAt: (16 to: 28).
+	[
+	(ticket
+		cover: (109 to: 114)
+		declaredAt: (77 to: 82)) transactionId:
+		(transactionId
+			cover: (131 to: 143)
+			declaredAt: (16 to: 28)) ] valueCoveringAll:
+		{116 to: 129}.! !
+!Behavior method!
+total
+	^ [
+	(lineItems
+		cover: (11 to: 19)
+		declaredAt: (11 to: 19)) sum: [ :aLineItem |
+		[
+		(aLineItem
+			cover: (41 to: 49)
+			declaredAt: (29 to: 37)) total ] valueCoveringAll:
+			{51 to: 55} ]] valueCoveringAll:
+		{21 to: 24}.! !
+!Behavior method!
+total
+	^ total
+		cover: (12 to: 16)
+		declaredAt: (12 to: 16).! !
+!Behavior method!
+transactionId: anId
+	(transactionId _ anId
+		cover: (40 to: 43)
+		declaredAt: (16 to: 19))
+		cover: (23 to: 35)
+		declaredAt: (23 to: 35).! !
+!Behavior method!
+registerSale
+	[
+	(salesBook
+		cover: (16 to: 24)
+		declaredAt: (16 to: 24)) add:
+		([
+		(self coverAll:
+			{31 to: 34}) createSale ] valueCoveringAll:
+			{36 to: 45}) ] valueCoveringAll:
+		{26 to: 29}.! !
+!Behavior method!
+createSale
+	^ [
+	(Sale
+		cover: (16 to: 19)
+		declaredAt: (16 to: 19))
+		doneBy:
+			(owner
+				cover: (29 to: 33)
+				declaredAt: (29 to: 33))
+		certifiedWith:
+			(ticket
+				cover: (50 to: 55)
+				declaredAt: (50 to: 55)) ] valueCoveringAll:
+		{21 to: 27. 35 to: 48}.! !
+!Behavior method!
+doneBy: aCustomer certifiedWith: aTicket
+	^ [
+	([
+	(self coverAll:
+		{46 to: 49}) new ] valueCoveringAll:
+		{51 to: 53})
+		initializeDoneBy:
+			(aCustomer
+				cover: (73 to: 81)
+				declaredAt: (9 to: 17))
+		certifiedWith:
+			(aTicket
+				cover: (98 to: 104)
+				declaredAt: (34 to: 40)) ] valueCoveringAll:
+		{55 to: 71. 83 to: 96}.! !
+!Behavior method!
+initializeDoneBy: aCustomer certifiedWith: aTicket
+	(customer _ aCustomer
+		cover: (67 to: 75)
+		declaredAt: (19 to: 27))
+		cover: (55 to: 62)
+		declaredAt: (55 to: 62).
+	(ticket _ aTicket
+		cover: (89 to: 95)
+		declaredAt: (44 to: 50))
+		cover: (79 to: 84)
+		declaredAt: (79 to: 84).! !
+!Behavior method!
+removeCartId: aCartId
+	"I'll not generate an error if the cartId is invalid because when used from http
+	request can be duplicated - Hernan"
+	[
+	(cartSessions
+		cover: (144 to: 155)
+		declaredAt: (144 to: 155))
+		removeKey:
+			(aCartId
+				cover: (168 to: 174)
+				declaredAt: (15 to: 21))
+		ifAbsent: [ ]] valueCoveringAll:
+		{157 to: 166. 176 to: 184}.! !
+!Behavior method!
+transactionId
+	^ transactionId
+		cover: (18 to: 30)
+		declaredAt: (18 to: 30).! !
+!Behavior method!
+bookPerformance: anItem
+	| bookPerformance totalMoney totalSales |
+	(bookPerformance _ [
+	(Dictionary
+		cover: (90 to: 99)
+		declaredAt: (90 to: 99)) new ] valueCoveringAll:
+		{101 to: 103})
+		cover: (71 to: 85)
+		declaredAt: (29 to: 43).
+	(totalSales _ [
+	(self coverAll:
+		{123 to: 126}) totalSalesOf:
+		(anItem
+			cover: (142 to: 147)
+			declaredAt: (18 to: 23)) ] valueCoveringAll:
+		{128 to: 140})
+		cover: (109 to: 118)
+		declaredAt: (56 to: 65).
+	(totalMoney _ [
+	(self coverAll:
+		{165 to: 168}) totalMoneyRaisedBy:
+		(anItem
+			cover: (190 to: 195)
+			declaredAt: (18 to: 23)) ] valueCoveringAll:
+		{170 to: 188})
+		cover: (151 to: 160)
+		declaredAt: (45 to: 54).
+	[
+	(bookPerformance
+		cover: (201 to: 215)
+		declaredAt: (29 to: 43))
+		at:
+			('quantity' coverAll:
+				{221 to: 230})
+		put:
+			(totalSales
+				cover: (237 to: 246)
+				declaredAt: (56 to: 65)) ] valueCoveringAll:
+		{217 to: 219. 232 to: 235}.
+	[
+	(bookPerformance
+		cover: (250 to: 264)
+		declaredAt: (29 to: 43))
+		at:
+			('total' coverAll:
+				{270 to: 276})
+		put:
+			(totalMoney
+				cover: (283 to: 292)
+				declaredAt: (45 to: 54)) ] valueCoveringAll:
+		{266 to: 268. 278 to: 281}.
+	[
+	(bookPerformance
+		cover: (296 to: 310)
+		declaredAt: (29 to: 43))
+		at:
+			('summary' coverAll:
+				{316 to: 324})
+		put:
+			([
+			([
+			([
+			([
+			(anItem
+				cover: (331 to: 336)
+				declaredAt: (18 to: 23)) ,
+				(' was selled ' coverAll:
+					{338 to: 351}) ] valueCoveringAll:
+				{337 to: 337}) ,
+				([
+				(totalSales
+					cover: (353 to: 362)
+					declaredAt: (56 to: 65)) asString ] valueCoveringAll:
+					{364 to: 371}) ] valueCoveringAll:
+				{352 to: 352}) ,
+				(' times and raised a total amount of money equal to: ' coverAll:
+					{374 to: 427}) ] valueCoveringAll:
+				{372 to: 372}) ,
+				([
+				(totalMoney
+					cover: (430 to: 439)
+					declaredAt: (45 to: 54)) asString ] valueCoveringAll:
+					{441 to: 448}) ] valueCoveringAll:
+				{428 to: 428}) ] valueCoveringAll:
+		{312 to: 314. 326 to: 329}.
+	^ bookPerformance
+		cover: (455 to: 469)
+		declaredAt: (29 to: 43).! !
+!Behavior method!
+totalSalesOf: anItem
+	[
+	([
+	(Delay
+		cover: (26 to: 30)
+		declaredAt: (26 to: 30)) forSeconds:
+		(1 coverAll:
+			{44 to: 44}) ] valueCoveringAll:
+		{32 to: 42}) wait ] valueCoveringAll:
+		{47 to: 50}.
+	^ [
+	(salesBook
+		cover: (56 to: 64)
+		declaredAt: (56 to: 64)) sum: [ :aSale | | quantityPerItem |
+		(quantityPerItem _ 0 coverAll:
+			{123 to: 123})
+			cover: (104 to: 118)
+			declaredAt: (83 to: 97).
+		[
+		(aSale
+			cover: (128 to: 132)
+			declaredAt: (73 to: 77)) lineItemsDo: [ :aLineItem |
+			[
+			([
+			([
+			(aLineItem
+				cover: (162 to: 170)
+				declaredAt: (149 to: 157)) item ] valueCoveringAll:
+				{172 to: 175}) =
+				(anItem
+					cover: (179 to: 184)
+					declaredAt: (15 to: 20)) ] valueCoveringAll:
+				{177 to: 177}) ifTrue: [
+				(quantityPerItem _ [
+				(quantityPerItem
+					cover: (196 to: 210)
+					declaredAt: (83 to: 97)) +
+					([
+					(aLineItem
+						cover: (233 to: 241)
+						declaredAt: (149 to: 157)) quantity ] valueCoveringAll:
+						{243 to: 250}) ] valueCoveringAll:
+					{231 to: 231})
+					cover: (215 to: 229)
+					declaredAt: (83 to: 97) ]] valueCoveringAll:
+				{187 to: 193} ]] valueCoveringAll:
+			{134 to: 145}.
+		quantityPerItem
+			cover: (257 to: 271)
+			declaredAt: (83 to: 97) ]] valueCoveringAll:
+		{66 to: 69}.! !
+!Behavior method!
+lineItemsDo: aBlock
+	^ [
+	(ticket
+		cover: (25 to: 30)
+		declaredAt: (25 to: 30)) lineItemsDo:
+		(aBlock
+			cover: (45 to: 50)
+			declaredAt: (14 to: 19)) ] valueCoveringAll:
+		{32 to: 43}.! !
+!Behavior method!
+lineItemsDo: aBlock
+	^ [
+	(lineItems
+		cover: (25 to: 33)
+		declaredAt: (25 to: 33)) do:
+		(aBlock
+			cover: (39 to: 44)
+			declaredAt: (14 to: 19)) ] valueCoveringAll:
+		{35 to: 37}.! !
+!Behavior method!
+item
+	^ item
+		cover: (11 to: 14)
+		declaredAt: (11 to: 14).! !
+!Behavior method!
+quantity
+	^ quantity
+		cover: (13 to: 20)
+		declaredAt: (13 to: 20).! !
+!Behavior method!
+totalMoneyRaisedBy: anItem
+	[
+	([
+	(Delay
+		cover: (32 to: 36)
+		declaredAt: (32 to: 36)) forSeconds:
+		(1 coverAll:
+			{50 to: 50}) ] valueCoveringAll:
+		{38 to: 48}) wait ] valueCoveringAll:
+		{53 to: 56}.
+	^ [
+	(salesBook
+		cover: (62 to: 70)
+		declaredAt: (62 to: 70)) sum: [ :aSale | | totalPerItem |
+		(totalPerItem _ 0 coverAll:
+			{121 to: 121})
+			cover: (106 to: 117)
+			declaredAt: (89 to: 100).
+		[
+		(aSale
+			cover: (126 to: 130)
+			declaredAt: (79 to: 83)) lineItemsDo: [ :aLineItem |
+			[
+			([
+			([
+			(aLineItem
+				cover: (160 to: 168)
+				declaredAt: (147 to: 155)) item ] valueCoveringAll:
+				{170 to: 173}) =
+				(anItem
+					cover: (177 to: 182)
+					declaredAt: (21 to: 26)) ] valueCoveringAll:
+				{175 to: 175}) ifTrue: [
+				(totalPerItem _ [
+				(totalPerItem
+					cover: (194 to: 205)
+					declaredAt: (89 to: 100)) +
+					([
+					(aLineItem
+						cover: (225 to: 233)
+						declaredAt: (147 to: 155)) total ] valueCoveringAll:
+						{235 to: 239}) ] valueCoveringAll:
+					{223 to: 223})
+					cover: (210 to: 221)
+					declaredAt: (89 to: 100) ]] valueCoveringAll:
+				{185 to: 191} ]] valueCoveringAll:
+			{132 to: 143}.
+		totalPerItem
+			cover: (246 to: 257)
+			declaredAt: (89 to: 100) ]] valueCoveringAll:
+		{72 to: 75}.! !
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:47:27'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:47:29'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:47:36'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:47:38'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:47:58'!
+FAILURE!
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'NR 6/13/2022 07:18:34' prior: 50335969!
+totalSales
+	
+	(Delay forSeconds: 1) wait.
+
+	^salesBook sum: [:aSale | | totalQuantity |
+		totalQuantity := 0.
+		aSale lineItemsDo: [:aLineItem | totalQuantity := totalQuantity + aLineItem quantity].
+		totalQuantity].
+	
+! !
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'LDMAF 6/13/2022 21:54:04' prior: 50333832!
+storePerformance
+
+	| totalMoney totalSales performance semaphore |
+	
+	performance := Dictionary new.
+	
+	semaphore := Semaphore new.
+	
+	[
+		totalSales := self totalSales.
+		semaphore signal.
+	] fork.
+	totalMoney := self totalMoneyRaised.
+	
+	semaphore wait.
+	
+	performance at: 'quantity' put: totalSales.
+	performance at: 'total' put: totalMoney.
+	performance at: 'summary' put: 'The store selled a total of ',totalSales asString, ' books and raised a total amount of money equal to: ', totalMoney asString.
+	
+	^performance
+	
+
+! !
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:54:16'!
+FAILURE!
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:54:18'!
+FAILURE!
+!TusLibrosSystemFacade methodsFor: 'private' stamp: 'LDMAF 6/13/2022 21:55:52' prior: 50333791!
+bookPerformance: anItem
+
+	| bookPerformance totalMoney totalSales semaphore |
+
+	bookPerformance := Dictionary new.
+	
+	semaphore := Semaphore new.
+	
+	[
+		totalSales := self totalSales.
+		semaphore signal.
+	] fork.
+	totalMoney := self totalMoneyRaised.
+	
+	semaphore wait.
+	
+	bookPerformance at: 'quantity' put: totalSales.
+	bookPerformance at: 'total' put: totalMoney.
+	bookPerformance at: 'summary' put: anItem,' was selled ',totalSales asString, ' times and raised a total amount of money equal to: ', totalMoney asString.
+	
+	^bookPerformance
+	
+
+! !
+
+!testRun: #TusLibrosSystemFacadeTest #test20BookPerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:55:59'!
+PASSED!
+
+!testRun: #TusLibrosSystemFacadeTest #test21StorePerformanceShouldNotTakeTooLong stamp: 'LDMAF 6/13/2022 21:56:09'!
+PASSED!
+
+----STARTUP---- (16 June 2022 17:43:20) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/Packages/System/Collections-CompactArrays.pck.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/Packages/Features/Compression.pck.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/Packages/Features/Sound.pck.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/Packages/Features/Cryptography-DigitalSignatures.pck.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/Packages/Features/Identities-UUID.pck.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/Packages/System/Network-Kernel.pck.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/WebClient.pck.st----!
+
+!classRemoval: #Cashier stamp: 'LDMAF 6/16/2022 17:46:14'!
+Object subclass: #Cashier
+	instanceVariableNames: 'catalogue products totalPurchase'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #Cart stamp: 'LDMAF 6/16/2022 17:46:14'!
+Object subclass: #Cart
+	instanceVariableNames: 'items catalogue'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CheckoutTest stamp: 'LDMAF 6/16/2022 17:46:14'!
+TestCase subclass: #CheckoutTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/16/2022 17:46:15'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'aProduct'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros'!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibrosREST Ejercicio it4.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros-Tests.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros-Tests Ejercicio it4.st----!
+
+!classRemoval: #ManualClock stamp: 'LDMAF 6/16/2022 17:47:40'!
+ProtoObject subclass: #ManualClock
+	instanceVariableNames: 'now'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Tests'!
+
+!classRemoval: #StoreTestObjectsFactory stamp: 'LDMAF 6/16/2022 17:47:40'!
+Object subclass: #StoreTestObjectsFactory
+	instanceVariableNames: 'today'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Tests'!
+
+!classRemoval: #TusLibrosSystemFacadeTest stamp: 'LDMAF 6/16/2022 17:47:41'!
+TestCase subclass: #TusLibrosSystemFacadeTest
+	instanceVariableNames: 'testObjectsFactory clock systemFacade merchantProcessorTransactionId'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Tests'!
+
+!classRemoval: #CreditCardTest stamp: 'LDMAF 6/16/2022 17:47:41'!
+TestCase subclass: #CreditCardTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Tests'!
+
+!classRemoval: #CashierTest stamp: 'LDMAF 6/16/2022 17:47:41'!
+TestCase subclass: #CashierTest
+	instanceVariableNames: 'testObjectsFactory debitBehavior'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Tests'!
+
+!classRemoval: #CartTest stamp: 'LDMAF 6/16/2022 17:47:42'!
+TestCase subclass: #CartTest
+	instanceVariableNames: 'testObjectsFactory'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibros-Tests'!
+
+!classRemoval: #RealTimeClock stamp: 'LDMAF 6/16/2022 17:47:48'!
+ProtoObject subclass: #RealTimeClock
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibrosREST'!
+
+!classRemoval: #DefaultMerchantProcessor stamp: 'LDMAF 6/16/2022 17:47:48'!
+ProtoObject subclass: #DefaultMerchantProcessor
+	instanceVariableNames: 'transactionId'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibrosREST'!
+
+!classRemoval: #TusLibrosServerRestInterface stamp: 'LDMAF 6/16/2022 17:47:48'!
+Object subclass: #TusLibrosServerRestInterface
+	instanceVariableNames: 'systemFacade'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibrosREST'!
+
+!classRemoval: #TusLibrosClientTestWindowModel stamp: 'LDMAF 6/16/2022 17:47:49'!
+Object subclass: #TusLibrosClientTestWindowModel
+	instanceVariableNames: 'cartIds selectedCartIdsIndex selectedBookCatalogIndex currentSelectedCartContent restInterface'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibrosREST'!
+
+!classRemoval: #TusLibrosClientRestInterface stamp: 'LDMAF 6/16/2022 17:47:49'!
+Object subclass: #TusLibrosClientRestInterface
+	instanceVariableNames: 'port'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibrosREST'!
+
+!classRemoval: #TusLibrosClientTestWindow stamp: 'LDMAF 6/16/2022 17:47:49'!
+SystemWindow subclass: #TusLibrosClientTestWindow
+	instanceVariableNames: 'cartIdsListMorph booksCatalogListMorph cartContentListMorph addToCartButtonMorph listCartButtonMorph selectedCartLabelMorph'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'TusLibrosREST'!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibros-Model.st----!
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/TusLibrosREST.st----!
+
+TusLibrosServerRestInterface installForDefaultSystem!
+
+TusLibrosClientTestWindow open!
+
+----STARTUP---- (23 June 2022 17:42:51) as /home/clinux01/Cuis_University/linux64/CuisUniversity-5053.image!
+
+
+----End fileIn of /home/clinux01/Cuis_University/linux64/CustomerImporter.st----!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:29:02' prior: 50331986 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	| newCustomer line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [ | customerData |
+			customerData := record.
+			newCustomer := Customer new.
+			newCustomer firstName: customerData second.
+			newCustomer lastName: customerData third.
+			newCustomer identificationType: customerData fourth.
+			newCustomer identificationNumber: customerData fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | addressData newAddress |
+			addressData := record.
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: addressData second.
+			newAddress streetNumber: addressData third asNumber .
+			newAddress town: addressData fourth.
+			newAddress zipCode: addressData fifth asNumber .
+			newAddress province: addressData sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:30:28' prior: 50332132 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	| newCustomer line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:33:32' prior: 50332166 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	|  line |
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:33:33'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:33:50' prior: 50332196 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	 
+
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:33:50'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:33:55' prior: 50332234 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:12'!
+importCustomer: record
+
+	newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:12' prior: 50332272 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:36' prior: 50332312 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ | newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:55'!
+importAddress: record
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:34:55' prior: 50332334 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [
+			self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress: record ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:35:24' prior: 50332369 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [ |record|
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer: record ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress: record ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line record'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:36:06'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:26' prior: 50332383 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		recordd := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:28' prior: 50332417 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		recordd := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line record'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:36:40'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line recordd'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:47' prior: 50332300!
+importCustomer: record
+
+	newCustomer := Customer new.
+			newCustomer firstName: recordd second.
+			newCustomer lastName: recordd third.
+			newCustomer identificationType: recordd fourth.
+			newCustomer identificationNumber: recordd fifth.
+			session persist: newCustomer! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:36:59' prior: 50332355!
+importAddress: record
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: recordd second.
+			newAddress streetNumber: recordd third asNumber .
+			newAddress town: recordd fourth.
+			newAddress zipCode: recordd fifth asNumber .
+			newAddress province: recordd sixth! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:37:37'!
+importCustomer
+
+	newCustomer := Customer new.
+			newCustomer firstName: recordd second.
+			newCustomer lastName: recordd third.
+			newCustomer identificationType: recordd fourth.
+			newCustomer identificationNumber: recordd fifth.
+			session persist: newCustomer! !
+
+!methodRemoval: CustomerImporter #importCustomer: stamp: 'LDMAF 6/23/2022 18:37:37'!
+importCustomer: record
+
+	newCustomer := Customer new.
+			newCustomer firstName: recordd second.
+			newCustomer lastName: recordd third.
+			newCustomer identificationType: recordd fourth.
+			newCustomer identificationNumber: recordd fifth.
+			session persist: newCustomer!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:37:59'!
+importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: recordd second.
+			newAddress streetNumber: recordd third asNumber .
+			newAddress town: recordd fourth.
+			newAddress zipCode: recordd fifth asNumber .
+			newAddress province: recordd sixth! !
+
+!methodRemoval: CustomerImporter #importAddress: stamp: 'LDMAF 6/23/2022 18:37:59'!
+importAddress: record
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: recordd second.
+			newAddress streetNumber: recordd third asNumber .
+			newAddress town: recordd fourth.
+			newAddress zipCode: recordd fifth asNumber .
+			newAddress province: recordd sixth!
+
+!classDefinition: #CustomerImporter category: 'CustomerImporter' stamp: 'LDMAF 6/23/2022 18:38:18'!
+Object subclass: #CustomerImporter
+	instanceVariableNames: 'session stream newCustomer line record'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CustomerImporter'!
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:38:18' prior: 50332430 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	line := stream nextLine.
+	[ line notNil ] whileTrue: [
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:38:18' prior: 50332487!
+importCustomer
+
+	newCustomer := Customer new.
+			newCustomer firstName: record second.
+			newCustomer lastName: record third.
+			newCustomer identificationType: record fourth.
+			newCustomer identificationNumber: record fifth.
+			session persist: newCustomer! !
+!CustomerImporter methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:38:18' prior: 50332509!
+importAddress
+
+	| newAddress |
+			newAddress := Address new.
+			newCustomer addAddress: newAddress.
+			newAddress streetName: record second.
+			newAddress streetNumber: record third asNumber .
+			newAddress town: record fourth.
+			newAddress zipCode: record fifth asNumber .
+			newAddress province: record sixth! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:38:55'!
+hasLineToImport
+
+	line := stream nextLine.
+	[ line notNil ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:38:55' prior: 50332545 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		record := line findTokens: $,.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:09'!
+createRecord
+
+	^ record := line findTokens: $,! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:09' prior: 50332589 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		self createRecord.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+
+		line := stream nextLine. ].
+
+
+	stream close.
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:44' prior: 50332606 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		self createRecord.
+		(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ].
+].
+	! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:54'!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [self importCustomer ].
+
+		(line beginsWith: 'A') ifTrue: [ self importAddress ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:39:54' prior: 50332618 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	self hasLineToImport whileTrue: [
+		self createRecord.
+		self importRecord.
+].
+	! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:40:01'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:40:01'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:40:24' prior: 50332583!
+hasLineToImport
+
+	line := stream nextLine.
+	^[ line notNil ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:41:06' prior: 50332648!
+hasLineToImport
+
+	line := stream nextLine.
+	^ line notNil! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:09'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:09'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:41:28' prior: 50332636 overrides: 16902254!
+value
+
+	"
+	self importCustomers
+	"
+	[self hasLineToImport] whileTrue: [
+		self createRecord.
+		self importRecord.
+].
+	! !
+!Behavior method!
+for: aConfiguration
+	^ [
+	([
+	(self coverAll:
+		{24 to: 27}) new ] valueCoveringAll:
+		{29 to: 31}) initializeFor:
+		(aConfiguration
+			cover: (48 to: 61)
+			declaredAt: (6 to: 19)) ] valueCoveringAll:
+		{33 to: 46}.! !
+!Behavior method!
+initializeFor: aConfiguration
+	(configuration _ aConfiguration
+		cover: (50 to: 63)
+		declaredAt: (16 to: 29))
+		cover: (33 to: 45)
+		declaredAt: (33 to: 45).
+	(tables _ [
+	(Dictionary
+		cover: (77 to: 86)
+		declaredAt: (77 to: 86)) new ] valueCoveringAll:
+		{88 to: 90})
+		cover: (67 to: 72)
+		declaredAt: (67 to: 72).
+	(id _ 0 coverAll:
+		{100 to: 100})
+		cover: (94 to: 95)
+		declaredAt: (94 to: 95).! !
+!Behavior method!
+beginTransaction
+	^ self.! !
+!Behavior method!
+from: aStream into: aSession
+	^ [
+	([
+	(self coverAll:
+		{32 to: 35}) new ] valueCoveringAll:
+		{37 to: 39})
+		initializeFrom:
+			(aStream
+				cover: (57 to: 63)
+				declaredAt: (7 to: 13))
+		into:
+			(aSession
+				cover: (71 to: 78)
+				declaredAt: (21 to: 28)) ] valueCoveringAll:
+		{41 to: 55. 65 to: 69}.! !
+!Behavior method!
+initializeFrom: aStream into: aSession
+	(session _ aSession
+		cover: (54 to: 61)
+		declaredAt: (31 to: 38))
+		cover: (43 to: 49)
+		declaredAt: (43 to: 49).
+	(stream _ aStream
+		cover: (75 to: 81)
+		declaredAt: (17 to: 23))
+		cover: (65 to: 70)
+		declaredAt: (65 to: 70).! !
+!Behavior method!
+value
+	"
+	self importCustomers
+	"
+	[
+	[
+	[
+	(self coverAll:
+		{38 to: 41}) hasLineToImport ] valueCoveringAll:
+		{43 to: 57} ] whileTrue: [
+		[
+		(self coverAll:
+			{75 to: 78}) createRecord ] valueCoveringAll:
+			{80 to: 91}.
+		[
+		(self coverAll:
+			{96 to: 99}) importRecord ] valueCoveringAll:
+			{101 to: 112} ]] valueCoveringAll:
+		{60 to: 69}.! !
+!Behavior method!
+hasLineToImport
+	(line _ [
+	(stream
+		cover: (27 to: 32)
+		declaredAt: (27 to: 32)) nextLine ] valueCoveringAll:
+		{34 to: 41})
+		cover: (19 to: 22)
+		declaredAt: (19 to: 22).
+	^ [
+	(line
+		cover: (47 to: 50)
+		declaredAt: (19 to: 22)) notNil ] valueCoveringAll:
+		{52 to: 57}.! !
+!Behavior method!
+createRecord
+	^ (record _ [
+	(line
+		cover: (28 to: 31)
+		declaredAt: (28 to: 31)) findTokens:
+		($, coverAll:
+			{45 to: 46}) ] valueCoveringAll:
+		{33 to: 43})
+		cover: (18 to: 23)
+		declaredAt: (18 to: 23).! !
+!Behavior method!
+importRecord
+	[
+	([
+	(line
+		cover: (17 to: 20)
+		declaredAt: (17 to: 20)) beginsWith:
+		('C' coverAll:
+			{34 to: 36}) ] valueCoveringAll:
+		{22 to: 32}) ifTrue: [
+		[
+		(self coverAll:
+			{48 to: 51}) importCustomer ] valueCoveringAll:
+			{53 to: 66} ]] valueCoveringAll:
+		{39 to: 45}.
+	[
+	([
+	(line
+		cover: (75 to: 78)
+		declaredAt: (17 to: 20)) beginsWith:
+		('A' coverAll:
+			{92 to: 94}) ] valueCoveringAll:
+		{80 to: 90}) ifTrue: [
+		[
+		(self coverAll:
+			{107 to: 110}) importAddress ] valueCoveringAll:
+			{112 to: 124} ]] valueCoveringAll:
+		{97 to: 103}.! !
+!Behavior method!
+importCustomer
+	(newCustomer _ [
+	(Customer
+		cover: (33 to: 40)
+		declaredAt: (33 to: 40)) new ] valueCoveringAll:
+		{42 to: 44})
+		cover: (18 to: 28)
+		declaredAt: (18 to: 28).
+	[
+	(newCustomer
+		cover: (50 to: 60)
+		declaredAt: (18 to: 28)) firstName:
+		([
+		(record
+			cover: (73 to: 78)
+			declaredAt: (73 to: 78)) second ] valueCoveringAll:
+			{80 to: 85}) ] valueCoveringAll:
+		{62 to: 71}.
+	[
+	(newCustomer
+		cover: (91 to: 101)
+		declaredAt: (18 to: 28)) lastName:
+		([
+		(record
+			cover: (113 to: 118)
+			declaredAt: (73 to: 78)) third ] valueCoveringAll:
+			{120 to: 124}) ] valueCoveringAll:
+		{103 to: 111}.
+	[
+	(newCustomer
+		cover: (130 to: 140)
+		declaredAt: (18 to: 28)) identificationType:
+		([
+		(record
+			cover: (162 to: 167)
+			declaredAt: (73 to: 78)) fourth ] valueCoveringAll:
+			{169 to: 174}) ] valueCoveringAll:
+		{142 to: 160}.
+	[
+	(newCustomer
+		cover: (180 to: 190)
+		declaredAt: (18 to: 28)) identificationNumber:
+		([
+		(record
+			cover: (214 to: 219)
+			declaredAt: (73 to: 78)) fifth ] valueCoveringAll:
+			{221 to: 225}) ] valueCoveringAll:
+		{192 to: 212}.
+	[
+	(session
+		cover: (231 to: 237)
+		declaredAt: (231 to: 237)) persist:
+		(newCustomer
+			cover: (248 to: 258)
+			declaredAt: (18 to: 28)) ] valueCoveringAll:
+		{239 to: 246}.! !
+!Behavior method!
+initialize
+	[ super initialize ] valueCoveringAll:
+		{20 to: 29}.
+	(addresses _ [
+	(OrderedCollection
+		cover: (46 to: 62)
+		declaredAt: (46 to: 62)) new ] valueCoveringAll:
+		{64 to: 66})
+		cover: (33 to: 41)
+		declaredAt: (33 to: 41).! !
+!Behavior method!
+firstName: aName
+	(firstName _ aName
+		cover: (33 to: 37)
+		declaredAt: (12 to: 16))
+		cover: (20 to: 28)
+		declaredAt: (20 to: 28).! !
+!Behavior method!
+lastName: aLastName
+	(lastName _ aLastName
+		cover: (35 to: 43)
+		declaredAt: (11 to: 19))
+		cover: (23 to: 30)
+		declaredAt: (23 to: 30).! !
+!Behavior method!
+identificationType: anIdentificationType
+	(identificationType _ anIdentificationType
+		cover: (66 to: 85)
+		declaredAt: (21 to: 40))
+		cover: (44 to: 61)
+		declaredAt: (44 to: 61).! !
+!Behavior method!
+identificationNumber: anIdentificationNumber
+	(identificationNumber _ anIdentificationNumber
+		cover: (72 to: 93)
+		declaredAt: (23 to: 44))
+		cover: (48 to: 67)
+		declaredAt: (48 to: 67).! !
+!Behavior method!
+persist: anObject
+	| table |
+	[
+	(self coverAll:
+		{33 to: 36}) delay ] valueCoveringAll:
+		{38 to: 42}.
+	(table _ [
+	(tables
+		cover: (55 to: 60)
+		declaredAt: (55 to: 60))
+		at:
+			([
+			(anObject
+				cover: (66 to: 73)
+				declaredAt: (10 to: 17)) class ] valueCoveringAll:
+				{75 to: 79})
+		ifAbsentPut: [
+			[
+			(Set
+				cover: (96 to: 98)
+				declaredAt: (96 to: 98)) new ] valueCoveringAll:
+				{100 to: 102} ]] valueCoveringAll:
+		{62 to: 64. 81 to: 92})
+		cover: (46 to: 50)
+		declaredAt: (23 to: 27).
+	[
+	(self coverAll:
+		{109 to: 112}) defineIdOf:
+		(anObject
+			cover: (126 to: 133)
+			declaredAt: (10 to: 17)) ] valueCoveringAll:
+		{114 to: 124}.
+	[
+	(table
+		cover: (137 to: 141)
+		declaredAt: (23 to: 27)) add:
+		(anObject
+			cover: (148 to: 155)
+			declaredAt: (10 to: 17)) ] valueCoveringAll:
+		{143 to: 146}.
+	[
+	([
+	(anObject
+		cover: (161 to: 168)
+		declaredAt: (10 to: 17)) isKindOf:
+		(Customer
+			cover: (180 to: 187)
+			declaredAt: (180 to: 187)) ] valueCoveringAll:
+		{170 to: 178}) ifTrue: [
+		[
+		(self coverAll:
+			{200 to: 203}) persistAddressesOf:
+			(anObject
+				cover: (225 to: 232)
+				declaredAt: (10 to: 17)) ] valueCoveringAll:
+			{205 to: 223} ]] valueCoveringAll:
+		{190 to: 196}.! !
+!Behavior method!
+delay
+	[
+	([
+	(Delay
+		cover: (10 to: 14)
+		declaredAt: (10 to: 14)) forMilliseconds:
+		(100 coverAll:
+			{33 to: 35}) ] valueCoveringAll:
+		{16 to: 31}) wait ] valueCoveringAll:
+		{38 to: 41}.! !
+!Behavior method!
+defineIdOf: anObject
+	[
+	(anObject
+		cover: (24 to: 31)
+		declaredAt: (13 to: 20))
+		instVarNamed:
+			('id' coverAll:
+				{47 to: 50})
+		put:
+			([
+			(self coverAll:
+				{58 to: 61}) newIdFor:
+				(anObject
+					cover: (73 to: 80)
+					declaredAt: (13 to: 20)) ] valueCoveringAll:
+				{63 to: 71}) ] valueCoveringAll:
+		{33 to: 45. 52 to: 55}.! !
+!Behavior method!
+newIdFor: anObject
+	(id _ [
+	(id
+		cover: (22 to: 23)
+		declaredAt: (22 to: 23)) +
+		(1 coverAll:
+			{33 to: 33}) ] valueCoveringAll:
+		{31 to: 31})
+		cover: (28 to: 29)
+		declaredAt: (22 to: 23).
+	^ id
+		cover: (38 to: 39)
+		declaredAt: (22 to: 23).! !
+!Behavior method!
+persistAddressesOf: anObjectWithAddresses
+	[
+	([
+	(anObjectWithAddresses
+		cover: (45 to: 65)
+		declaredAt: (21 to: 41)) addresses ] valueCoveringAll:
+		{67 to: 75}) do: [ :anAddress |
+		[
+		(self coverAll:
+			{96 to: 99}) persist:
+			(anAddress
+				cover: (110 to: 118)
+				declaredAt: (84 to: 92)) ] valueCoveringAll:
+			{101 to: 108} ]] valueCoveringAll:
+		{77 to: 79}.! !
+!Behavior method!
+addresses
+	^ addresses
+		cover: (15 to: 23)
+		declaredAt: (15 to: 23).! !
+!Behavior method!
+importAddress
+	| newAddress |
+	(newAddress _ [
+	(Address
+		cover: (49 to: 55)
+		declaredAt: (49 to: 55)) new ] valueCoveringAll:
+		{57 to: 59})
+		cover: (35 to: 44)
+		declaredAt: (19 to: 28).
+	[
+	(newCustomer
+		cover: (65 to: 75)
+		declaredAt: (65 to: 75)) addAddress:
+		(newAddress
+			cover: (89 to: 98)
+			declaredAt: (19 to: 28)) ] valueCoveringAll:
+		{77 to: 87}.
+	[
+	(newAddress
+		cover: (104 to: 113)
+		declaredAt: (19 to: 28)) streetName:
+		([
+		(record
+			cover: (127 to: 132)
+			declaredAt: (127 to: 132)) second ] valueCoveringAll:
+			{134 to: 139}) ] valueCoveringAll:
+		{115 to: 125}.
+	[
+	(newAddress
+		cover: (145 to: 154)
+		declaredAt: (19 to: 28)) streetNumber:
+		([
+		([
+		(record
+			cover: (170 to: 175)
+			declaredAt: (127 to: 132)) third ] valueCoveringAll:
+			{177 to: 181}) asNumber ] valueCoveringAll:
+			{183 to: 190}) ] valueCoveringAll:
+		{156 to: 168}.
+	[
+	(newAddress
+		cover: (197 to: 206)
+		declaredAt: (19 to: 28)) town:
+		([
+		(record
+			cover: (214 to: 219)
+			declaredAt: (127 to: 132)) fourth ] valueCoveringAll:
+			{221 to: 226}) ] valueCoveringAll:
+		{208 to: 212}.
+	[
+	(newAddress
+		cover: (232 to: 241)
+		declaredAt: (19 to: 28)) zipCode:
+		([
+		([
+		(record
+			cover: (252 to: 257)
+			declaredAt: (127 to: 132)) fifth ] valueCoveringAll:
+			{259 to: 263}) asNumber ] valueCoveringAll:
+			{265 to: 272}) ] valueCoveringAll:
+		{243 to: 250}.
+	[
+	(newAddress
+		cover: (279 to: 288)
+		declaredAt: (19 to: 28)) province:
+		([
+		(record
+			cover: (300 to: 305)
+			declaredAt: (127 to: 132)) sixth ] valueCoveringAll:
+			{307 to: 311}) ] valueCoveringAll:
+		{290 to: 298}.! !
+!Behavior method!
+addAddress: anAddress
+	[
+	(addresses
+		cover: (25 to: 33)
+		declaredAt: (25 to: 33)) add:
+		(anAddress
+			cover: (40 to: 48)
+			declaredAt: (13 to: 21)) ] valueCoveringAll:
+		{35 to: 38}.! !
+!Behavior method!
+streetName: aStreetName
+	(streetName _ aStreetName
+		cover: (41 to: 51)
+		declaredAt: (13 to: 23))
+		cover: (27 to: 36)
+		declaredAt: (27 to: 36).! !
+!Behavior method!
+streetNumber: aStreetNumber
+	(streetNumber _ aStreetNumber
+		cover: (47 to: 59)
+		declaredAt: (15 to: 27))
+		cover: (31 to: 42)
+		declaredAt: (31 to: 42).! !
+!Behavior method!
+town: aTown
+	(town _ aTown
+		cover: (23 to: 27)
+		declaredAt: (7 to: 11))
+		cover: (15 to: 18)
+		declaredAt: (15 to: 18).! !
+!Behavior method!
+zipCode: aZipCode
+	(zipCode _ aZipCode
+		cover: (32 to: 39)
+		declaredAt: (10 to: 17))
+		cover: (21 to: 27)
+		declaredAt: (21 to: 27).! !
+!Behavior method!
+province: aProvince
+	(province _ aProvince
+		cover: (35 to: 43)
+		declaredAt: (11 to: 19))
+		cover: (23 to: 30)
+		declaredAt: (23 to: 30).! !
+!Behavior method!
+selectAllOfType: aType
+	[
+	(self coverAll:
+		{26 to: 29}) delay ] valueCoveringAll:
+		{31 to: 35}.
+	^ [
+	([
+	(self coverAll:
+		{41 to: 44}) objectsOfType:
+		(aType
+			cover: (61 to: 65)
+			declaredAt: (18 to: 22)) ] valueCoveringAll:
+		{46 to: 59}) copy ] valueCoveringAll:
+		{68 to: 71}.! !
+!Behavior method!
+objectsOfType: aType
+	^ [
+	(tables
+		cover: (26 to: 31)
+		declaredAt: (26 to: 31))
+		at:
+			(aType
+				cover: (37 to: 41)
+				declaredAt: (16 to: 20))
+		ifAbsent: [
+			#() coverAll:
+				{55 to: 57} ]] valueCoveringAll:
+		{33 to: 35. 43 to: 51}.! !
+!Behavior method!
+select: aCondition ofType: aType
+	[
+	(self coverAll:
+		{36 to: 39}) delay ] valueCoveringAll:
+		{41 to: 45}.
+	^ [
+	([
+	(self coverAll:
+		{51 to: 54}) objectsOfType:
+		(aType
+			cover: (71 to: 75)
+			declaredAt: (28 to: 32)) ] valueCoveringAll:
+		{56 to: 69}) select:
+		(aCondition
+			cover: (86 to: 95)
+			declaredAt: (9 to: 18)) ] valueCoveringAll:
+		{78 to: 84}.! !
+!Behavior method!
+identificationType
+	^ identificationType
+		cover: (23 to: 40)
+		declaredAt: (23 to: 40).! !
+!Behavior method!
+identificationNumber
+	^ identificationNumber
+		cover: (25 to: 44)
+		declaredAt: (25 to: 44).! !
+!Behavior method!
+firstName
+	^ firstName
+		cover: (14 to: 22)
+		declaredAt: (14 to: 22).! !
+!Behavior method!
+lastName
+	^ lastName
+		cover: (13 to: 20)
+		declaredAt: (13 to: 20).! !
+!Behavior method!
+addressAt: aStreetName
+	^ [
+	(addresses
+		cover: (28 to: 36)
+		declaredAt: (28 to: 36)) detect: [ :anAddress |
+		[
+		(anAddress
+			cover: (60 to: 68)
+			declaredAt: (48 to: 56)) isAt:
+			(aStreetName
+				cover: (76 to: 86)
+				declaredAt: (12 to: 22)) ] valueCoveringAll:
+			{70 to: 74} ]] valueCoveringAll:
+		{38 to: 44}.! !
+!Behavior method!
+isAt: aStreetName
+	^ [
+	(streetName
+		cover: (23 to: 32)
+		declaredAt: (23 to: 32)) =
+		(aStreetName
+			cover: (36 to: 46)
+			declaredAt: (7 to: 17)) ] valueCoveringAll:
+		{34 to: 34}.! !
+!Behavior method!
+streetName
+	^ streetName
+		cover: (15 to: 24)
+		declaredAt: (15 to: 24).! !
+!Behavior method!
+streetNumber
+	^ streetNumber
+		cover: (17 to: 28)
+		declaredAt: (17 to: 28).! !
+!Behavior method!
+town
+	^ town
+		cover: (9 to: 12)
+		declaredAt: (9 to: 12).! !
+!Behavior method!
+zipCode
+	^ zipCode
+		cover: (12 to: 18)
+		declaredAt: (12 to: 18).! !
+!Behavior method!
+province
+	^ province
+		cover: (13 to: 20)
+		declaredAt: (13 to: 20).! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:33'!
+PASSED!
+!Behavior method!
+commit
+	[
+	([
+	(tables
+		cover: (11 to: 16)
+		declaredAt: (11 to: 16))
+		at:
+			(Customer
+				cover: (22 to: 29)
+				declaredAt: (22 to: 29))
+		ifAbsent: [
+			#() coverAll:
+				{42 to: 44} ]] valueCoveringAll:
+		{18 to: 20. 31 to: 39}) do: [ :aCustomer |
+		[
+		(self coverAll:
+			{67 to: 70}) persistAddressesOf:
+			(aCustomer
+				cover: (92 to: 100)
+				declaredAt: (55 to: 63)) ] valueCoveringAll:
+			{72 to: 90} ]] valueCoveringAll:
+		{48 to: 50}.! !
+!Behavior method!
+close
+	^ self.! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:41:41'!
+PASSED!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:43:15' prior: 50332628!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ self importAddress ].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:43:21' prior: 50333109!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ self importAddress ].! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:43:46'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:51:56'!
+test02CustomerRecordMustBeCOnly
+	
+	self should: [	
+	(CustomerImporter from: (self validData) into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidrecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:52:09' prior: 50333126!
+test02CustomerRecordMustBeCOnly
+	
+	self 
+	should: [	(CustomerImporter from: (self validData) into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidrecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:52:13'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:52:13'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:55:35' prior: 50333116!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [ ^ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ ^ self importAddress ].
+	
+	self class! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:56:32' prior: 50333161!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [ ^ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidrecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 18:56:37' prior: 50333169!
+importRecord
+
+	(line beginsWith: 'C') ifTrue: [ ^ self importCustomer ].
+	(line beginsWith: 'A') ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 18:56:45' prior: 50333140!
+test02CustomerRecordMustBeCOnly
+	
+	self 
+	should: [	(CustomerImporter from: (self validData) into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 18:57:27'!
+invalidRecordTypeErrorDecription
+	^ 'Invalid Record'! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:57:41'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:57:42'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:57:42'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:58:27'!
+FAILURE!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 18:58:33'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:58:34'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 18:58:34'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:01:05' prior: 50333178!
+importRecord
+
+	self isCustomerRecord ifTrue: [ ^ self importCustomer ].
+	self isAddressRecord ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:01:06'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:01:06'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:01:59'!
+isCustomerRecord
+	^ (record first = 'C')! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:02:17'!
+isAddressRecord
+	^ (record first = 'A')! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:02:22'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:02:23'!
+FAILURE!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:02:23'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:03:07' prior: 50333188!
+test02CustomerRecordMustBeCOnly
+	
+	self 
+	should: [	(CustomerImporter from: self invalidCustomerRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:03:36'!
+invalidCustomerRecord
+
+	^ ReadStream on: 'CC,Pepe,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:03:41'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:03:41'!
+PASSED!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:29:29' prior: 50332558!
+importCustomer
+
+	newCustomer := Customer new.
+	newCustomer firstName: record second.
+	newCustomer lastName: record third.
+	newCustomer identificationType: record fourth.
+	newCustomer identificationNumber: record fifth.
+	session persist: newCustomer! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:30:41'!
+test03AddressRecordsMustBeAOnly
+	
+	self 
+	should: [	(CustomerImporter from: self invalidAddressRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:30:52'!
+invalidAddressRecord
+
+	^ ReadStream on: 'CC,Pepe,Sanchez,D,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:31:14' prior: 50333310!
+invalidAddressRecord
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:31:16' prior: 50333316!
+invalidAddressRecord
+
+	^ ReadStream on: 'AA,San Martin,3322,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 19:31:23'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:33:41'!
+test04StartingWithCommaShouldRaiseError
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:34:03'!
+invalidRecordStartsWithComma
+
+	^ ReadStream on: ',A,San Martin,3322,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:34:07'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:34:07'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:35:10'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:35:10'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:35:33' prior: 50333346!
+invalidRecordStartsWithComma
+
+	^ ReadStream on: '\,A,San Martin,3322,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 19:35:37'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 19:35:37'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 19:35:38'!
+PASSED!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:35:38'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:37:18' prior: 50333366!
+invalidRecordStartsWithComma
+
+	^ ReadStream on: ',A,San Martin,3322,Olivos,1636,BsAs'! !
+
+	^ record := line findTokens: $,!
+
+line findTokens: $,!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:39:51'!
+ERROR!
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:41:10'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:43:02' prior: 50332653!
+hasLineToImport
+
+	line := stream nextLine.
+	(self isRegisterLine: line) ifFalse: [self error: 'opa'].
+	^ line notNil! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:45:44' prior: 50333384!
+invalidRecordStartsWithComma
+
+	^ ReadStream on: ',A,San Martin,3322,,Olivos,1636,BsAs'! !
+
+!testRun: #ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:46:07'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:46:23' prior: 50333399!
+hasLineToImport
+
+	line := stream nextLine.
+	"(self isRegisterLine: line) ifFalse: [self error: 'opa']."
+	^ line notNil! !
+
+	^ record := line findTokens: $,!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:50:48'!
+test04RecordsMustHaveCorrectAmountOfFields
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!methodRemoval: ImportTest #test04StartingWithCommaShouldRaiseError stamp: 'LDMAF 6/23/2022 19:50:48'!
+test04StartingWithCommaShouldRaiseError
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+
+'Hola, como, estan, putos' split!
+
+'Hola, como, estan, putos' findTokens: $,!
+
+'Hola,,como, estan, putos' findTokens: $,!
+
+'Hola, ,como, estan, putos' findTokens: $,!
+
+OrderedCollection with: ''!
+
+'Hola, ,como, estan, putos' findTokens: $,!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:57:37'!
+test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!methodRemoval: ImportTest #test04RecordsMustHaveCorrectAmountOfFields stamp: 'LDMAF 6/23/2022 19:57:37'!
+test04RecordsMustHaveCorrectAmountOfFields
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:57:55' prior: 50333461!
+test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:58:12'!
+invalidRecordWithCommasTogether
+
+	^ ReadStream on: ',A,San Martin,3322,,Olivos,1636,BsAs'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:58:34' prior: 50333506!
+invalidRecordWithCommasTogether
+
+	^ ReadStream on: 'C,,Pepe,Sanchez,,D,22333444'! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 19:58:44'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 19:58:44'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:59:17' prior: 50333296!
+test03AddressRecordsMustBeAOnly
+	
+	self 
+	should: [	(CustomerImporter from: self invalidAddressRecord into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size]! !
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 19:59:20'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 19:59:39'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:00:02'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:00:09'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:00:09'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:01:37' prior: 50333416!
+hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordTypeErrorDecription ].
+	^ line notNil! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:02:27'!
+hasCommasTogether: aLine
+		! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:05:53' prior: 50333564!
+hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,])  ]
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:06:59' prior: 50333568!
+hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ]
+		]! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:07:11'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:07:11'!
+FAILURE!
+
+true and: [false]!
+
+true and: false!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:08:17' prior: 50333577!
+hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: char = $,) ifTrue: [^true] ]
+		]! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:08:25'!
+FAILURE!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:08:25'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:08:45' prior: 50333594!
+hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ]
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:10:58' prior: 50333610!
+hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+			ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true].
+			prevChar _ char ]
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:11:43' prior: 50333619!
+hasCommasTogether: aLine
+	|prevChar|
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:11:53' prior: 50333629!
+hasCommasTogether: aLine
+	|prevChar|
+	prevChar _ nil.
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		]! !
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:11:59'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:12:02'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:12:15'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:13:42'!
+test05RecordsShouldNotHaveBlankCells
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithBlankCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:14:23'!
+invalidRecordWithBlankCells
+
+	^ ReadStream on: 'C, ,Pepe, ,Sanchez,,D,22333444'! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:14:30'!
+PASSED!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:15:17' prior: 50333556!
+hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:15:35'!
+invalidRecordHasCommasTogether
+	^ 'Invalid Record, must not have commas together'! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:15:39' prior: 50333691!
+invalidRecordHasCommasTogether
+	^ 'Invalid record, must not have commas together'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:16:02' prior: 50333512!
+invalidRecordWithCommasTogether
+
+	^ ReadStream on: 'C,,Pepe,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:16:19'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:16:19'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:17:27' prior: 50333703!
+invalidRecordWithCommasTogether
+
+	^ ReadStream on: 'C,,Pepe,Sanchez,D,,22333444'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:17:34' prior: 50333674!
+invalidRecordWithBlankCells
+
+	^ ReadStream on: 'C, ,Pepe, ,Sanchez,D,22333444'! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:17:45'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:17:45'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:18:06' prior: 50333491!
+test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:18:25'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:18:25'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:22:00' prior: 50333683!
+hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	(self hasBlankCells: line) ifTrue: [self error: self class invalidRecordBlankCells ].
+	^ line notNil! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:22:36'!
+test04RecordsShouldNotHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!methodRemoval: ImportTest #test04RecordsShouldHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:22:36'!
+test04RecordsShouldHaveTwoCommasTogether
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithCommasTogether into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]!
+
+'Hola, ,como' asOrderedCollection !
+
+(('Hola, ,como' asOrderedCollection) occurrencesOf: $ ) > 0!
+
+(('Hola matias, ,como' asOrderedCollection) occurrencesOf: $ ) > 0!
+
+(('Hola matias,,como' asOrderedCollection) occurrencesOf: $ ) > 0  !
+
+(('Hola matias,,como' asOrderedCollection) occurrencesOf: $ ) > 0!
+
+('Hola matias,,como' asOrderedCollection)!
+
+('Hola matias, ,como' findTokens: $,)!
+
+(('Hola matias, ,como' findTokens: $,) occurrencesOf: $ ) > 0!
+
+(('Hola matias, ,como' findTokens: $,) occurrencesOf: ' ') > 0!
+
+(('Hola matias,  ,como' findTokens: $,) occurrencesOf: ' ') > 0!
+
+'ey mis ops son medio opa, lo fumo con falopa' trim !
+
+'ey mis ops son medio opa, lo fumo con falopa' trimmed: ' '!
+
+'ey mis ops son medio opa, lo fumo con falopa' withoutTrailingBlanks !
+
+'ey mis ops son medio opa, lo fumo con  falopa' withoutTrailingBlanks !
+
+'ey mis ops son medio opa, lo fumo con falopa' withoutSeparators !
+
+'ey         mis ops son medio opa, lo fumo con falopa' withoutSeparators !
+
+'            ' withoutSeparators isEmpty !
+
+(('Hola matias,  ,como' findTokens: $,) occurrencesOf: ' ') anySatisfy: [:s | s withoutSeparators isEmpty ]!
+
+('Hola matias,  ,como' findTokens: $,) anySatisfy: [:s | s withoutSeparators isEmpty ]!
+
+('Hola matias,DROGA,como' findTokens: $,) anySatisfy: [:s | s withoutSeparators isEmpty ] ifEmpty: ['nada']!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:47' prior: 50332600!
+createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:54' prior: 50333840!
+createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:58' prior: 50333849!
+createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ].
+	^record! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:33:59' prior: 50333858!
+createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self Error self class invalidRecordWithBlankSpaces ].
+	^record.! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:34:09' prior: 50333757!
+hasLineToImport
+
+	line := stream nextLine.
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:34:26' prior: 50333867!
+createRecord
+	
+	record := line findTokens: $,.
+	record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self error: self class invalidRecordWithBlankSpaces ].
+	^record.! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:35:04'!
+ensureRecordHasNotBlankCells
+
+	^ record anySatisfy: [:s | s withoutSeparators isEmpty ] ifTrue: [self error: self class invalidRecordWithBlankSpaces ]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:35:04' prior: 50333884!
+createRecord
+	
+	record := line findTokens: $,.
+	self ensureRecordHasNotBlankCells.
+	^record.! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:35:23'!
+invalidRecordHasBlankSpaces
+	^ 'Invalid record, must not have blank cells'! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:35:34' prior: 50333659!
+test05RecordsShouldNotHaveBlankCells
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithBlankCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordHasBlankSpaces equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:35:38'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:35:38'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:35:55'!
+FAILURE!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:37:10'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:38:10' prior: 50333639!
+hasCommasTogether: aLine
+	|prevChar|
+	prevChar _ nil.
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		].
+	^false! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:16'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:16'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:38:40' prior: 50333893!
+ensureRecordHasNotBlankCells
+
+	^ (record anySatisfy: [:s | s withoutSeparators isEmpty ]) ifTrue: [self error: self class invalidRecordWithBlankSpaces ]! !
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:46'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:38:46'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:39:14'!
+invalidRecordWithBlankSpaces
+	^ 'Invalid record, must not have blank cells'! !
+
+!methodRemoval: CustomerImporter class #invalidRecordHasBlankSpaces stamp: 'LDMAF 6/23/2022 20:39:14'!
+invalidRecordHasBlankSpaces
+	^ 'Invalid record, must not have blank cells'!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:39:18'!
+ERROR!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:39:18'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:39:18'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:39:18'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:39:18'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:39:35'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:39:50'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:43:34'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:44:13' prior: 50333941!
+hasCommasTogether: aLine
+	|prevChar|
+	prevChar _ nil.
+	aLine isNil ifTrue: [^false].
+	aLine do: [ :char |
+			( prevChar isNil ) ifTrue: [prevChar _ char]
+						   ifFalse: [ (prevChar = $, and: [char = $,]) ifTrue: [^true] ].
+			prevChar _ char.
+		].
+	^false! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:44:19'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:44:20'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:44:20'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:44:20'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:44:20'!
+ERROR!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:44:20'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:44:50' prior: 50333913!
+test05RecordsShouldNotHaveBlankCells
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordWithBlankCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordWithBlankSpaces equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:44:55'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:44:55'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:44:55'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:44:56'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:44:56'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:45:33'!
+test06RecordShouldNotStartWithComma
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordWithBlankSpaces equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:45:35'!
+FAILURE!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:45:35'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:46:32' prior: 50334067!
+test06RecordShouldNotStartWithComma
+	
+	self 
+	should: [	(CustomerImporter from: self invalidRecordStartsWithComma into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidRecordStartsWithComma equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:46:37'!
+ERROR!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:46:37'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 20:46:54'!
+invalidRecordStartsWithComma
+	^ 'Invalid record, must not start with comma'! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:48:39' prior: 50333876!
+hasLineToImport
+
+	line := stream nextLine.
+	(self startWithComma: line) ifTrue: [self error: self class invalidRecordStartsWithComma ].
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:48:59'!
+startsWithComma: aLine
+	! !
+
+'Hola matias,DROGA,como' first !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:49:40' prior: 50334126!
+startsWithComma: aLine
+	^(aLine first = $,)! !
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:49:46'!
+ERROR!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:49:46'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:50:09' prior: 50334115!
+hasLineToImport
+
+	line := stream nextLine.
+	(self startsWithComma: line) ifTrue: [self error: self class invalidRecordStartsWithComma ].
+	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
+	^ line notNil! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:50:55' prior: 50333406!
+invalidRecordStartsWithComma
+
+	^ ReadStream on: ',C,Pepe,Sanchez,D,22333444'! !
+
+	^(aLine first = $,)!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:53:12'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:53:15'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:53:28'!
+ERROR!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:53:29'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:53:29'!
+ERROR!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:53:40'!
+ERROR!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:54:26' prior: 50334131!
+startsWithComma: aLine
+	aLine isNil ifTrue: [^false].
+	^(aLine first = $,).! !
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 20:54:31'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 20:54:32'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:02:56'!
+test07CustomerRecordShouldHaveFiveCells
+	
+	self 
+	should: [	(CustomerImporter from: self customerRecordWithMoreThanFiveCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidCustomerRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:03:00'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:03:07'!
+customerRecordWithMoreThanFiveCells
+	self shouldBeImplemented.! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:04:35' prior: 50334232!
+customerRecordWithMoreThanFiveCells
+	^ ReadStream on: 'CC,Pepe,Sanchez,D,22333444,999999'! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:04:43'!
+ERROR!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:04:43'!
+ERROR!
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 21:05:37'!
+invalidCustomerRecordWithIncorrectSize
+	^ 'Invalid amount of cells in customer record'! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:05:50'!
+FAILURE!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:05:50'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:06:39' prior: 50334238!
+customerRecordWithMoreThanFiveCells
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444,999999'! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:06:46'!
+FAILURE!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:06:46'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:07:11' prior: 50333242!
+isCustomerRecord
+	^ (record first = 'C') and: [record size = 5]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:08:43' prior: 50333228!
+importRecord
+
+	self isCustomerRecord ifTrue: [ ^ self importCustomer ] ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize ].
+	self isAddressRecord ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:18' prior: 50334277!
+isCustomerRecord
+	(record size = 5) ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize ]
+	^ (record first = 'C')! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:23' prior: 50334295!
+isCustomerRecord
+	(record size = 5) ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize ].
+	^ (record first = 'C')! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:52' prior: 50334303!
+isCustomerRecord
+	^ (record first = 'C') and: [record size = 5]! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:09:56' prior: 50334311!
+isCustomerRecord
+	^ (record first = 'C').! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:12:44' prior: 50334283!
+importRecord
+
+	self isCustomerRecord ifTrue: [ 
+		(self ensureCustomerRecordHasCorrectSize).
+		^ self importCustomer.
+	].
+	self isAddressRecord ifTrue: [ ^ self importAddress ].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:13:35'!
+ensureCustomerRecordHasCorrectSize
+
+	(record size = 5) ifFalse: [self error: self class customerRecordWithMoreThanFiveCells].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:13:48' prior: 50334332!
+ensureCustomerRecordHasCorrectSize
+	(record size = 5) ifFalse: [self error: self class customerRecordWithMoreThanFiveCells].! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:14:33' prior: 50334339!
+ensureCustomerRecordHasCorrectSize
+	(record size = 5) ifFalse: [self error: self class invalidCustomerRecordWithIncorrectSize].! !
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:15:07'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 21:15:18'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:15:19'!
+PASSED!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:15:57'!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithMoreThanFiveCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:16:45'!
+addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:19:53'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:19:53'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:20:26' prior: 50334378!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithMoreThanSixCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
+!CustomerImporter class methodsFor: 'instance creation' stamp: 'LDMAF 6/23/2022 21:20:39'!
+invalidAddressRecordWithIncorrectSize
+	^ 'Invalid amount of cells in address record'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:44'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:44'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:58'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:20:58'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:21:25'!
+ERROR!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:21:46'!
+ERROR!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:22:27' prior: 50334393!
+addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+	A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:22:31'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:22:31'!
+FAILURE!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:23:04' prior: 50334322!
+importRecord
+
+	self isCustomerRecord ifTrue: [ 
+		(self ensureCustomerRecordHasCorrectSize).
+		^ self importCustomer.
+	].
+	self isAddressRecord ifTrue: [ 
+		(self ensureAddressRecordHasCorrectSize).
+		^ self importAddress 
+	].
+	
+	self error: self class invalidRecordTypeErrorDecription! !
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 21:23:24'!
+ensureAddressRecordHasCorrectSize
+	(record size = 6) ifFalse: [self error: self class invalidAddressRecordWithIncorrectSize ].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:23:36'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:23:36'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:23:54'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:25:02' prior: 50334447!
+addressRecordWithMoreThanSixCells
+
+	^ ReadStream on: 'C,Pepe,Sanchez,D,22333444
+A,San Martin,3322,Olivos,1636,BsAs,9999,999'! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:07'!
+FAILURE!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:07'!
+FAILURE!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 21:25:14' prior: 50334406!
+test08AddressRecordShouldHaveSixCells
+	
+	self 
+	should: [	(CustomerImporter from: self addressRecordWithMoreThanSixCells into: session) value.	]
+	raise: Error - MessageNotUnderstood
+	withExceptionDo: [ :anError | 
+		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
+		self assert: 0 equals: (session selectAllOfType: Address) size].! !
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:16'!
+PASSED!
+
+!testRun: #ImportTest #test01Import stamp: 'LDMAF 6/23/2022 21:25:21'!
+PASSED!
+
+!testRun: #ImportTest #test02CustomerRecordMustBeCOnly stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test03AddressRecordsMustBeAOnly stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test04RecordsShouldNotHaveTwoCommasTogether stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test05RecordsShouldNotHaveBlankCells stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test06RecordShouldNotStartWithComma stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test07CustomerRecordShouldHaveFiveCells stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+!testRun: #ImportTest #test08AddressRecordShouldHaveSixCells stamp: 'LDMAF 6/23/2022 21:25:22'!
+PASSED!
+
+----QUIT----(23 June 2022 21:25:58) CuisUniversity-5053.image priorSource: 4615012!
