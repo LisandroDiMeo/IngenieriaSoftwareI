@@ -51,11 +51,11 @@ assertPepeSanchezWasImportedCorrectly: importedCustomer
 	self assertAddressOf: importedCustomer streetName: 'San Martin' streetNumber: 3322 town: 'Olivos' zipCode: 1636 province:'BsAs'.
 	self assertAddressOf: importedCustomer streetName: 'Maipu' streetNumber: 888 town: 'Florida' zipCode: 1122 province: 'Buenos Aires'! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 20:35:16'!
 customerIdentifiedAs: idType withNumber: idNumber 
 
 	^ (session select: [:aCustomer | aCustomer identificationType = idType and: [aCustomer identificationNumber = idNumber]]
-			ofType: ConcreteCustomer) anyOne! !
+			ofType: Customer) anyOne! !
 
 !ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:06:41'!
 customerRecordWithWrongAmountOfCells
@@ -90,10 +90,10 @@ invalidRecordWithCommasTogether
 
 	^ ReadStream on: 'C,,Pepe,Sanchez,D,,22333444'! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'IG 6/16/2022 19:42:10'!
 setUp
 
-	session := DataBaseSession for: (Array with: Address with: ConcreteCustomer).
+	session := DataBaseSession for: (Array with: Address with: Customer).
 	session beginTransaction! !
 
 !ImportTest methodsFor: 'as yet unclassified' stamp: 'IG 6/16/2022 19:43:06'!
@@ -102,15 +102,15 @@ tearDown
 	session commit.
 	session close! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 21:24:49'!
 test01Import
 	
 	(CustomerImporter from: (self validData) into: session) value.	
-	self assert: 2 equals: (session selectAllOfType: ConcreteCustomer) size.
+	self assert: 2 equals: (session selectAllOfType: Customer) size.
 	self assertPepeSanchezWasImportedCorrectly: (self customerIdentifiedAs: 'D' withNumber: '22333444').
 	self assertJuanPerezWasImportedCorrectly: (self customerIdentifiedAs: 'C' withNumber: '23-25666777-9').! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:03:07'!
 test02CustomerRecordMustBeCOnly
 	
 	self 
@@ -118,7 +118,7 @@ test02CustomerRecordMustBeCOnly
 	raise: Error - MessageNotUnderstood
 	withExceptionDo: [ :anError | 
 		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
-		self assert: 0 equals: (session selectAllOfType: ConcreteCustomer) size]! !
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
 
 !ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 19:59:17'!
 test03AddressRecordsMustBeAOnly
@@ -130,7 +130,7 @@ test03AddressRecordsMustBeAOnly
 		self assert: CustomerImporter invalidRecordTypeErrorDecription equals: anError messageText.
 		self assert: 0 equals: (session selectAllOfType: Address) size]! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:22:36'!
 test04RecordsShouldNotHaveTwoCommasTogether
 	
 	self 
@@ -138,9 +138,9 @@ test04RecordsShouldNotHaveTwoCommasTogether
 	raise: Error - MessageNotUnderstood
 	withExceptionDo: [ :anError | 
 		self assert: CustomerImporter invalidRecordHasCommasTogether equals: anError messageText.
-		self assert: 0 equals: (session selectAllOfType: ConcreteCustomer) size]! !
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:44:50'!
 test05RecordsShouldNotHaveBlankCells
 	
 	self 
@@ -148,9 +148,9 @@ test05RecordsShouldNotHaveBlankCells
 	raise: Error - MessageNotUnderstood
 	withExceptionDo: [ :anError | 
 		self assert: CustomerImporter invalidRecordWithBlankSpaces equals: anError messageText.
-		self assert: 0 equals: (session selectAllOfType: ConcreteCustomer) size]! !
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/23/2022 20:46:32'!
 test06RecordShouldNotStartWithComma
 	
 	self 
@@ -158,9 +158,9 @@ test06RecordShouldNotStartWithComma
 	raise: Error - MessageNotUnderstood
 	withExceptionDo: [ :anError | 
 		self assert: CustomerImporter invalidRecordStartsWithComma equals: anError messageText.
-		self assert: 0 equals: (session selectAllOfType: ConcreteCustomer) size]! !
+		self assert: 0 equals: (session selectAllOfType: Customer) size]! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:05:37'!
 test07CustomerRecordShouldHaveFiveCells
 	
 	self 
@@ -168,7 +168,7 @@ test07CustomerRecordShouldHaveFiveCells
 	raise: Error - MessageNotUnderstood
 	withExceptionDo: [ :anError | 
 		self assert: CustomerImporter invalidCustomerRecordWithIncorrectSize equals: anError messageText.
-		self assert: 0 equals: (session selectAllOfType: ConcreteCustomer) size].! !
+		self assert: 0 equals: (session selectAllOfType: Customer) size].! !
 
 !ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:23:42'!
 test08AddressRecordShouldHaveSixCells
@@ -180,14 +180,14 @@ test08AddressRecordShouldHaveSixCells
 		self assert: CustomerImporter invalidAddressRecordWithIncorrectSize equals: anError messageText.
 		self assert: 0 equals: (session selectAllOfType: Address) size].! !
 
-!ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:34:20'!
+!ImportTest methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:47:50'!
 test09ImportAddressBeforeItsCustomerRecordShouldThrowError
 	
 	self 
 	should: [	(CustomerImporter from: self addressRecordBeforeCustomerRecord into: session) value.	]
 	raise: Error - MessageNotUnderstood
 	withExceptionDo: [ :anError | 
-		self assert: NullCustomer imANullCustomer equals: anError messageText.
+		self assert: CustomerImporter addressWithoutCustomer equals: anError messageText.
 		self assert: 0 equals: (session selectAllOfType: Address) size].! !
 
 !ImportTest methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/16/2022 20:54:04'!
@@ -275,226 +275,87 @@ Object subclass: #Customer
 	poolDictionaries: ''
 	category: 'CustomerImporter'!
 
-!Customer methodsFor: 'addresses' stamp: 'LDMAF 6/26/2022 17:25:49'!
-addAddress: anAddress
-
-	self subclassResponsibility ! !
-
-!Customer methodsFor: 'addresses' stamp: 'LDMAF 6/26/2022 17:25:59'!
-addressAt: aStreetName 
-
-	self subclassResponsibility ! !
-
-!Customer methodsFor: 'addresses' stamp: 'LDMAF 6/26/2022 17:26:05'!
-addresses
-
-	self subclassResponsibility ! !
-
-
-!Customer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:26:14'!
-firstName
-
-	self subclassResponsibility  ! !
-
-!Customer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:26:21'!
-firstName: aName
-
-	self subclassResponsibility ! !
-
-!Customer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:26:31'!
-lastName
-
-	self subclassResponsibility  ! !
-
-!Customer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:26:40'!
-lastName: aLastName
-
-	self subclassResponsibility 
-! !
-
-
-!Customer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:26:48'!
-identificationNumber
-
-	self subclassResponsibility ! !
-
-!Customer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:26:53'!
-identificationNumber: anIdentificationNumber
-
-	self subclassResponsibility ! !
-
-!Customer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:26:58'!
-identificationType
-
-	self subclassResponsibility ! !
-
-!Customer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:27:06'!
-identificationType: anIdentificationType
-
-	self subclassResponsibility ! !
-
-
-!Customer methodsFor: 'initialization' stamp: 'LDMAF 6/26/2022 17:27:17'!
-initialize
-
-	"super initialize."
-	self subclassResponsibility! !
-
-
-!classDefinition: #ConcreteCustomer category: 'CustomerImporter'!
-Customer subclass: #ConcreteCustomer
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CustomerImporter'!
-
-!ConcreteCustomer methodsFor: 'addresses' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'addresses' stamp: 'HAW 5/22/2022 00:19:29'!
 addAddress: anAddress
 
 	addresses add: anAddress ! !
 
-!ConcreteCustomer methodsFor: 'addresses' stamp: 'IG 6/16/2022 19:58:53'!
+!Customer methodsFor: 'addresses' stamp: 'IG 6/16/2022 19:58:53'!
 addressAt: aStreetName 
 
 	^addresses detect: [:anAddress | anAddress isAt: aStreetName].! !
 
-!ConcreteCustomer methodsFor: 'addresses' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'addresses' stamp: 'HAW 5/22/2022 00:19:29'!
 addresses
 
 	^ addresses! !
 
 
-!ConcreteCustomer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
 firstName
 
 	^firstName ! !
 
-!ConcreteCustomer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
 firstName: aName
 
 	firstName := aName! !
 
-!ConcreteCustomer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
 lastName
 
 	^lastName ! !
 
-!ConcreteCustomer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'name' stamp: 'HAW 5/22/2022 00:19:29'!
 lastName: aLastName
 
 	lastName := aLastName
 ! !
 
 
-!ConcreteCustomer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
 identificationNumber
 
 	^identificationNumber ! !
 
-!ConcreteCustomer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
 identificationNumber: anIdentificationNumber
 
 	identificationNumber := anIdentificationNumber! !
 
-!ConcreteCustomer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
 identificationType
 
 	^identificationType ! !
 
-!ConcreteCustomer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
+!Customer methodsFor: 'identification' stamp: 'HAW 5/22/2022 00:19:29'!
 identificationType: anIdentificationType
 
 	identificationType := anIdentificationType! !
 
 
-!ConcreteCustomer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:28:39'!
+!Customer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:28:39'!
 initialize
 
 	"super initialize."
 	addresses := OrderedCollection new.! !
 
-
-!classDefinition: #NullCustomer category: 'CustomerImporter'!
-Customer subclass: #NullCustomer
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CustomerImporter'!
-
-!NullCustomer methodsFor: 'addresses' stamp: 'LDMAF 6/26/2022 17:30:50'!
-addAddress: anAddress
-
-	self error: self class imANullCustomer ! !
-
-!NullCustomer methodsFor: 'addresses' stamp: 'LDMAF 6/26/2022 17:31:00'!
-addressAt: aStreetName 
-
-	self error: self class imANullCustomer ! !
-
-!NullCustomer methodsFor: 'addresses' stamp: 'LDMAF 6/26/2022 17:31:06'!
-addresses
-
-	self error: self class imANullCustomer ! !
-
-
-!NullCustomer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:31:13'!
-firstName
-
-	self error: self class imANullCustomer ! !
-
-!NullCustomer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:31:21'!
-firstName: aName
-
-	self error: self class imANullCustomer ! !
-
-!NullCustomer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:31:27'!
-lastName
-
-	self error: self class imANullCustomer  ! !
-
-!NullCustomer methodsFor: 'name' stamp: 'LDMAF 6/26/2022 17:31:34'!
-lastName: aLastName
-
-	self error: self class imANullCustomer 
-! !
-
-
-!NullCustomer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:31:44'!
-identificationNumber
-
-	self error: self class imANullCustomer  ! !
-
-!NullCustomer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:31:51'!
-identificationNumber: anIdentificationNumber
-
-	self error: self class imANullCustomer ! !
-
-!NullCustomer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:31:57'!
-identificationType
-
-	self error: self class imANullCustomer ! !
-
-!NullCustomer methodsFor: 'identification' stamp: 'LDMAF 6/26/2022 17:32:02'!
-identificationType: anIdentificationType
-
-	self error: self class imANullCustomer ! !
-
-
-!NullCustomer methodsFor: 'initialization' stamp: 'LDMAF 6/26/2022 17:23:33'!
-initialize
+!Customer methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:33:06'!
+initializeNullCustomer
 
 	"super initialize."
-	addresses := OrderedCollection new.! !
+	addresses := OrderedCollection new.
+	addAddressBehavior := [:address | self error: 'soy nulo'].! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
-!classDefinition: 'NullCustomer class' category: 'CustomerImporter'!
-NullCustomer class
+!classDefinition: 'Customer class' category: 'CustomerImporter'!
+Customer class
 	instanceVariableNames: ''!
 
-!NullCustomer class methodsFor: 'as yet unclassified' stamp: 'LDMAF 6/26/2022 17:30:29'!
-imANullCustomer
-	^ 'I am a null customer.'! !
+!Customer class methodsFor: 'as yet unclassified' stamp: 'ldm 6/26/2022 16:27:39'!
+nullCustomer
+	^self new initializeNullCustomer.! !
 
 
 !classDefinition: #CustomerImporter category: 'CustomerImporter'!
@@ -504,12 +365,11 @@ Object subclass: #CustomerImporter
 	poolDictionaries: ''
 	category: 'CustomerImporter'!
 
-!CustomerImporter methodsFor: 'initialization' stamp: 'LDMAF 6/26/2022 17:33:37'!
+!CustomerImporter methodsFor: 'initialization' stamp: 'ldm 6/26/2022 16:47:11'!
 initializeFrom: aStream into: aSession
 	
 	session := aSession.
-	stream := aStream.
-	newCustomer := NullCustomer new.! !
+	stream := aStream.! !
 
 
 !CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 20:35:04'!
@@ -552,12 +412,12 @@ hasLineToImport
 	(self hasCommasTogether: line) ifTrue: [self error: self class invalidRecordHasCommasTogether ].
 	^ line notNil! !
 
-!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/26/2022 17:33:18'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'ldm 6/26/2022 16:46:37'!
 importAddress
 
 	| newAddress |
 			newAddress := Address new.
-			"newCustomer isNil ifTrue: [self error: self class addressWithoutCustomer]."
+			newCustomer isNil ifTrue: [self error: self class addressWithoutCustomer].
 			newCustomer addAddress: newAddress.
 			newAddress streetName: record second.
 			newAddress streetNumber: record third asNumber .
@@ -565,10 +425,10 @@ importAddress
 			newAddress zipCode: record fifth asNumber .
 			newAddress province: record sixth! !
 
-!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!CustomerImporter methodsFor: 'evaluating' stamp: 'LDMAF 6/23/2022 19:29:29'!
 importCustomer
 
-	newCustomer := ConcreteCustomer new.
+	newCustomer := Customer new.
 	newCustomer firstName: record second.
 	newCustomer lastName: record third.
 	newCustomer identificationType: record fourth.
@@ -670,10 +530,10 @@ beginTransaction
 
 	! !
 
-!DataBaseSession methodsFor: 'transaction management' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!DataBaseSession methodsFor: 'transaction management' stamp: 'HAW 5/22/2022 19:17:36'!
 commit
 
-	(tables at: ConcreteCustomer ifAbsent: [#()]) do: [ :aCustomer | self persistAddressesOf: aCustomer ]
+	(tables at: Customer ifAbsent: [#()]) do: [ :aCustomer | self persistAddressesOf: aCustomer ]
 	! !
 
 
@@ -720,7 +580,7 @@ newIdFor: anObject
 	^id! !
 
 
-!DataBaseSession methodsFor: 'persistance' stamp: 'LDMAF 6/26/2022 17:21:09'!
+!DataBaseSession methodsFor: 'persistance' stamp: 'HAW 5/22/2022 00:19:29'!
 persist: anObject
 
 	| table |
@@ -731,7 +591,7 @@ persist: anObject
 	self defineIdOf: anObject.
 	table add: anObject.
 
-	(anObject isKindOf: ConcreteCustomer) ifTrue: [ self persistAddressesOf: anObject ].! !
+	(anObject isKindOf: Customer) ifTrue: [ self persistAddressesOf: anObject ].! !
 
 
 !DataBaseSession methodsFor: 'selecting' stamp: 'HAW 5/22/2022 19:29:06'!
